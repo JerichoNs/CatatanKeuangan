@@ -9,19 +9,21 @@ import { ThemeToggle } from '../../components/ThemeToggle';
 import { ServerConfigModal } from '../../components/ServerConfigModal';
 
 function HeaderRightActions({ onOpenServerModal }: { onOpenServerModal: () => void }) {
-  const { logout } = useAuth();
+  const { logout, isAdmin } = useAuth();
   const { colors } = useTheme();
 
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginRight: spacing.md }}>
-      <TouchableOpacity
-        onPress={onOpenServerModal}
-        hitSlop={8}
-        accessibilityRole="button"
-        accessibilityLabel="Pengaturan IP Server"
-      >
-        <Ionicons name="server-outline" size={20} color={colors.ink} />
-      </TouchableOpacity>
+      {isAdmin && (
+        <TouchableOpacity
+          onPress={onOpenServerModal}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Pengaturan IP Server"
+        >
+          <Ionicons name="server-outline" size={20} color={colors.ink} />
+        </TouchableOpacity>
+      )}
       <ThemeToggle size="small" />
       <TouchableOpacity
         onPress={logout}
