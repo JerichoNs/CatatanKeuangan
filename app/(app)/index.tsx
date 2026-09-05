@@ -1,5 +1,15 @@
 import { useCallback, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,10 +27,12 @@ function formatRupiah(value: number) {
 
 export default function DashboardScreen() {
   const { user, isAdmin } = useAuth();
-  const { colors, isDark } = useTheme();
+  const { colors, isDark, setTheme } = useTheme();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [optionsModalVisible, setOptionsModalVisible] = useState(false);
+  const [resetting, setResetting] = useState(false);
 
   const fetchTransactions = useCallback(async () => {
     if (!user) return;
@@ -47,6 +59,43 @@ export default function DashboardScreen() {
   const saldo = totalIncome - totalExpense;
   const recent = transactions.slice(0, 5);
   const hasData = transactions.length > 0;
+
+  const handleRefresh = async () => {
+    setOptionsModalVisible(false);
+    await fetchTransactions();
+  };
+
+  const handleResetTheme = () => {
+    setOptionsModalVisible(false);
+    setTheme('light');
+  };
+
+  const handleResetAllTransactions = () => {
+    setOptionsModalVisible(false);
+    Alert.alert(
+      'Reset Semua Transaksi',
+      'Apakah kamu yakin ingin menghapus SEMUA catatan transaksi akunmu? Saldo akan kembali menjadi Rp0. Tindakan ini tidak dapat dibatalkan.',
+      [
+        { text: 'Batal', style: 'cancel' },
+        {
+          text: 'Ya, Reset Semua',
+          style: 'destructive',
+          onPress: async () => {
+            setResetting(true);
+            try {
+              await api.delete('/transactions/reset/all');
+              setTransactions([]);
+              Alert.alert('Sukses', 'Semua catatan transaksi berhasil dibersihkan.');
+            } catch {
+              Alert.alert('Gagal', 'Gagal mereset transaksi. Coba lagi.');
+            } finally {
+              setResetting(false);
+            }
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <ScrollView
@@ -89,9 +138,22 @@ export default function DashboardScreen() {
                 <Ionicons name="wallet-outline" size={18} color="#C9D6F5" />
                 <Text style={styles.saldoLabel}>Total Saldo</Text>
               </View>
-              <View style={styles.activePill}>
-                <View style={styles.activeDot} />
-                <Text style={styles.activePillText}>Aktif</Text>
+              <View style={styles.saldoActionsRow}>
+                <TouchableOpacity
+                  style={styles.resetTriggerBtn}
+                  onPress={() => setOptionsModalVisible(true)}
+                  hitSlop={8}
+                  activeOpacity={0.8}
+                  accessibilityLabel="Opsi Dashboard & Reset"
+                >
+                  <Ionicons name="refresh-circle-outline" size={18} color="#FFFFFF" />
+                  <Text style={styles.resetTriggerText}>Opsi & Reset</Text>
+                </TouchableOpacity>
+
+                <View style={styles.activePill}>
+                  <View style={styles.activeDot} />
+                  <Text style={styles.activePillText}>Aktif</Text>
+                </View>
               </View>
             </View>
 
@@ -235,6 +297,106 @@ export default function DashboardScreen() {
           )}
         </>
       )}
+
+      {/* Modal Opsi & Reset Dashboard */}
+      <Modal
+        visible={optionsModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setOptionsModalVisible(false)}
+      >
+        <Pressable
+          style={styles.modalBackdrop}
+          onPress={() => setOptionsModalVisible(false)}
+        >
+          <Pressable
+            style={[
+              styles.modalCard,
+              { backgroundColor: colors.surface, borderColor: colors.border },
+            ]}
+            onPress={(e) => e.stopPropagation()}
+          >
+            <View style={[styles.modalHeader, { borderBottomColor: colors.border }]}>
+              <View style={styles.modalHeaderTitleRow}>
+                <Ionicons name="settings-outline" size={20} color={colors.primary} />
+                <Text style={[styles.modalTitle, { color: colors.ink }]}>
+                  Opsi & Reset Dashboard
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setOptionsModalVisible(false)}
+                hitSlop={8}
+              >
+                <Ionicons name="close" size={20} color={colors.inkMuted} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.modalBody}>
+              {/* Opsi 1: Refresh Data */}
+              <TouchableOpacity
+                style={[styles.optionItem, { backgroundColor: colors.surfaceAlt }]}
+                onPress={handleRefresh}
+                activeOpacity={0.7}
+              >
+                <View style={[styles.optionIcon, { backgroundColor: colors.primaryLight }]}>
+                  <Ionicons name="refresh" size={18} color={colors.primary} />
+                </View>
+                <View style={styles.optionContent}>
+                  <Text style={[styles.optionTitle, { color: colors.ink }]}>
+                    Segarkan Data
+                  </Text>
+                  <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
+                    Muat ulang saldo dan catatan transaksi terbaru
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              {/* Opsi 2: Reset Preferensi Tema */}
+              <TouchableOpacity
+                style={[styles.optionItem, { backgroundColor: colors.surfaceAlt }]}
+                onPress={handleResetTheme}
+                activeOpacity={0.7}
+              >
+                <View style={[styles.optionIcon, { backgroundColor: '#FEF3C7' }]}>
+                  <Ionicons name="sunny" size={18} color="#D97706" />
+                </View>
+                <View style={styles.optionContent}>
+                  <Text style={[styles.optionTitle, { color: colors.ink }]}>
+                    Reset ke Mode Terang
+                  </Text>
+                  <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
+                    Kembalikan tema ke tampilan standar
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              {/* Opsi 3: Reset Semua Catatan Transaksi */}
+              <TouchableOpacity
+                style={[styles.optionItem, { backgroundColor: colors.expenseBg }]}
+                onPress={handleResetAllTransactions}
+                disabled={resetting}
+                activeOpacity={0.7}
+              >
+                <View style={[styles.optionIcon, { backgroundColor: '#FEE2E2' }]}>
+                  {resetting ? (
+                    <ActivityIndicator size="small" color={colors.expense} />
+                  ) : (
+                    <Ionicons name="trash-outline" size={18} color={colors.expense} />
+                  )}
+                </View>
+                <View style={styles.optionContent}>
+                  <Text style={[styles.optionTitle, { color: colors.expense }]}>
+                    Reset Semua Catatan Transaksi
+                  </Text>
+                  <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
+                    Kosongkan seluruh riwayat dan mulai saldo dari Rp0
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </ScrollView>
   );
 }
@@ -256,6 +418,25 @@ const styles = StyleSheet.create({
   saldoTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   saldoHeaderWrap: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   saldoLabel: { color: '#C9D6F5', fontSize: 13, fontWeight: '600' },
+  saldoActionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  resetTriggerBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: radius.pill,
+  },
+  resetTriggerText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700',
+  },
   activePill: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -293,4 +474,68 @@ const styles = StyleSheet.create({
   txNote: { fontSize: 12, marginTop: 2 },
   txAmount: { fontSize: 15, fontWeight: '800' },
   ctaWrap: { marginTop: spacing.lg },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.md,
+  },
+  modalCard: {
+    width: '100%',
+    maxWidth: 420,
+    borderRadius: radius.xl,
+    borderWidth: 1,
+    padding: spacing.md,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingBottom: spacing.sm,
+    borderBottomWidth: 1,
+    marginBottom: spacing.md,
+  },
+  modalHeaderTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  modalTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+  },
+  modalBody: {
+    gap: spacing.sm,
+  },
+  optionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    padding: spacing.sm,
+    borderRadius: radius.md,
+  },
+  optionIcon: {
+    width: 38,
+    height: 38,
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  optionContent: {
+    flex: 1,
+  },
+  optionTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  optionSub: {
+    fontSize: 11,
+    marginTop: 2,
+  },
 });

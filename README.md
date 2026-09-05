@@ -1,176 +1,103 @@
-<div align="center">
+# 💵 Catatan Keuangan
 
-# 💰 Catatan Keuangan
+Halo! 👋 Ini projek aplikasi pencatat keuangan harian yang kubikin pake **Expo (React Native)** untuk aplikasinya dan **Laravel 12 (Sanctum API)** untuk backend-nya.
 
-### *Aplikasi Manajemen Keuangan Cerdas, Modern & Elegan*
+Awalnya projek ini sempat pake Firebase, tapi akhirnya kumigrasi total ke **Laravel REST API** biar arsitekturnya lebih rapi, datanya gampang di-manage, dan enak buat belajar integrasi fullstack antara React Native dan PHP.
 
-![React Native](https://img.shields.io/badge/React_Native-0.86.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Expo](https://img.shields.io/badge/Expo-SDK_57-000020?style=for-the-badge&logo=expo&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-Ready-000000?style=for-the-badge&logo=vercel&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-
-<br />
-
-**Catatan Keuangan** adalah aplikasi pencatatan dan analisis arus keuangan pribadi yang dibangun menggunakan **Expo (React Native)** pada sisi Frontend dan **Laravel 12 (REST API + Sanctum)** pada sisi Backend. Dirancang dengan mengutamakan estetika visual premium, performa tinggi, animasi yang halus, dan kemudahan penggunaan lintas platform (Android, iOS, dan Web).
-
-[Fitur Utama](#-fitur-utama) • [Tangkapan Layar](#-tampilan-antarmuka) • [Teknologi](#-teknologi--stack) • [Instalasi & Menjalankan](#-cara-menjalankan) • [Deploy Vercel](#-deploy-ke-vercel)
-
-</div>
+Bisa dibuka di **Web browser**, di-scan lewat **Expo Go (HP)**, dan udah siap langsung di-deploy ke **Vercel**.
 
 ---
 
-## ✨ Fitur Utama
+## ⚡ Fitur-Fitur Serunya
 
-### 🌙 1. Mode Gelap & Terang dengan Animasi Halus *(Animated Theme)*
-- **Transisi Mulus (*Fluid Organic Transition*)**: Menggunakan interpolasi warna dinamis dan *bezier curves*, berpindah antara tema gelap dan terang terasa sangat lembut dan tidak kaku (*no harsh snaps*).
-- **Tombol Toggle Switch Interaktif**: Tombol geser modern dengan animasi rotasi 360° dan *cross-fade* ikon matahari dan bulan.
-- **Penyimpanan Otomatis**: Preferensi tema disimpan di `AsyncStorage` dan otomatis sinkron dengan tema sistem perangkat.
-
-### 📅 2. Kalender Interaktif & Lompat Cepat *(Interactive Calendar)*
-- **Lompat Cepat Bulan/Tahun**: Tak perlu menggeser panah satu per satu! Cukup sentuh pemilih tahun dan pilih salah satu dari 12 bulan untuk melompat seketika ke periode manapun.
-- **Grid Tanggal Lengkap (1–31)**: Kalender visual bulanan untuk memilih transaksi per hari.
-- **Indikator Titik Transaksi *(Dots)***: Menampilkan dot hijau (pemasukan) dan dot merah (pengeluaran) pada setiap tanggal yang memiliki riwayat aktivitas.
-- **Filter Fleksibel**: Filter daftar transaksi berdasarkan tanggal spesifik atau tampilkan rekap satu bulan penuh.
-
-### 📊 3. Dashboard Finansial & Analisis Cerdas
-- **Kartu Saldo Dinamis**: Tampilan total saldo, total pemasukan, dan total pengeluaran dengan latar belakang gradasi elegan.
-- **Bar Rasio Real-Time**: Visualisasi persentase rasio pemasukan berbanding pengeluaran.
-- **Kategori Terlengkap**: Dilengkapi kategori dengan ikon warna-warni (Makanan, Transportasi, Belanja, Tagihan, Hiburan, Gaji, Bonus, dll).
-
-### 📑 4. Laporan Bulanan & Ekspor PDF
-- **Rekap Arus Kas**: Ringkasan saldo bersih bulanan dengan badge otomatis **Surplus** atau **Defisit**.
-- **Analisis Kategori**: Bar chart visual pengeluaran berdasarkan proporsi kategori terbesar.
-- **Ekspor Dokumen PDF**: Cetak atau bagikan laporan keuangan bulanan lengkap ke file PDF dalam satu klik.
-
-### 🛡️ 5. Panel Admin Eksklusif *(Role-Based Access)*
-- **Akses Terproteksi**: Dilindungi oleh token autentikasi Sanctum dan verifikasi role `is_admin`.
-- **Statistik Global**: Memantau total pengguna terdaftar, jumlah transaksi global, dan volume perputaran dana.
-- **Manajemen Pengguna**: Melihat daftar user beserta riwayat transaksi detail masing-masing akun.
-- **Pengaturan IP Terpusat**: Fitur konfigurasi IP publik dan admin yang hanya bisa diakses oleh akun Admin.
-
-### 🌐 6. Dukungan Multi-Environment & Dual IP
-- **Pemisahan API Publik & Admin**: Dukungan port dan IP berbeda antara endpoint pengguna dan endpoint admin untuk keamanan ekstra.
-- **Preset Satu Klik**: Pilihan cepat IP LAN (`192.168.1.x`), Komputer/Web (`localhost`), atau Emulator Android (`10.0.2.2`).
-- **Live Connection Tester**: Mengetes status konektivitas server secara langsung dari aplikasi.
+- **🌓 Dark Mode & Light Mode yang Beneran Smooth**:
+  Transisinya nggak kaku atau sekadar ganti warna mendadak. Ada interpolasi warna + animasi elastis di switch-nya, plus efek transisi halus di web biar nyaman di mata.
+- **📅 Kalender Interaktif di Riwayat**:
+  Nggak perlu lagi klik panah bolak-balik satu per satu cuma buat ngecek transaksi beberapa bulan lalu. Tinggal buka modal kalender, pilih tahun/bulan langsung lompat, atau klik tanggal spesifik buat filter hari itu. Tanggal yang ada transaksinya juga ada titik indikatornya (hijau buat pemasukan, merah buat pengeluaran).
+- **📊 Ringkasan Saldo & Grafik Rasio**:
+  Lihat total saldo, total pemasukan, dan pengeluaran secara visual. Ada rasio bar langsung buat ngeliat persentase uang yang masuk vs uang yang keluar.
+- **🔄 Opsi & Reset di Dashboard**:
+  Di kartu saldo ada tombol *Opsi & Reset* buat reload data kapan aja, ganti preset tema, atau reset/bersihin semua catatan transaksi akun kalau mau mulai dari nol lagi.
+- **📑 Ekspor Laporan ke PDF**:
+  Bisa langsung cetak atau simpan rekap transaksi bulanan dalam bentuk dokumen PDF yang rapi (support cetak langsung di browser atau share file di HP).
+- **🛡️ Panel Admin Khusus**:
+  Akun yang ditandai sebagai admin (`is_admin = true`) punya akses ke halaman admin buat pantau total pengguna, total volume transaksi global, dan riwayat transaksi semua user.
+- **🌐 Konfigurasi IP Fleksibel**:
+  Khusus buat admin, ada menu pengaturan IP terpisah (IP Publik dan IP Admin) lengkap dengan tombol tes koneksi dan preset cepat buat HP (LAN), Localhost (PC), atau Emulator Android.
 
 ---
 
-## 🛠️ Teknologi & Stack
+## 🛠️ Tech Stack yang Dipake
 
-| Bagian | Teknologi | Keterangan |
-| :--- | :--- | :--- |
-| **Frontend Framework** | [React Native](https://reactnative.dev/) / [Expo 57](https://expo.dev/) | Cross-platform (Android, iOS, Web) |
-| **Routing** | [Expo Router](https://docs.expo.dev/router/introduction/) | File-based navigation |
-| **Bahasa** | [TypeScript](https://www.typescriptlang.org/) | Type-safe development |
-| **Penyimpanan Lokal** | [AsyncStorage](https://react-native-async-storage.github.io/async-storage/) | Token sesi, tema, & preferensi IP |
-| **Backend Framework** | [Laravel 12](https://laravel.com/) | RESTful API Engine |
-| **Autentikasi** | [Laravel Sanctum](https://laravel.com/docs/sanctum) | Bearer token authentication |
-| **Database** | SQLite / MySQL | Penyimpanan relasional data transaksi & user |
-| **PDF Engine** | Expo Print & Expo Sharing | Ekspor laporan PDF native & web |
+- **Frontend**: React Native, Expo SDK 57, Expo Router, TypeScript.
+- **Backend**: Laravel 12, Laravel Sanctum (Token Auth), SQLite / MySQL.
+- **Styling & Animasi**: Vanilla React Native StyleSheet, React Native Animated API, LayoutAnimation.
+- **Ekspor PDF**: Expo Print & Expo Sharing.
+- **Deployment**: Vercel (untuk Web Frontend).
 
 ---
 
-## 📂 Struktur Proyek
+## 🚀 Cara Jalanin di Komputer Kamu
 
-```plaintext
-catatan-keuangan/
-├── app/                      # Expo Router Pages
-│   ├── (app)/                # Halaman Aplikasi Terproteksi
-│   │   ├── index.tsx         # Dashboard utama & Saldo
-│   │   ├── transaksi.tsx     # Form tambah & edit transaksi
-│   │   ├── riwayat.tsx       # Riwayat transaksi + Modal Kalender
-│   │   ├── laporan.tsx       # Rekap analisis & Ekspor PDF
-│   │   └── _layout.tsx       # Tab bar navigation & Theme toggle
-│   ├── (auth)/               # Halaman Autentikasi
-│   │   ├── login.tsx         # Halaman Masuk
-│   │   ├── register.tsx      # Halaman Pendaftaran
-│   │   └── forgot-password.tsx # Reset Password teranimasi
-│   ├── admin/                # Halaman Panel Admin
-│   │   ├── index.tsx         # Dashboard statistik admin & Atur IP
-│   │   └── user/[uid].tsx    # Detail transaksi per user
-│   └── _layout.tsx           # Root provider (Theme & Auth)
-├── components/               # Komponen UI Reusable
-│   ├── CalendarModal.tsx     # Modal Kalender & Lompat Bulan
-│   ├── ServerConfigModal.tsx # Modal Konfigurasi IP Publik & Admin
-│   ├── ThemeToggle.tsx       # Switcher animasi mode gelap/terang
-│   └── ui.tsx                # Card, Button, Input, Chip, Badge
-├── constants/                # Tema & Kategori
-│   ├── categories.ts         # Konfigurasi kategori transaksi
-│   └── theme.ts              # Palet warna Light & Dark mode
-├── contexts/                 # React Context State
-│   ├── AuthContext.tsx       # Manajemen sesi pengguna
-│   └── ThemeContext.tsx      # Manajemen tema & animasi transisi
-├── services/                 # Jaringan & API
-│   └── api.ts                # HTTP Client fetch dengan dual-IP routing
-└── vercel.json               # Konfigurasi Deploy Web ke Vercel
-```
-
----
-
-## 🚀 Cara Menjalankan
-
-### 1. Menjalankan Backend (Laravel API)
-Pastikan PHP (>= 8.2) dan Composer sudah terinstal di komputer kamu.
+### 1. Nyalain Backend (Laravel)
+Pastikan kamu udah install PHP (minimal v8.2) dan Composer:
 
 ```bash
 cd catatan-keuangan-api
 
-# Install dependensi (jika baru pertama kali)
+# Install dependency kalau baru pertama kali clone
 composer install
 
-# Jalankan migrasi database
+# Siapin database & migrasi tabel
 php artisan migrate
 
-# Jalankan server API (Port 8000 untuk Publik)
+# Jalankan server API (default port 8000)
 php artisan serve --host=0.0.0.0 --port=8000
+```
 
-# (Opsional) Jalankan server API khusus Admin di Port 8001
+Kalau mau jalanin server admin terpisah di port 8001:
+```bash
 php artisan serve --host=0.0.0.0 --port=8001
 ```
 
-### 2. Menjalankan Frontend (Expo App)
+### 2. Nyalain Frontend (React Native / Expo)
+Buka terminal baru di folder frontend:
 
 ```bash
 cd catatan-keuangan
 
-# Install dependensi
+# Install paket npm
 npm install
 
-# Menjalankan di Web Browser
+# Buka versi Web
 npm run web
 
-# Menjalankan di HP (Expo Go)
+# Atau buka buat HP (Expo Go)
 npm start
 ```
-> 💡 *Scan QR code yang muncul di terminal menggunakan aplikasi **Expo Go** di ponsel kamu.*
+Tinggal scan QR code-nya pake aplikasi **Expo Go** di HP Android atau kamera iPhone kamu.
 
 ---
 
-## ☁️ Deploy ke Vercel
+## ☁️ Cara Deploy Web ke Vercel
 
-Proyek ini telah dikonfigurasi secara optimal untuk di-deploy ke **Vercel** sebagai Single Page Application (SPA).
+Di repo ini udah include file `vercel.json` dan script build web `build:web`. Jadi deploy-nya gampang banget:
 
-1. Push kode terbaru ke GitHub repository kamu.
-2. Masuk ke dashboard **[Vercel](https://vercel.com)** lalu klik **"Add New Project"**.
-3. Hubungkan repository `CatatanKeuangan`.
-4. Vercel akan secara otomatis mendeteksi pengaturan dari [`vercel.json`](file:///c:/Users/JerichoNS/Downloads/ABDM/Compressed/catatan-keuangan/vercel.json):
-   - **Build Command**: `npx expo export -p web`
-   - **Output Directory**: `dist`
-5. Klik **Deploy** dan aplikasi web siap diakses secara publik!
+1. Push repo ini ke akun GitHub kamu.
+2. Buka [vercel.com](https://vercel.com) dan klik **Add New Project**.
+3. Pilih repository ini, biarkan build command otomatis (`npm run build:web`) dan output folder `dist`.
+4. Klik **Deploy** dan selesai! Web kamu langsung live.
 
 ---
 
-## 🔒 Keamanan & Akun Admin
+## 📌 Catatan Tambahan
 
-- Setiap request yang memerlukan autentikasi dilindungi token **Laravel Sanctum**.
-- Endpoint admin (`/api/admin/*`) diverifikasi secara ketat berdasarkan status `is_admin = true`.
-- Akun non-admin yang mencoba mengakses panel admin akan otomatis dialihkan dan ditolak oleh backend (`403 Forbidden`).
+- **Akun Admin**: Kalau mau bikin akun jadi admin, cukup buka tinker di folder backend:
+  ```bash
+  php artisan tinker --execute="App\Models\User::where('email', 'email_kamu@gmail.com')->update(['is_admin' => true]);"
+  ```
+  Setelah itu logout lalu login ulang di aplikasi. Banner admin emas bakal otomatis nongol di atas dashboard.
 
 ---
 
-## 👨‍💻 Kontributor & Lisensi
-
-Dibuat dengan ❤️ oleh **[JerichoNs](https://github.com/JerichoNs)**.  
-Didistribusikan di bawah lisensi **MIT**. Silakan gunakan, pelajari, dan kembangkan sesuai kebutuhan.
+Dibikin sama **[Jericho](https://github.com/JerichoNs)**. Kalau projek ini bermanfaat buat referensi belajar kamu, boleh tinggalin bintang ⭐ di repo ini ya!

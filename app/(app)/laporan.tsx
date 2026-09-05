@@ -81,55 +81,95 @@ export default function LaporanScreen() {
         .map((t) => {
           const color = t.type === 'income' ? '#16A34A' : '#DC2626';
           const sign = t.type === 'income' ? '+' : '-';
-          return `<tr><td>${t.date}</td><td>${t.category}</td><td>${t.note ?? ''}</td><td style="text-align:right;color:${color}">${sign}Rp ${t.amount.toLocaleString('id-ID')}</td></tr>`;
+          return `<tr>
+            <td style="padding: 10px 8px; border-bottom: 1px solid #E2E8F0;">${t.date}</td>
+            <td style="padding: 10px 8px; border-bottom: 1px solid #E2E8F0; font-weight: 600;">${t.category}</td>
+            <td style="padding: 10px 8px; border-bottom: 1px solid #E2E8F0; color: #64748B;">${t.note ?? '-'}</td>
+            <td style="padding: 10px 8px; border-bottom: 1px solid #E2E8F0; text-align: right; font-weight: 700; color: ${color};">
+              ${sign}Rp ${t.amount.toLocaleString('id-ID')}
+            </td>
+          </tr>`;
         })
         .join('');
 
       const html = `
-        <html><head><meta charset="utf-8" /><style>
-          body { font-family: -apple-system, Helvetica, Arial, sans-serif; padding: 24px; color: #14181F; }
-          h1 { font-size: 20px; color: #16234F; margin-bottom: 4px; }
-          .period { color: #6B7280; margin-bottom: 20px; }
-          .summary { display: flex; gap: 16px; margin-bottom: 24px; }
-          .box { flex: 1; border: 1px solid #E5E9F0; border-radius: 10px; padding: 12px; }
-          .box .label { font-size: 11px; color: #6B7280; text-transform: uppercase; }
-          .box .value { font-size: 18px; font-weight: 700; margin-top: 4px; }
-          table { width: 100%; border-collapse: collapse; font-size: 12px; }
-          th { text-align: left; border-bottom: 2px solid #E5E9F0; padding: 8px 6px; color: #6B7280; font-size: 11px; text-transform: uppercase; }
-          td { padding: 8px 6px; border-bottom: 1px solid #F0F2F6; }
-        </style></head><body>
-          <h1>Laporan Keuangan - Catatan Keuangan</h1>
-          <div class="period">Periode: ${formatBulanTahun(month)}</div>
-          <div class="summary">
-            <div class="box"><div class="label">Pemasukan</div><div class="value" style="color:#16A34A">Rp ${totalIncome.toLocaleString('id-ID')}</div></div>
-            <div class="box"><div class="label">Pengeluaran</div><div class="value" style="color:#DC2626">Rp ${totalExpense.toLocaleString('id-ID')}</div></div>
-            <div class="box"><div class="label">Saldo Bersih</div><div class="value" style="color:#16234F">Rp ${net.toLocaleString('id-ID')}</div></div>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8" />
+          <title>Laporan Keuangan - ${formatBulanTahun(month)}</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 32px; color: #0F172A; max-width: 800px; margin: 0 auto; }
+            .header { border-bottom: 2px solid #2B5CE6; padding-bottom: 16px; margin-bottom: 24px; }
+            h1 { font-size: 24px; font-weight: 800; color: #16234F; margin: 0 0 4px 0; }
+            .period { color: #64748B; font-size: 14px; font-weight: 500; }
+            .summary { display: flex; gap: 16px; margin-bottom: 30px; }
+            .box { flex: 1; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px; background-color: #F8FAFC; }
+            .box .label { font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; }
+            .box .value { font-size: 20px; font-weight: 800; margin-top: 6px; }
+            table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px; }
+            th { text-align: left; border-bottom: 2px solid #CBD5E1; padding: 10px 8px; color: #475569; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+            .footer { margin-top: 40px; text-align: center; color: #94A3B8; font-size: 12px; border-top: 1px solid #E2E8F0; padding-top: 16px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>Catatan Keuangan</h1>
+            <div class="period">Laporan Bulanan: ${formatBulanTahun(month)}</div>
           </div>
-          <table><thead><tr><th>Tanggal</th><th>Kategori</th><th>Catatan</th><th style="text-align:right">Jumlah</th></tr></thead>
-          <tbody>${rows}</tbody></table>
-        </body></html>`;
+          <div class="summary">
+            <div class="box">
+              <div class="label">Total Pemasukan</div>
+              <div class="value" style="color: #16A34A;">Rp ${totalIncome.toLocaleString('id-ID')}</div>
+            </div>
+            <div class="box">
+              <div class="label">Total Pengeluaran</div>
+              <div class="value" style="color: #DC2626;">Rp ${totalExpense.toLocaleString('id-ID')}</div>
+            </div>
+            <div class="box">
+              <div class="label">Saldo Bersih</div>
+              <div class="value" style="color: #2B5CE6;">Rp ${net.toLocaleString('id-ID')}</div>
+            </div>
+          </div>
+          <h3>Rincian Transaksi</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Kategori</th>
+                <th>Catatan</th>
+                <th style="text-align: right;">Jumlah</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+          <div class="footer">
+            Dicetak otomatis dari Aplikasi Catatan Keuangan
+          </div>
+        </body>
+        </html>
+      `;
 
       if (Platform.OS === 'web') {
-        const printWindow = window.open('', '_blank');
-        if (!printWindow) {
-          Alert.alert('Gagal export', 'Browser memblokir pop-up.');
-          return;
-        }
-        printWindow.document.write(html);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
+        // Print.printAsync pada web langsung membuka dialog browser Print / Save PDF
+        await Print.printAsync({ html });
       } else {
         const { uri } = await Print.printToFileAsync({ html });
         if (await Sharing.isAvailableAsync()) {
           await Sharing.shareAsync(uri, {
             mimeType: 'application/pdf',
-            dialogTitle: 'Laporan Keuangan',
+            dialogTitle: `Laporan Keuangan ${month}`,
+            UTI: 'com.adobe.pdf',
           });
+        } else {
+          await Print.printAsync({ html });
         }
       }
-    } catch {
-      Alert.alert('Gagal export', 'Coba lagi beberapa saat lagi.');
+    } catch (err: any) {
+      console.error('Export PDF error:', err);
+      Alert.alert('Gagal export', err?.message || 'Coba lagi beberapa saat lagi.');
     } finally {
       setExporting(false);
     }
