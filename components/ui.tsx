@@ -10,15 +10,32 @@ import {
   KeyboardTypeOptions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, spacing, radius, shadow } from '../constants/theme';
+import { useTheme } from '../contexts/ThemeContext';
+import { spacing, radius, shadow } from '../constants/theme';
 
 export function Card({ children, style }: { children: ReactNode; style?: ViewStyle }) {
-  return <View style={[styles.card, style]}>{children}</View>;
+  const { colors, isDark } = useTheme();
+  return (
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: colors.surface,
+          borderColor: isDark ? colors.border : '#EAEFF8',
+          borderWidth: 1,
+        },
+        style,
+      ]}
+    >
+      {children}
+    </View>
+  );
 }
 
 export function SectionLabel({ children }: { children: ReactNode }) {
+  const { colors } = useTheme();
   return (
-    <Text style={styles.sectionLabel} accessibilityRole="header">
+    <Text style={[styles.sectionLabel, { color: colors.inkMuted }]} accessibilityRole="header">
       {children}
     </Text>
   );
@@ -33,19 +50,18 @@ export function EmptyState({
   title: string;
   description: string;
 }) {
+  const { colors } = useTheme();
   return (
     <View style={styles.empty} accessible accessibilityRole="text" accessibilityLabel={`${title}. ${description}`}>
-      <View style={styles.emptyIconWrap}>
+      <View style={[styles.emptyIconWrap, { backgroundColor: colors.primaryLight }]}>
         <Ionicons name={icon} size={26} color={colors.primary} />
       </View>
-      <Text style={styles.emptyTitle}>{title}</Text>
-      <Text style={styles.emptyDescription}>{description}</Text>
+      <Text style={[styles.emptyTitle, { color: colors.ink }]}>{title}</Text>
+      <Text style={[styles.emptyDescription, { color: colors.inkMuted }]}>{description}</Text>
     </View>
   );
 }
 
-// Beda sama EmptyState: ini buat kondisi GAGAL MEMUAT data (mis. Firestore
-// error/offline), bukan sekadar "datanya kosong" - makanya ada tombol coba lagi.
 export function ErrorState({
   title = 'Gagal memuat data',
   description = 'Cek koneksi internet kamu, terus coba lagi.',
@@ -55,30 +71,32 @@ export function ErrorState({
   description?: string;
   onRetry: () => void;
 }) {
+  const { colors } = useTheme();
   return (
     <View style={styles.empty} accessible accessibilityRole="alert" accessibilityLabel={`${title}. ${description}`}>
-      <View style={[styles.emptyIconWrap, styles.errorIconWrap]}>
+      <View style={[styles.emptyIconWrap, { backgroundColor: colors.expenseBg }]}>
         <Ionicons name="cloud-offline-outline" size={26} color={colors.expense} />
       </View>
-      <Text style={styles.emptyTitle}>{title}</Text>
-      <Text style={styles.emptyDescription}>{description}</Text>
+      <Text style={[styles.emptyTitle, { color: colors.ink }]}>{title}</Text>
+      <Text style={[styles.emptyDescription, { color: colors.inkMuted }]}>{description}</Text>
       <TouchableOpacity
         onPress={onRetry}
-        style={styles.retryButton}
+        style={[styles.retryButton, { borderColor: colors.primary }]}
         accessibilityRole="button"
         accessibilityLabel="Coba lagi"
       >
         <Ionicons name="refresh" size={14} color={colors.primary} />
-        <Text style={styles.retryText}>Coba lagi</Text>
+        <Text style={[styles.retryText, { color: colors.primary }]}>Coba lagi</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 export function PhaseBadge({ label }: { label: string }) {
+  const { colors } = useTheme();
   return (
-    <View style={styles.badge}>
-      <Text style={styles.badgeText}>{label}</Text>
+    <View style={[styles.badge, { backgroundColor: colors.accent }]}>
+      <Text style={[styles.badgeText, { color: colors.primaryDark }]}>{label}</Text>
     </View>
   );
 }
@@ -94,17 +112,24 @@ export function Chip({
   selected: boolean;
   onPress: () => void;
 }) {
+  const { colors } = useTheme();
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.8}
-      style={[styles.chip, selected && styles.chipSelected]}
+      style={[
+        styles.chip,
+        {
+          backgroundColor: selected ? colors.primary : colors.surface,
+          borderColor: selected ? colors.primary : colors.border,
+        },
+      ]}
       accessibilityRole="button"
       accessibilityState={{ selected }}
       accessibilityLabel={label}
     >
       {icon ? <Ionicons name={icon} size={14} color={selected ? '#FFFFFF' : colors.inkMuted} /> : null}
-      <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{label}</Text>
+      <Text style={[styles.chipText, { color: selected ? '#FFFFFF' : colors.ink }]}>{label}</Text>
     </TouchableOpacity>
   );
 }
@@ -126,6 +151,7 @@ export function Button({
   disabled?: boolean;
   icon?: keyof typeof Ionicons.glyphMap;
 }) {
+  const { colors } = useTheme();
   const isDisabled = disabled || loading;
   const textColor = variant === 'ghost' ? colors.primary : variant === 'accent' ? colors.primaryDark : '#FFFFFF';
 
@@ -136,8 +162,8 @@ export function Button({
       activeOpacity={0.85}
       style={[
         styles.button,
-        variant === 'primary' && styles.buttonPrimary,
-        variant === 'accent' && styles.buttonAccent,
+        variant === 'primary' && { backgroundColor: colors.primary, ...shadow.button },
+        variant === 'accent' && { backgroundColor: colors.accent, ...shadow.button },
         variant === 'ghost' && styles.buttonGhost,
         isDisabled && styles.buttonDisabled,
       ]}
@@ -174,14 +200,23 @@ export function InputField({
   keyboardType?: KeyboardTypeOptions;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
 }) {
+  const { colors } = useTheme();
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(!!secureTextEntry);
 
   return (
-    <View style={[styles.inputWrapper, focused && styles.inputWrapperFocused]}>
+    <View
+      style={[
+        styles.inputWrapper,
+        {
+          backgroundColor: colors.surface,
+          borderColor: focused ? colors.primary : colors.border,
+        },
+      ]}
+    >
       <Ionicons name={icon} size={18} color={focused ? colors.primary : colors.inkMuted} />
       <TextInput
-        style={styles.inputField}
+        style={[styles.inputField, { color: colors.ink }]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
@@ -209,7 +244,6 @@ export function InputField({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.surface,
     borderRadius: radius.lg,
     padding: spacing.md,
     ...shadow.card,
@@ -217,7 +251,6 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontSize: 13,
     fontWeight: '700',
-    color: colors.inkMuted,
     letterSpacing: 0.5,
     textTransform: 'uppercase',
     marginBottom: spacing.sm,
@@ -231,14 +264,12 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: radius.pill,
-    backgroundColor: colors.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.sm,
   },
-  errorIconWrap: { backgroundColor: '#FEECEC' },
-  emptyTitle: { fontSize: 16, fontWeight: '700', color: colors.ink, marginBottom: spacing.xs },
-  emptyDescription: { fontSize: 14, color: colors.inkMuted, textAlign: 'center', lineHeight: 20 },
+  emptyTitle: { fontSize: 16, fontWeight: '700', marginBottom: spacing.xs },
+  emptyDescription: { fontSize: 14, textAlign: 'center', lineHeight: 20 },
   retryButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -248,35 +279,26 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: radius.pill,
     borderWidth: 1.5,
-    borderColor: colors.primary,
   },
-  retryText: { color: colors.primary, fontWeight: '700', fontSize: 13 },
+  retryText: { fontWeight: '700', fontSize: 13 },
   badge: {
-    backgroundColor: colors.accent,
     paddingHorizontal: spacing.sm,
     paddingVertical: 4,
     borderRadius: radius.pill,
     alignSelf: 'flex-start',
     marginBottom: spacing.sm,
   },
-  badgeText: { fontSize: 11, fontWeight: '700', color: colors.primaryDark },
+  badgeText: { fontSize: 11, fontWeight: '700' },
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: colors.surface,
     borderWidth: 1.5,
-    borderColor: colors.border,
     borderRadius: radius.pill,
     paddingHorizontal: spacing.md,
     paddingVertical: 8,
   },
-  chipSelected: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  chipText: { fontSize: 13, fontWeight: '600', color: colors.ink },
-  chipTextSelected: { color: '#FFFFFF' },
+  chipText: { fontSize: 13, fontWeight: '600' },
   button: {
     borderRadius: radius.md,
     paddingVertical: 14,
@@ -284,8 +306,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonContent: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  buttonPrimary: { backgroundColor: colors.primary, ...shadow.button },
-  buttonAccent: { backgroundColor: colors.accent, ...shadow.button },
   buttonGhost: { backgroundColor: 'transparent' },
   buttonDisabled: { opacity: 0.55 },
   buttonText: { fontWeight: '700', fontSize: 16 },
@@ -293,21 +313,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: colors.surface,
     borderRadius: radius.md,
     paddingHorizontal: spacing.md,
     height: 52,
     borderWidth: 1.5,
-    borderColor: 'transparent',
     ...shadow.card,
-  },
-  inputWrapperFocused: {
-    borderColor: colors.primary,
   },
   inputField: {
     flex: 1,
     fontSize: 15,
-    color: colors.ink,
     height: '100%',
   },
 });

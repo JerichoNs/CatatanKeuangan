@@ -43,3 +43,18 @@ export function formatBulanTahun(monthKeyStr: string): string {
   const date = new Date(y, m - 1, 1);
   return date.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
 }
+
+export const MONTH_NAMES_SHORT = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+  'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
+];
+
+export const DAY_NAMES_SHORT = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+
+export function getDaysInMonth(year: number, monthZeroIndexed: number): number {
+  return new Date(year, monthZeroIndexed + 1, 0).getDate();
+}
+
+export function getFirstDayOfMonth(year: number, monthZeroIndexed: number): number {
+  return new Date(year, monthZeroIndexed, 1).getDay();
+}

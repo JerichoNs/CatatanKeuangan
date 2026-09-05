@@ -4,10 +4,11 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, ActivityIndicator } from 'react-native';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
-import { colors } from '../constants/theme';
+import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
 
 function RootNavigation() {
   const { user, loading } = useAuth();
+  const { colors, isDark } = useTheme();
   const segments = useSegments();
   const router = useRouter();
 
@@ -30,16 +31,22 @@ function RootNavigation() {
     );
   }
 
-  return <Slot />;
+  return (
+    <>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <Slot />
+    </>
+  );
 }
 
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <StatusBar style="dark" />
-        <RootNavigation />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <RootNavigation />
+        </AuthProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }
