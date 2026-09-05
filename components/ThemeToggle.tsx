@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { TouchableOpacity, Animated, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, Animated, StyleSheet, View, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -10,15 +10,15 @@ export function ThemeToggle({ size = 'medium' }: { size?: 'small' | 'medium' }) 
   useEffect(() => {
     Animated.spring(animatedValue, {
       toValue: isDark ? 1 : 0,
-      useNativeDriver: true,
+      useNativeDriver: false, // Dibutuhkan untuk interpolasi warna
       friction: 7,
-      tension: 50,
+      tension: 45,
     }).start();
   }, [isDark]);
 
   const isSmall = size === 'small';
-  const width = isSmall ? 52 : 62;
-  const height = isSmall ? 28 : 32;
+  const width = isSmall ? 54 : 64;
+  const height = isSmall ? 30 : 34;
   const knobSize = isSmall ? 22 : 26;
   const translateXRange = width - knobSize - 6;
 
@@ -27,48 +27,108 @@ export function ThemeToggle({ size = 'medium' }: { size?: 'small' | 'medium' }) 
     outputRange: [3, translateXRange],
   });
 
-  const rotate = animatedValue.interpolate({
+  const scaleX = animatedValue.interpolate({
+    inputRange: [0, 0.3, 0.7, 1],
+    outputRange: [1, 1.16, 1.16, 1],
+  });
+
+  const containerBg = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    outputRange: ['#E2E8F0', '#1E293B'],
+  });
+
+  const containerBorder = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#CBD5E1', '#334155'],
+  });
+
+  const knobBg = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#FFFFFF', '#38BDF8'],
+  });
+
+  // Cross-fade dan rotasi halus untuk ikon matahari
+  const sunOpacity = animatedValue.interpolate({
+    inputRange: [0, 0.45, 1],
+    outputRange: [1, 0, 0],
+  });
+  const sunRotate = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '90deg'],
+  });
+
+  // Cross-fade dan rotasi halus untuk ikon bulan
+  const moonOpacity = animatedValue.interpolate({
+    inputRange: [0, 0.55, 1],
+    outputRange: [0, 0, 1],
+  });
+  const moonRotate = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['-90deg', '0deg'],
   });
 
   return (
     <TouchableOpacity
-      activeOpacity={0.8}
+      activeOpacity={0.85}
       onPress={toggleTheme}
-      style={[
-        styles.container,
-        {
-          width,
-          height,
-          backgroundColor: isDark ? '#1E293B' : '#E2E8F0',
-          borderColor: isDark ? '#334155' : '#CBD5E1',
-        },
-      ]}
       accessibilityRole="button"
       accessibilityLabel={`Ganti ke mode ${isDark ? 'terang' : 'gelap'}`}
     >
-      <View style={styles.iconBackground}>
-        <Ionicons name="sunny" size={isSmall ? 12 : 14} color="#F59E0B" />
-        <Ionicons name="moon" size={isSmall ? 11 : 13} color="#94A3B8" />
-      </View>
-
       <Animated.View
         style={[
-          styles.knob,
+          styles.container,
           {
-            width: knobSize,
-            height: knobSize,
-            backgroundColor: isDark ? '#38BDF8' : '#FFFFFF',
-            transform: [{ translateX }, { rotate }],
+            width,
+            height,
+            backgroundColor: containerBg,
+            borderColor: containerBorder,
           },
         ]}
       >
-        <Ionicons
-          name={isDark ? 'moon' : 'sunny'}
-          size={isSmall ? 12 : 14}
-          color={isDark ? '#0F172A' : '#F59E0B'}
-        />
+        {/* Ikon Statis Latar Belakang */}
+        <View style={styles.iconBackground}>
+          <Ionicons name="sunny" size={isSmall ? 13 : 15} color="#F59E0B" />
+          <Ionicons name="moon" size={isSmall ? 11 : 13} color="#94A3B8" />
+        </View>
+
+        {/* Knob Geser Elastis & Beranimasi Penuh */}
+        <Animated.View
+          style={[
+            styles.knob,
+            {
+              width: knobSize,
+              height: knobSize,
+              backgroundColor: knobBg,
+              transform: [{ translateX }, { scaleX }],
+            },
+          ]}
+        >
+          {/* Ikon Matahari (Aktif saat Light Mode) */}
+          <Animated.View
+            style={[
+              styles.iconWrapper,
+              {
+                opacity: sunOpacity,
+                transform: [{ rotate: sunRotate }],
+              },
+            ]}
+          >
+            <Ionicons name="sunny" size={isSmall ? 13 : 15} color="#F59E0B" />
+          </Animated.View>
+
+          {/* Ikon Bulan (Aktif saat Dark Mode) */}
+          <Animated.View
+            style={[
+              styles.iconWrapper,
+              {
+                opacity: moonOpacity,
+                transform: [{ rotate: moonRotate }],
+              },
+            ]}
+          >
+            <Ionicons name="moon" size={isSmall ? 12 : 14} color="#0F172A" />
+          </Animated.View>
+        </Animated.View>
       </Animated.View>
     </TouchableOpacity>
   );
@@ -96,8 +156,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowOpacity: 0.22,
+    shadowRadius: 4,
     elevation: 3,
+    position: 'relative',
+  },
+  iconWrapper: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

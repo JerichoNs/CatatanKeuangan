@@ -51,13 +51,23 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const setThemeWithAnimation = (newTheme: 'light' | 'dark') => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    try {
+      LayoutAnimation.configureNext(
+        LayoutAnimation.create(
+          300,
+          LayoutAnimation.Types.easeInEaseOut,
+          LayoutAnimation.Properties.opacity
+        )
+      );
+    } catch {
+      // Fallback jika platform tidak support
+    }
     setCurrentTheme(newTheme);
     Animated.spring(animValue, {
       toValue: newTheme === 'dark' ? 1 : 0,
       useNativeDriver: false,
-      friction: 8,
-      tension: 60,
+      friction: 7,
+      tension: 40,
     }).start();
 
     AsyncStorage.setItem(STORAGE_KEY, newTheme).catch(() => {});

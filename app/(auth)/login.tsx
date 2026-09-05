@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { Link, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth, translateApiError } from '../../contexts/AuthContext';
@@ -7,7 +7,6 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { spacing, radius } from '../../constants/theme';
 import { Button, InputField } from '../../components/ui';
 import { ThemeToggle } from '../../components/ThemeToggle';
-import { ServerConfigModal } from '../../components/ServerConfigModal';
 
 export default function LoginScreen() {
   const { login } = useAuth();
@@ -16,7 +15,6 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [serverModalVisible, setServerModalVisible] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -45,18 +43,7 @@ export default function LoginScreen() {
           <View style={[styles.logoWrap, { backgroundColor: colors.primaryLight }]}>
             <Ionicons name="wallet" size={32} color={colors.primary} />
           </View>
-          <View style={styles.topActions}>
-            <TouchableOpacity
-              style={[styles.serverIconBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
-              onPress={() => setServerModalVisible(true)}
-              hitSlop={8}
-              accessibilityRole="button"
-              accessibilityLabel="Pengaturan IP Server"
-            >
-              <Ionicons name="server-outline" size={18} color={colors.primary} />
-            </TouchableOpacity>
-            <ThemeToggle size="small" />
-          </View>
+          <ThemeToggle size="small" />
         </View>
 
         <Text style={[styles.title, { color: colors.ink }]}>Catatan Keuangan</Text>
@@ -106,11 +93,6 @@ export default function LoginScreen() {
           </Link>
         </View>
       </ScrollView>
-
-      <ServerConfigModal
-        visible={serverModalVisible}
-        onClose={() => setServerModalVisible(false)}
-      />
     </KeyboardAvoidingView>
   );
 }
@@ -130,19 +112,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: spacing.md,
-  },
-  topActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  serverIconBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   logoWrap: {
     width: 64,

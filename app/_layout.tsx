@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Slot, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Platform } from 'react-native';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
 
@@ -11,6 +11,25 @@ function RootNavigation() {
   const { colors, isDark } = useTheme();
   const segments = useSegments();
   const router = useRouter();
+
+  // Transisi warna halus saat dark/light mode aktif di web browser
+  useEffect(() => {
+    if (Platform.OS === 'web' && typeof document !== 'undefined') {
+      const styleId = 'catatan-smooth-theme-transition';
+      if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.innerHTML = `
+          body, #root, div, span, p, a, input, button {
+            transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                        color 0.25s ease !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (loading) return;
