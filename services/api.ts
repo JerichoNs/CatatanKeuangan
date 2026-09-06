@@ -15,8 +15,8 @@ export const DEFAULT_PUBLIC_URL =
 
 export const DEFAULT_ADMIN_URL =
   Platform.OS === 'web'
-    ? 'http://localhost:8001/api'
-    : `http://${DEFAULT_LAN_IP}:8001/api`;
+    ? 'http://localhost:8000/api'
+    : `http://${DEFAULT_LAN_IP}:8000/api`;
 
 let currentPublicUrl = DEFAULT_PUBLIC_URL;
 let currentAdminUrl = DEFAULT_ADMIN_URL;
@@ -148,7 +148,14 @@ async function request<T>(
     if (e.name === 'AbortError') {
       throw new ApiError('Request timeout — cek koneksi internet atau IP server kamu.', 0);
     }
-    throw e;
+    if (e instanceof ApiError) {
+      throw e;
+    }
+    // Tangani network failure, connection refused, CORS, atau server mati
+    throw new ApiError(
+      'Tidak dapat terhubung ke server (Port 8000). Pastikan server backend sudah dijalankan.',
+      0
+    );
   }
 }
 

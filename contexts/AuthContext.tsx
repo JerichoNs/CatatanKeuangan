@@ -115,10 +115,26 @@ export function translateApiError(error: unknown): string {
     if (error.status === 401) return "Email atau password salah.";
     if (error.status === 422 && error.errors) {
       const first = Object.values(error.errors)[0]?.[0];
-      if (first) return first;
+      if (first) {
+        if (first.toLowerCase().includes('email') && first.toLowerCase().includes('required')) {
+          return "Email wajib diisi.";
+        }
+        if (first.toLowerCase().includes('password') && first.toLowerCase().includes('required')) {
+          return "Password wajib diisi.";
+        }
+        if (first.toLowerCase().includes('already been taken')) {
+          return "Email sudah terdaftar. Silakan gunakan email lain atau masuk.";
+        }
+        return first;
+      }
     }
-    if (error.status === 0)  return "Tidak ada koneksi internet.";
+    if (error.status === 0) {
+      return error.message || "Tidak dapat terhubung ke server backend (Port 8000).";
+    }
     return error.message || "Terjadi kesalahan, coba lagi.";
+  }
+  if (error instanceof Error && (error.message.includes('fetch') || error.message.includes('Network'))) {
+    return "Tidak dapat terhubung ke server backend (Port 8000). Pastikan server aktif.";
   }
   return "Terjadi kesalahan, coba lagi.";
 }

@@ -25,6 +25,14 @@ function RootNavigation() {
                         border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                         color 0.25s ease !important;
           }
+          /* Hilangkan latar kuning/biru autofill bawaan Chrome & Edge */
+          input:-webkit-autofill,
+          input:-webkit-autofill:hover,
+          input:-webkit-autofill:focus,
+          input:-webkit-autofill:active {
+            transition: background-color 99999s ease-in-out 0s !important;
+            -webkit-text-fill-color: inherit !important;
+          }
         `;
         document.head.appendChild(style);
       }

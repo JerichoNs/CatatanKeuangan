@@ -16,6 +16,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { spacing, radius, shadow } from '../../constants/theme';
 import { Button, InputField } from '../../components/ui';
 import { ThemeToggle } from '../../components/ThemeToggle';
+import { AuthAmbientBubbles } from '../../components/AuthAmbientBubbles';
 
 export default function ForgotPasswordScreen() {
   const { resetPassword } = useAuth();
@@ -122,20 +123,7 @@ export default function ForgotPasswordScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       {/* Latar Belakang Lingkaran Ambient Glowing */}
-      <View style={styles.ambientContainer} pointerEvents="none">
-        <View
-          style={[
-            styles.glowOrb1,
-            { backgroundColor: isDark ? 'rgba(79, 125, 249, 0.12)' : 'rgba(43, 92, 230, 0.08)' },
-          ]}
-        />
-        <View
-          style={[
-            styles.glowOrb2,
-            { backgroundColor: isDark ? 'rgba(251, 191, 36, 0.08)' : 'rgba(255, 193, 69, 0.08)' },
-          ]}
-        />
-      </View>
+      <AuthAmbientBubbles />
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -274,30 +262,6 @@ export default function ForgotPasswordScreen() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  ambientContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    overflow: 'hidden',
-  },
-  glowOrb1: {
-    position: 'absolute',
-    top: -80,
-    right: -80,
-    width: 280,
-    height: 280,
-    borderRadius: 140,
-  },
-  glowOrb2: {
-    position: 'absolute',
-    bottom: -60,
-    left: -60,
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-  },
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
