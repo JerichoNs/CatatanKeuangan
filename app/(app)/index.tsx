@@ -32,6 +32,9 @@ export default function DashboardScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
+  const [confirmResetVisible, setConfirmResetVisible] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState(false);
+  const [resetError, setResetError] = useState('');
   const [resetting, setResetting] = useState(false);
 
   const fetchTransactions = useCallback(async () => {
@@ -70,31 +73,29 @@ export default function DashboardScreen() {
     setTheme('light');
   };
 
-  const handleResetAllTransactions = () => {
-    setOptionsModalVisible(false);
-    Alert.alert(
-      'Reset Semua Transaksi',
-      'Apakah kamu yakin ingin menghapus SEMUA catatan transaksi akunmu? Saldo akan kembali menjadi Rp0. Tindakan ini tidak dapat dibatalkan.',
-      [
-        { text: 'Batal', style: 'cancel' },
-        {
-          text: 'Ya, Reset Semua',
-          style: 'destructive',
-          onPress: async () => {
-            setResetting(true);
-            try {
-              await api.delete('/transactions/reset/all');
-              setTransactions([]);
-              Alert.alert('Sukses', 'Semua catatan transaksi berhasil dibersihkan.');
-            } catch {
-              Alert.alert('Gagal', 'Gagal mereset transaksi. Coba lagi.');
-            } finally {
-              setResetting(false);
-            }
-          },
-        },
-      ]
-    );
+  const handleOpenResetConfirm = () => {
+    setResetError('');
+    setResetSuccess(false);
+    setConfirmResetVisible(true);
+  };
+
+  const handleExecuteResetTransactions = async () => {
+    setResetting(true);
+    setResetError('');
+    try {
+      await api.delete('/transactions/reset/all');
+      setTransactions([]);
+      setResetSuccess(true);
+      setTimeout(() => {
+        setResetSuccess(false);
+        setConfirmResetVisible(false);
+        setOptionsModalVisible(false);
+      }, 1000);
+    } catch (e: any) {
+      setResetError(e.message || 'Gagal mereset transaksi. Pastikan koneksi server aktif.');
+    } finally {
+      setResetting(false);
+    }
   };
 
   return (
@@ -141,7 +142,12 @@ export default function DashboardScreen() {
               <View style={styles.saldoActionsRow}>
                 <TouchableOpacity
                   style={styles.resetTriggerBtn}
-                  onPress={() => setOptionsModalVisible(true)}
+                  onPress={() => {
+                    setConfirmResetVisible(false);
+                    setResetError('');
+                    setResetSuccess(false);
+                    setOptionsModalVisible(true);
+                  }}
                   hitSlop={8}
                   activeOpacity={0.8}
                   accessibilityLabel="Opsi Dashboard & Reset"
@@ -316,84 +322,143 @@ export default function DashboardScreen() {
             ]}
             onPress={(e) => e.stopPropagation()}
           >
-            <View style={[styles.modalHeader, { borderBottomColor: colors.border }]}>
-              <View style={styles.modalHeaderTitleRow}>
-                <Ionicons name="settings-outline" size={20} color={colors.primary} />
-                <Text style={[styles.modalTitle, { color: colors.ink }]}>
-                  Opsi & Reset Dashboard
+            {confirmResetVisible ? (
+              <View style={styles.confirmResetWrap}>
+                <View style={styles.confirmIconBadge}>
+                  <Ionicons name="warning-outline" size={32} color={colors.expense} />
+                </View>
+
+                <Text style={[styles.confirmTitle, { color: colors.ink }]}>
+                  Reset Semua Transaksi?
                 </Text>
+                <Text style={[styles.confirmDesc, { color: colors.inkMuted }]}>
+                  Seluruh catatan riwayat transaksi akunmu akan dihapus secara permanen dan saldo kembali ke Rp0. Tindakan ini tidak dapat dibatalkan.
+                </Text>
+
+                {resetError ? (
+                  <View style={[styles.resetAlertBox, { backgroundColor: colors.expenseBg }]}>
+                    <Ionicons name="alert-circle" size={16} color={colors.expense} />
+                    <Text style={[styles.resetAlertText, { color: colors.expense }]}>{resetError}</Text>
+                  </View>
+                ) : null}
+
+                {resetSuccess ? (
+                  <View style={[styles.resetAlertBox, { backgroundColor: colors.incomeBg }]}>
+                    <Ionicons name="checkmark-circle" size={16} color={colors.income} />
+                    <Text style={[styles.resetAlertText, { color: colors.income }]}>
+                      Semua transaksi berhasil dibersihkan!
+                    </Text>
+                  </View>
+                ) : null}
+
+                <View style={styles.confirmActionRow}>
+                  <TouchableOpacity
+                    style={[styles.confirmBtnCancel, { borderColor: colors.border, backgroundColor: colors.surfaceAlt }]}
+                    onPress={() => {
+                      setConfirmResetVisible(false);
+                      setResetError('');
+                    }}
+                    disabled={resetting}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={[styles.confirmBtnCancelText, { color: colors.ink }]}>Batal</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[styles.confirmBtnDanger, { backgroundColor: colors.expense }]}
+                    onPress={handleExecuteResetTransactions}
+                    disabled={resetting || resetSuccess}
+                    activeOpacity={0.8}
+                  >
+                    {resetting ? (
+                      <ActivityIndicator size="small" color="#FFFFFF" />
+                    ) : (
+                      <View style={styles.btnRow}>
+                        <Ionicons name="trash-outline" size={16} color="#FFFFFF" />
+                        <Text style={styles.confirmBtnDangerText}>Ya, Reset Semua</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                </View>
               </View>
-              <TouchableOpacity
-                onPress={() => setOptionsModalVisible(false)}
-                hitSlop={8}
-              >
-                <Ionicons name="close" size={20} color={colors.inkMuted} />
-              </TouchableOpacity>
-            </View>
+            ) : (
+              <>
+                <View style={[styles.modalHeader, { borderBottomColor: colors.border }]}>
+                  <View style={styles.modalHeaderTitleRow}>
+                    <Ionicons name="settings-outline" size={20} color={colors.primary} />
+                    <Text style={[styles.modalTitle, { color: colors.ink }]}>
+                      Opsi & Reset Dashboard
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => setOptionsModalVisible(false)}
+                    hitSlop={8}
+                  >
+                    <Ionicons name="close" size={20} color={colors.inkMuted} />
+                  </TouchableOpacity>
+                </View>
 
-            <View style={styles.modalBody}>
-              {/* Opsi 1: Refresh Data */}
-              <TouchableOpacity
-                style={[styles.optionItem, { backgroundColor: colors.surfaceAlt }]}
-                onPress={handleRefresh}
-                activeOpacity={0.7}
-              >
-                <View style={[styles.optionIcon, { backgroundColor: colors.primaryLight }]}>
-                  <Ionicons name="refresh" size={18} color={colors.primary} />
-                </View>
-                <View style={styles.optionContent}>
-                  <Text style={[styles.optionTitle, { color: colors.ink }]}>
-                    Segarkan Data
-                  </Text>
-                  <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
-                    Muat ulang saldo dan catatan transaksi terbaru
-                  </Text>
-                </View>
-              </TouchableOpacity>
+                <View style={styles.modalBody}>
+                  {/* Opsi 1: Refresh Data */}
+                  <TouchableOpacity
+                    style={[styles.optionItem, { backgroundColor: colors.surfaceAlt }]}
+                    onPress={handleRefresh}
+                    activeOpacity={0.7}
+                  >
+                    <View style={[styles.optionIcon, { backgroundColor: colors.primaryLight }]}>
+                      <Ionicons name="refresh" size={18} color={colors.primary} />
+                    </View>
+                    <View style={styles.optionContent}>
+                      <Text style={[styles.optionTitle, { color: colors.ink }]}>
+                        Segarkan Data
+                      </Text>
+                      <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
+                        Muat ulang saldo dan catatan transaksi terbaru
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
 
-              {/* Opsi 2: Reset Preferensi Tema */}
-              <TouchableOpacity
-                style={[styles.optionItem, { backgroundColor: colors.surfaceAlt }]}
-                onPress={handleResetTheme}
-                activeOpacity={0.7}
-              >
-                <View style={[styles.optionIcon, { backgroundColor: '#FEF3C7' }]}>
-                  <Ionicons name="sunny" size={18} color="#D97706" />
-                </View>
-                <View style={styles.optionContent}>
-                  <Text style={[styles.optionTitle, { color: colors.ink }]}>
-                    Reset ke Mode Terang
-                  </Text>
-                  <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
-                    Kembalikan tema ke tampilan standar
-                  </Text>
-                </View>
-              </TouchableOpacity>
+                  {/* Opsi 2: Reset Preferensi Tema */}
+                  <TouchableOpacity
+                    style={[styles.optionItem, { backgroundColor: colors.surfaceAlt }]}
+                    onPress={handleResetTheme}
+                    activeOpacity={0.7}
+                  >
+                    <View style={[styles.optionIcon, { backgroundColor: '#FEF3C7' }]}>
+                      <Ionicons name="sunny" size={18} color="#D97706" />
+                    </View>
+                    <View style={styles.optionContent}>
+                      <Text style={[styles.optionTitle, { color: colors.ink }]}>
+                        Reset ke Mode Terang
+                      </Text>
+                      <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
+                        Kembalikan tema ke tampilan standar
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
 
-              {/* Opsi 3: Reset Semua Catatan Transaksi */}
-              <TouchableOpacity
-                style={[styles.optionItem, { backgroundColor: colors.expenseBg }]}
-                onPress={handleResetAllTransactions}
-                disabled={resetting}
-                activeOpacity={0.7}
-              >
-                <View style={[styles.optionIcon, { backgroundColor: '#FEE2E2' }]}>
-                  {resetting ? (
-                    <ActivityIndicator size="small" color={colors.expense} />
-                  ) : (
-                    <Ionicons name="trash-outline" size={18} color={colors.expense} />
-                  )}
+                  {/* Opsi 3: Reset Semua Catatan Transaksi */}
+                  <TouchableOpacity
+                    style={[styles.optionItem, { backgroundColor: colors.expenseBg }]}
+                    onPress={handleOpenResetConfirm}
+                    disabled={resetting}
+                    activeOpacity={0.7}
+                  >
+                    <View style={[styles.optionIcon, { backgroundColor: '#FEE2E2' }]}>
+                      <Ionicons name="trash-outline" size={18} color={colors.expense} />
+                    </View>
+                    <View style={styles.optionContent}>
+                      <Text style={[styles.optionTitle, { color: colors.expense }]}>
+                        Reset Semua Catatan Transaksi
+                      </Text>
+                      <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
+                        Kosongkan seluruh riwayat dan mulai saldo dari Rp0
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.optionContent}>
-                  <Text style={[styles.optionTitle, { color: colors.expense }]}>
-                    Reset Semua Catatan Transaksi
-                  </Text>
-                  <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
-                    Kosongkan seluruh riwayat dan mulai saldo dari Rp0
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+              </>
+            )}
           </Pressable>
         </Pressable>
       </Modal>
@@ -537,5 +602,79 @@ const styles = StyleSheet.create({
   optionSub: {
     fontSize: 11,
     marginTop: 2,
+  },
+  confirmResetWrap: {
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+  },
+  confirmIconBadge: {
+    width: 60,
+    height: 60,
+    borderRadius: radius.pill,
+    backgroundColor: '#FEE2E2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+  },
+  confirmTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    textAlign: 'center',
+    marginBottom: spacing.xs,
+  },
+  confirmDesc: {
+    fontSize: 13,
+    lineHeight: 19,
+    textAlign: 'center',
+    marginBottom: spacing.md,
+  },
+  resetAlertBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    borderRadius: radius.md,
+    padding: spacing.sm,
+    marginBottom: spacing.md,
+    width: '100%',
+  },
+  resetAlertText: {
+    fontSize: 12,
+    fontWeight: '600',
+    flex: 1,
+  },
+  confirmActionRow: {
+    flexDirection: 'row',
+    gap: 10,
+    width: '100%',
+    marginTop: spacing.xs,
+  },
+  confirmBtnCancel: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  confirmBtnCancelText: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  confirmBtnDanger: {
+    flex: 1.3,
+    paddingVertical: 12,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  confirmBtnDangerText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  btnRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
 });
