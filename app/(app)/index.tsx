@@ -142,6 +142,17 @@ export default function DashboardScreen() {
               <View style={styles.saldoActionsRow}>
                 <TouchableOpacity
                   style={styles.resetTriggerBtn}
+                  onPress={handleOpenResetConfirm}
+                  hitSlop={8}
+                  activeOpacity={0.8}
+                  accessibilityLabel="Reset Saldo ke Rp0"
+                >
+                  <Ionicons name="trash-outline" size={13} color="#FFFFFF" />
+                  <Text style={styles.resetTriggerText}>Reset Saldo</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.optionsTriggerBtn}
                   onPress={() => {
                     setConfirmResetVisible(false);
                     setResetError('');
@@ -150,16 +161,11 @@ export default function DashboardScreen() {
                   }}
                   hitSlop={8}
                   activeOpacity={0.8}
-                  accessibilityLabel="Opsi Dashboard & Reset"
+                  accessibilityLabel="Opsi Dashboard"
                 >
-                  <Ionicons name="refresh-circle-outline" size={18} color="#FFFFFF" />
-                  <Text style={styles.resetTriggerText}>Opsi & Reset</Text>
+                  <Ionicons name="settings-outline" size={13} color="#FFFFFF" />
+                  <Text style={styles.resetTriggerText}>Opsi</Text>
                 </TouchableOpacity>
-
-                <View style={styles.activePill}>
-                  <View style={styles.activeDot} />
-                  <Text style={styles.activePillText}>Aktif</Text>
-                </View>
               </View>
             </View>
 
@@ -329,10 +335,10 @@ export default function DashboardScreen() {
                 </View>
 
                 <Text style={[styles.confirmTitle, { color: colors.ink }]}>
-                  Reset Semua Transaksi?
+                  Reset Saldo ke Rp0?
                 </Text>
                 <Text style={[styles.confirmDesc, { color: colors.inkMuted }]}>
-                  Seluruh catatan riwayat transaksi akunmu akan dihapus secara permanen dan saldo kembali ke Rp0. Tindakan ini tidak dapat dibatalkan.
+                  Seluruh saldo dan catatan riwayat transaksi akunmu akan dibersihkan, sehingga total saldo kembali menjadi Rp0. Tindakan ini tidak dapat dibatalkan.
                 </Text>
 
                 {resetError ? (
@@ -346,7 +352,7 @@ export default function DashboardScreen() {
                   <View style={[styles.resetAlertBox, { backgroundColor: colors.incomeBg }]}>
                     <Ionicons name="checkmark-circle" size={16} color={colors.income} />
                     <Text style={[styles.resetAlertText, { color: colors.income }]}>
-                      Semua transaksi berhasil dibersihkan!
+                      Saldo akunmu berhasil di-reset ke Rp0!
                     </Text>
                   </View>
                 ) : null}
@@ -375,7 +381,7 @@ export default function DashboardScreen() {
                     ) : (
                       <View style={styles.btnRow}>
                         <Ionicons name="trash-outline" size={16} color="#FFFFFF" />
-                        <Text style={styles.confirmBtnDangerText}>Ya, Reset Semua</Text>
+                        <Text style={styles.confirmBtnDangerText}>Ya, Reset Saldo (Rp0)</Text>
                       </View>
                     )}
                   </TouchableOpacity>
@@ -437,7 +443,7 @@ export default function DashboardScreen() {
                     </View>
                   </TouchableOpacity>
 
-                  {/* Opsi 3: Reset Semua Catatan Transaksi */}
+                  {/* Opsi 3: Reset Saldo ke Rp0 */}
                   <TouchableOpacity
                     style={[styles.optionItem, { backgroundColor: colors.expenseBg }]}
                     onPress={handleOpenResetConfirm}
@@ -449,10 +455,10 @@ export default function DashboardScreen() {
                     </View>
                     <View style={styles.optionContent}>
                       <Text style={[styles.optionTitle, { color: colors.expense }]}>
-                        Reset Semua Catatan Transaksi
+                        Reset Saldo ke Rp0
                       </Text>
                       <Text style={[styles.optionSub, { color: colors.inkMuted }]}>
-                        Kosongkan seluruh riwayat dan mulai saldo dari Rp0
+                        Kosongkan seluruh saldo & riwayat transaksi akun
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -501,6 +507,15 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 11,
     fontWeight: '700',
+  },
+  optionsTriggerBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: radius.pill,
   },
   activePill: {
     flexDirection: 'row',
