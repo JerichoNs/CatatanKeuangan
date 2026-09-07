@@ -75,6 +75,20 @@ function RootNavigation() {
     }
   }, [user, loading, segments]);
 
+  // Sinkronkan latar belakang dokumen web dan elemen #root dengan tema yang aktif
+  useEffect(() => {
+    if (Platform.OS === 'web' && typeof document !== 'undefined') {
+      document.body.style.backgroundColor = colors.background;
+      if (document.documentElement) {
+        document.documentElement.style.backgroundColor = colors.background;
+      }
+      const rootEl = document.getElementById('root');
+      if (rootEl) {
+        rootEl.style.backgroundColor = colors.background;
+      }
+    }
+  }, [colors.background]);
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
@@ -84,10 +98,10 @@ function RootNavigation() {
   }
 
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Slot />
-    </>
+    </View>
   );
 }
 

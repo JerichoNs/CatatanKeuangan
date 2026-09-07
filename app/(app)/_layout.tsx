@@ -180,6 +180,7 @@ export default function AppTabsLayout() {
 
       <Tabs
         screenOptions={{
+          sceneStyle: { backgroundColor: 'transparent' },
           headerStyle: {
             backgroundColor: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
             shadowColor: 'transparent',

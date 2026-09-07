@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { Slot, useRouter } from 'expo-router';
 import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
-import { colors, spacing } from '../../constants/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 
 export default function AdminLayout() {
   const { user, isAdmin, loading } = useAuth();
+  const { colors } = useTheme();
   const router = useRouter();
 
   useEffect(() => {
@@ -16,17 +17,21 @@ export default function AdminLayout() {
 
   if (loading || !isAdmin) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.center, { backgroundColor: colors.background }]}>
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={styles.text}>Memeriksa akses admin...</Text>
+        <Text style={[styles.text, { color: colors.inkMuted }]}>Memeriksa akses admin...</Text>
       </View>
     );
   }
 
-  return <Slot />;
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <Slot />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background, gap: spacing.sm },
-  text: { color: colors.inkMuted, fontSize: 13 },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 12 },
+  text: { fontSize: 13 },
 });
