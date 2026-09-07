@@ -154,14 +154,15 @@ npm start
 
 ---
 
-## 🔐 Akun Administrator Bawaan
+## 🔐 Manajemen Hak Akses Administrator
 
-| Email | Password | Hak Akses | Keterangan |
-| :--- | :--- | :--- | :--- |
-| `info.thanael@gmail.com` | `admin12345` | **Administrator** | Akun Utama Admin |
-| `admin@catatankeuangan.com` | `admin12345` | **Administrator** | Akun Master Admin |
+Hak akses administrator dikelola langsung dari server backend. Untuk menetapkan hak akses admin pada akun pengguna, jalankan perintah artisan berikut pada terminal backend Anda:
 
-*Setiap akun baru yang didaftarkan dengan email berawalan `info.thanael` atau domain admin otomatis memperoleh hak akses Administrator.*
+```bash
+php artisan tinker --execute="App\Models\User::where('email', 'email_anda@domain.com')->update(['is_admin' => true]);"
+```
+
+Setelah itu, login ulang ke dalam aplikasi dan banner emas Administrator akan otomatis aktif di halaman Dashboard.
 
 ---
 
