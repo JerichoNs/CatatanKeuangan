@@ -33,6 +33,31 @@ function RootNavigation() {
             transition: background-color 99999s ease-in-out 0s !important;
             -webkit-text-fill-color: inherit !important;
           }
+          /* Custom subtle scrollbar */
+          ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+          }
+          ::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 9999px;
+          }
+          ::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.5);
+          }
+          /* Aturan khusus cetak (Print/PDF) */
+          @media print {
+            header, nav, [role="tablist"], [data-testid="tab-bar"], .no-print {
+              display: none !important;
+            }
+            body, #root {
+              background: #ffffff !important;
+              color: #0f172a !important;
+            }
+          }
         `;
         document.head.appendChild(style);
       }

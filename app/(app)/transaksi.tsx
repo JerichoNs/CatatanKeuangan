@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
+  useWindowDimensions,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -30,6 +31,8 @@ function formatRupiah(value: number) {
 export default function TransaksiScreen() {
   const { user } = useAuth();
   const { colors, isDark } = useTheme();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
   const { id } = useLocalSearchParams<{ id?: string }>();
   const isEditing = !!id;
 
@@ -162,7 +165,10 @@ export default function TransaksiScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[
+          styles.container,
+          { maxWidth: isDesktop ? 760 : 540, paddingBottom: isDesktop ? 110 : 85 },
+        ]}
         keyboardShouldPersistTaps="handled"
       >
         <Text style={[styles.title, { color: colors.ink }]}>

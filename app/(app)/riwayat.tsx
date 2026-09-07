@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
@@ -25,6 +25,8 @@ function formatRupiah(value: number) {
 export default function RiwayatScreen() {
   const { user } = useAuth();
   const { colors, isDark } = useTheme();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -115,7 +117,10 @@ export default function RiwayatScreen() {
   return (
     <ScrollView
       style={[styles.flex, { backgroundColor: colors.background }]}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={[
+        styles.container,
+        { maxWidth: isDesktop ? 1080 : 540, paddingBottom: isDesktop ? 110 : 85 },
+      ]}
     >
       <View style={styles.headerRow}>
         <View>
