@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { Animated, StyleSheet, ViewStyle } from 'react-native';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useIsFocused } from 'expo-router';
 
 interface ScreenTransitionWrapperProps {
   children: React.ReactNode;
@@ -8,6 +8,7 @@ interface ScreenTransitionWrapperProps {
 }
 
 export function ScreenTransitionWrapper({ children, style }: ScreenTransitionWrapperProps) {
+  const isFocused = useIsFocused();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(14)).current;
   const scaleAnim = useRef(new Animated.Value(0.988)).current;
@@ -44,15 +45,17 @@ export function ScreenTransitionWrapper({ children, style }: ScreenTransitionWra
 
   return (
     <Animated.View
+      pointerEvents={isFocused ? 'auto' : 'none'}
       style={[
         styles.flex,
         style,
         {
-          opacity: fadeAnim,
+          opacity: isFocused ? fadeAnim : 0,
           transform: [
             { translateY: slideAnim },
             { scale: scaleAnim },
           ],
+          display: isFocused ? 'flex' : 'none',
         },
       ]}
     >
