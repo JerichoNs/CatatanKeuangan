@@ -30,6 +30,64 @@ function AnimatedTabIcon({ name, color, focused }: { name: any; color: any; focu
   );
 }
 
+function CustomHeaderTitle({
+  title,
+  subtitle,
+  icon,
+  iconBg,
+  iconColor,
+}: {
+  title: string;
+  subtitle: string;
+  icon: any;
+  iconBg: string;
+  iconColor: string;
+}) {
+  const { colors, isDark } = useTheme();
+
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 2 }}>
+      <View
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 11,
+          backgroundColor: iconBg,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth: 1,
+          borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+        }}
+      >
+        <Ionicons name={icon} size={18} color={iconColor} />
+      </View>
+      <View style={{ justifyContent: 'center' }}>
+        <Text
+          style={{
+            color: colors.ink,
+            fontWeight: '900',
+            fontSize: 16,
+            letterSpacing: -0.3,
+            lineHeight: 20,
+          }}
+        >
+          {title}
+        </Text>
+        <Text
+          style={{
+            color: colors.inkMuted,
+            fontSize: 11,
+            fontWeight: '600',
+            lineHeight: 14,
+          }}
+        >
+          {subtitle}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
 function HeaderRightActions({ isDesktop }: { isDesktop: boolean }) {
   const { logout, user, isAdmin } = useAuth();
   const { colors, isDark } = useTheme();
@@ -123,18 +181,12 @@ export default function AppTabsLayout() {
       <Tabs
         screenOptions={{
           headerStyle: {
-            backgroundColor: isDark ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255, 255, 255, 0.85)',
+            backgroundColor: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
             shadowColor: 'transparent',
             elevation: 0,
             borderBottomWidth: 1,
             borderBottomColor: colors.border,
-            height: isDesktop ? 68 : 58,
-          },
-          headerTitleStyle: {
-            color: colors.ink,
-            fontWeight: '800',
-            fontSize: isDesktop ? 20 : 18,
-            letterSpacing: -0.4,
+            height: isDesktop ? 70 : 64,
           },
           headerShadowVisible: false,
           headerRight: () => <HeaderRightActions isDesktop={isDesktop} />,
@@ -184,6 +236,15 @@ export default function AppTabsLayout() {
           name="index"
           options={{
             title: 'Dashboard',
+            headerTitle: () => (
+              <CustomHeaderTitle
+                title="Dashboard Keuangan"
+                subtitle="Ringkasan & Kesehatan Kas"
+                icon="grid"
+                iconBg={isDark ? 'rgba(37, 99, 235, 0.2)' : 'rgba(37, 99, 235, 0.12)'}
+                iconColor={colors.primary}
+              />
+            ),
             tabBarIcon: ({ color, focused }) => (
               <AnimatedTabIcon name="grid-outline" color={color} focused={focused} />
             ),
@@ -193,6 +254,15 @@ export default function AppTabsLayout() {
           name="transaksi"
           options={{
             title: 'Catat',
+            headerTitle: () => (
+              <CustomHeaderTitle
+                title="Catat Transaksi"
+                subtitle="Input Arus Masuk & Keluar"
+                icon="add-circle"
+                iconBg={isDark ? 'rgba(34, 197, 94, 0.2)' : 'rgba(34, 197, 94, 0.12)'}
+                iconColor="#16A34A"
+              />
+            ),
             tabBarIcon: ({ color, focused }) => (
               <AnimatedTabIcon name="add-circle-outline" color={color} focused={focused} />
             ),
@@ -202,6 +272,15 @@ export default function AppTabsLayout() {
           name="riwayat"
           options={{
             title: 'Riwayat',
+            headerTitle: () => (
+              <CustomHeaderTitle
+                title="Riwayat Transaksi"
+                subtitle="Histori & Manajemen Kas"
+                icon="time"
+                iconBg={isDark ? 'rgba(168, 85, 247, 0.2)' : 'rgba(168, 85, 247, 0.12)'}
+                iconColor="#9333EA"
+              />
+            ),
             tabBarIcon: ({ color, focused }) => (
               <AnimatedTabIcon name="time-outline" color={color} focused={focused} />
             ),
@@ -211,6 +290,15 @@ export default function AppTabsLayout() {
           name="laporan"
           options={{
             title: 'Laporan',
+            headerTitle: () => (
+              <CustomHeaderTitle
+                title="Laporan Keuangan"
+                subtitle="Analisis & Rekap Eksekutif"
+                icon="bar-chart"
+                iconBg={isDark ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.12)'}
+                iconColor={colors.primary}
+              />
+            ),
             tabBarIcon: ({ color, focused }) => (
               <AnimatedTabIcon name="bar-chart-outline" color={color} focused={focused} />
             ),
