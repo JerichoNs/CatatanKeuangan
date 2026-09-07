@@ -20,6 +20,7 @@ import { api } from '../../services/api';
 import { spacing, radius, shadow } from '../../constants/theme';
 import { Card, SectionLabel, EmptyState, ErrorState } from '../../components/ui';
 import { ServerConfigModal } from '../../components/ServerConfigModal';
+import { MarketTicker } from '../../components/MarketTicker';
 import { iconForCategory } from '../../constants/categories';
 import type { Transaction } from '../../types';
 
@@ -144,9 +145,19 @@ export default function DashboardScreen() {
       {/* 1. Header Greeting & Date Badge */}
       <View style={[styles.welcomeRow, isDesktop ? styles.welcomeRowDesktop : null]}>
         <View style={{ flex: 1 }}>
-          <View style={styles.datePill}>
-            <Ionicons name="calendar-outline" size={13} color={colors.primary} />
-            <Text style={[styles.datePillText, { color: colors.primary }]}>{getFormattedDate()}</Text>
+          <View
+            style={[
+              styles.datePill,
+              {
+                backgroundColor: isDark ? 'rgba(59, 130, 246, 0.16)' : 'rgba(37, 99, 235, 0.08)',
+                borderColor: isDark ? 'rgba(59, 130, 246, 0.35)' : 'rgba(37, 99, 235, 0.22)',
+              },
+            ]}
+          >
+            <View style={[styles.dateIconCircle, { backgroundColor: colors.primary }]}>
+              <Ionicons name="calendar" size={13} color="#FFFFFF" />
+            </View>
+            <Text style={[styles.datePillText, { color: colors.ink }]}>{getFormattedDate()}</Text>
           </View>
           <Text style={[styles.greetingTitle, { color: colors.ink }]}>
             {getGreeting()}, <Text style={{ color: colors.primary }}>{user?.name || 'Kawan'}</Text> 👋
@@ -221,6 +232,9 @@ export default function DashboardScreen() {
         </Card>
       ) : (
         <>
+          {/* Informasi Kurs & Indeks Pasar Modal (IHSG, USD, EUR, SGD, JPY, Emas) */}
+          <MarketTicker />
+
           {/* 3. Top Financial Metric Cards Grid */}
           <View style={isDesktop ? styles.metricGridDesktop : styles.metricGridMobile}>
             {/* Kartu Saldo Utama (Hero) */}
@@ -838,17 +852,25 @@ const styles = StyleSheet.create({
   datePill: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
     alignSelf: 'flex-start',
-    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingHorizontal: 14,
+    paddingVertical: 7,
     borderRadius: radius.pill,
-    marginBottom: 8,
+    borderWidth: 1.5,
+    marginBottom: 10,
+  },
+  dateIconCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   datePillText: {
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: 14,
+    fontWeight: '800',
+    letterSpacing: -0.2,
   },
   greetingTitle: {
     fontSize: 26,
