@@ -163,7 +163,13 @@ Proyek ini sudah dilengkapi konfigurasi siap pakai untuk Vercel:
 
 ## 📌 Pengaturan Hak Akses Admin
 
-Untuk mengaktifkan hak akses admin pada akun tertentu, jalankan perintah berikut di terminal backend:
+Akun admin bawaan yang sudah siap digunakan:
+- **Akun Utama (info.thanael)**: `info.thanael@gmail.com` / `admin12345` (Admin aktif)
+- **Akun Master Admin**: `admin@catatankeuangan.com` / `admin12345` (Admin aktif)
+
+Sistem juga secara otomatis mendeteksi email dengan awalan `info.thanael` atau domain admin saat registrasi/login dan langsung memberikan hak akses admin (`is_admin: true`).
+
+Untuk mengaktifkan hak akses admin manual pada akun lain, jalankan perintah berikut di terminal backend:
 
 ```bash
 php artisan tinker --execute="App\Models\User::where('email', 'email_kamu@domain.com')->update(['is_admin' => true]);"
