@@ -1,11 +1,34 @@
+import React, { useEffect, useRef } from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { View, TouchableOpacity, Text, Platform, useWindowDimensions } from 'react-native';
+import { View, TouchableOpacity, Text, Platform, useWindowDimensions, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { spacing, radius } from '../../constants/theme';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { ThemeToggle } from '../../components/ThemeToggle';
+import { AppAmbientBackground } from '../../components/AppAmbientBackground';
+
+function AnimatedTabIcon({ name, color, focused }: { name: any; color: any; focused: boolean }) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (focused) {
+      Animated.sequence([
+        Animated.timing(scale, { toValue: 1.24, duration: 140, useNativeDriver: true }),
+        Animated.spring(scale, { toValue: 1, friction: 4, tension: 55, useNativeDriver: true }),
+      ]).start();
+    } else {
+      scale.setValue(1);
+    }
+  }, [focused]);
+
+  return (
+    <Animated.View style={{ transform: [{ scale }], alignItems: 'center', justifyContent: 'center' }}>
+      <Ionicons name={name} size={22} color={color} />
+    </Animated.View>
+  );
+}
 
 function HeaderRightActions({ isDesktop }: { isDesktop: boolean }) {
   const { logout, user, isAdmin } = useAuth();
@@ -93,94 +116,107 @@ export default function AppTabsLayout() {
   const mobileTabHeight = 64 + bottomInset;
 
   return (
-    <Tabs
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: colors.surface,
-          shadowColor: 'transparent',
-          elevation: 0,
-          borderBottomWidth: 1,
-          borderBottomColor: colors.border,
-          height: isDesktop ? 68 : 58,
-        },
-        headerTitleStyle: {
-          color: colors.ink,
-          fontWeight: '800',
-          fontSize: isDesktop ? 20 : 18,
-          letterSpacing: -0.4,
-        },
-        headerShadowVisible: false,
-        headerRight: () => <HeaderRightActions isDesktop={isDesktop} />,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.inkMuted,
-        tabBarStyle: isDesktop
-          ? ({
-              position: 'absolute',
-              bottom: 16,
-              left: '50%',
-              marginLeft: -dockWidth / 2,
-              width: dockWidth,
-              height: 64,
-              borderRadius: 24,
-              backgroundColor: isDark ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-              borderWidth: 1,
-              borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 8 },
-              shadowOpacity: isDark ? 0.35 : 0.08,
-              shadowRadius: 18,
-              elevation: 10,
-              paddingBottom: 8,
-              paddingTop: 8,
-            } as any)
-          : {
-              backgroundColor: colors.surface,
-              borderTopColor: colors.border,
-              borderTopWidth: 1,
-              elevation: isDark ? 0 : 4,
-              height: mobileTabHeight,
-              paddingBottom: bottomInset + 2,
-              paddingTop: 8,
-            },
-        tabBarItemStyle: {
-          justifyContent: 'center',
-          alignItems: 'center',
-        },
-        tabBarLabelStyle: {
-          fontSize: 11,
-          fontWeight: '700',
-          marginTop: 2,
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Dashboard',
-          tabBarIcon: ({ color }) => <Ionicons name="grid-outline" size={22} color={color} />,
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      {/* Background Animasi Nebula / Floating Glow Orbs */}
+      <AppAmbientBackground />
+
+      <Tabs
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: isDark ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255, 255, 255, 0.85)',
+            shadowColor: 'transparent',
+            elevation: 0,
+            borderBottomWidth: 1,
+            borderBottomColor: colors.border,
+            height: isDesktop ? 68 : 58,
+          },
+          headerTitleStyle: {
+            color: colors.ink,
+            fontWeight: '800',
+            fontSize: isDesktop ? 20 : 18,
+            letterSpacing: -0.4,
+          },
+          headerShadowVisible: false,
+          headerRight: () => <HeaderRightActions isDesktop={isDesktop} />,
+          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: colors.inkMuted,
+          tabBarStyle: isDesktop
+            ? ({
+                position: 'absolute',
+                bottom: 16,
+                left: '50%',
+                marginLeft: -dockWidth / 2,
+                width: dockWidth,
+                height: 64,
+                borderRadius: 24,
+                backgroundColor: isDark ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.92)',
+                borderWidth: 1,
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 8 },
+                shadowOpacity: isDark ? 0.35 : 0.08,
+                shadowRadius: 18,
+                elevation: 10,
+                paddingBottom: 8,
+                paddingTop: 8,
+              } as any)
+            : {
+                backgroundColor: isDark ? 'rgba(15, 23, 42, 0.96)' : 'rgba(255, 255, 255, 0.96)',
+                borderTopColor: colors.border,
+                borderTopWidth: 1,
+                elevation: isDark ? 0 : 4,
+                height: mobileTabHeight,
+                paddingBottom: bottomInset + 2,
+                paddingTop: 8,
+              },
+          tabBarItemStyle: {
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+          tabBarLabelStyle: {
+            fontSize: 11,
+            fontWeight: '700',
+            marginTop: 2,
+          },
         }}
-      />
-      <Tabs.Screen
-        name="transaksi"
-        options={{
-          title: 'Catat',
-          tabBarIcon: ({ color }) => <Ionicons name="add-circle-outline" size={22} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="riwayat"
-        options={{
-          title: 'Riwayat',
-          tabBarIcon: ({ color }) => <Ionicons name="time-outline" size={22} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="laporan"
-        options={{
-          title: 'Laporan',
-          tabBarIcon: ({ color }) => <Ionicons name="bar-chart-outline" size={22} color={color} />,
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Dashboard',
+            tabBarIcon: ({ color, focused }) => (
+              <AnimatedTabIcon name="grid-outline" color={color} focused={focused} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="transaksi"
+          options={{
+            title: 'Catat',
+            tabBarIcon: ({ color, focused }) => (
+              <AnimatedTabIcon name="add-circle-outline" color={color} focused={focused} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="riwayat"
+          options={{
+            title: 'Riwayat',
+            tabBarIcon: ({ color, focused }) => (
+              <AnimatedTabIcon name="time-outline" color={color} focused={focused} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="laporan"
+          options={{
+            title: 'Laporan',
+            tabBarIcon: ({ color, focused }) => (
+              <AnimatedTabIcon name="bar-chart-outline" color={color} focused={focused} />
+            ),
+          }}
+        />
+      </Tabs>
+    </View>
   );
 }

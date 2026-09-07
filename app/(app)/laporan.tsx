@@ -19,6 +19,7 @@ import { api } from '../../services/api';
 import { spacing, radius, shadow } from '../../constants/theme';
 import { Card, SectionLabel, EmptyState, ErrorState } from '../../components/ui';
 import { CalendarModal } from '../../components/CalendarModal';
+import { ScreenTransitionWrapper } from '../../components/ScreenTransitionWrapper';
 import { currentMonthKey, formatBulanTahun, monthKey, shiftMonth } from '../../utils/date';
 import { iconForCategory } from '../../constants/categories';
 import type { Transaction } from '../../types';
@@ -371,18 +372,19 @@ export default function LaporanScreen() {
   };
 
   return (
-    <ScrollView
-      style={[styles.flex, { backgroundColor: colors.background }]}
-      contentContainerStyle={[
-        styles.container,
-        {
-          maxWidth: isDesktop ? 1160 : 540,
-          paddingHorizontal: isDesktop ? 28 : 16,
-          paddingBottom: isDesktop ? 110 : 85,
-        },
-      ]}
-      showsVerticalScrollIndicator={false}
-    >
+    <ScreenTransitionWrapper>
+      <ScrollView
+        style={[styles.flex, { backgroundColor: 'transparent' }]}
+        contentContainerStyle={[
+          styles.container,
+          {
+            maxWidth: isDesktop ? 1160 : 540,
+            paddingHorizontal: isDesktop ? 28 : 16,
+            paddingBottom: isDesktop ? 110 : 85,
+          },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
       {/* 1. Header Bar */}
       <View style={[styles.headerRow, isDesktop ? styles.headerRowDesktop : null]}>
         <View style={{ flex: 1 }}>
@@ -766,6 +768,7 @@ export default function LaporanScreen() {
         onSelectDate={() => {}}
       />
     </ScrollView>
+    </ScreenTransitionWrapper>
   );
 }
 

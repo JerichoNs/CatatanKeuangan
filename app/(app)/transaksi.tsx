@@ -19,6 +19,7 @@ import { api, ApiError } from '../../services/api';
 import { spacing, radius } from '../../constants/theme';
 import { Card, SectionLabel, Chip, Button } from '../../components/ui';
 import { CalendarModal } from '../../components/CalendarModal';
+import { ScreenTransitionWrapper } from '../../components/ScreenTransitionWrapper';
 import { expenseCategories, incomeCategories } from '../../constants/categories';
 import { todayISO, yesterdayISO, formatTanggalPanjang, monthKey } from '../../utils/date';
 import type { TransactionType } from '../../types';
@@ -160,10 +161,11 @@ export default function TransaksiScreen() {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={[styles.flex, { backgroundColor: colors.background }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <ScreenTransitionWrapper>
+      <KeyboardAvoidingView
+        style={[styles.flex, { backgroundColor: 'transparent' }]}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
       <ScrollView
         contentContainerStyle={[
           styles.container,
@@ -317,6 +319,7 @@ export default function TransaksiScreen() {
         }}
       />
     </KeyboardAvoidingView>
+    </ScreenTransitionWrapper>
   );
 }
 

@@ -21,6 +21,7 @@ import { spacing, radius, shadow } from '../../constants/theme';
 import { Card, SectionLabel, EmptyState, ErrorState } from '../../components/ui';
 import { ServerConfigModal } from '../../components/ServerConfigModal';
 import { MarketTicker } from '../../components/MarketTicker';
+import { ScreenTransitionWrapper } from '../../components/ScreenTransitionWrapper';
 import { iconForCategory } from '../../constants/categories';
 import type { Transaction } from '../../types';
 
@@ -130,18 +131,19 @@ export default function DashboardScreen() {
   };
 
   return (
-    <ScrollView
-      style={[styles.flex, { backgroundColor: colors.background }]}
-      contentContainerStyle={[
-        styles.container,
-        {
-          maxWidth: isDesktop ? 1160 : 540,
-          paddingHorizontal: isDesktop ? 28 : 16,
-          paddingBottom: isDesktop ? 110 : 85,
-        },
-      ]}
-      showsVerticalScrollIndicator={false}
-    >
+    <ScreenTransitionWrapper>
+      <ScrollView
+        style={[styles.flex, { backgroundColor: 'transparent' }]}
+        contentContainerStyle={[
+          styles.container,
+          {
+            maxWidth: isDesktop ? 1160 : 540,
+            paddingHorizontal: isDesktop ? 28 : 16,
+            paddingBottom: isDesktop ? 110 : 85,
+          },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
       {/* 1. Header Greeting & Date Badge */}
       <View style={[styles.welcomeRow, isDesktop ? styles.welcomeRowDesktop : null]}>
         <View style={{ flex: 1 }}>
@@ -827,6 +829,7 @@ export default function DashboardScreen() {
         onClose={() => setServerConfigVisible(false)}
       />
     </ScrollView>
+    </ScreenTransitionWrapper>
   );
 }
 

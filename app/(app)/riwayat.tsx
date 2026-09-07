@@ -8,6 +8,7 @@ import { api } from '../../services/api';
 import { spacing, radius } from '../../constants/theme';
 import { Card, EmptyState, ErrorState, Chip } from '../../components/ui';
 import { CalendarModal } from '../../components/CalendarModal';
+import { ScreenTransitionWrapper } from '../../components/ScreenTransitionWrapper';
 import { iconForCategory } from '../../constants/categories';
 import {
   currentMonthKey,
@@ -115,13 +116,14 @@ export default function RiwayatScreen() {
   };
 
   return (
-    <ScrollView
-      style={[styles.flex, { backgroundColor: colors.background }]}
-      contentContainerStyle={[
-        styles.container,
-        { maxWidth: isDesktop ? 1080 : 540, paddingBottom: isDesktop ? 110 : 85 },
-      ]}
-    >
+    <ScreenTransitionWrapper>
+      <ScrollView
+        style={[styles.flex, { backgroundColor: 'transparent' }]}
+        contentContainerStyle={[
+          styles.container,
+          { maxWidth: isDesktop ? 1080 : 540, paddingBottom: isDesktop ? 110 : 85 },
+        ]}
+      >
       <View style={styles.headerRow}>
         <View>
           <Text style={[styles.title, { color: colors.ink }]}>Riwayat Transaksi</Text>
@@ -337,6 +339,7 @@ export default function RiwayatScreen() {
         transactionDates={transactionDatesMap}
       />
     </ScrollView>
+    </ScreenTransitionWrapper>
   );
 }
 
