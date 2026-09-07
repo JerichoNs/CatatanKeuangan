@@ -5,18 +5,19 @@ const PUBLIC_URL_KEY = '@catatan_public_api_url';
 const ADMIN_URL_KEY = '@catatan_admin_api_url';
 const TOKEN_KEY = '@catatan_keuangan_token';
 
-// Default URL: pada web gunakan localhost, pada device fisik gunakan IP LAN
+// Default URL: Railway production backend
 export const DEFAULT_LAN_IP = '192.168.1.6';
+export const RAILWAY_API_URL = 'https://catatan-keuangan-api-production.up.railway.app/api';
 
 export const DEFAULT_PUBLIC_URL =
   Platform.OS === 'web'
-    ? 'http://localhost:8000/api'
-    : `http://${DEFAULT_LAN_IP}:8000/api`;
+    ? RAILWAY_API_URL
+    : RAILWAY_API_URL;
 
 export const DEFAULT_ADMIN_URL =
   Platform.OS === 'web'
-    ? 'http://localhost:8000/api'
-    : `http://${DEFAULT_LAN_IP}:8000/api`;
+    ? RAILWAY_API_URL
+    : RAILWAY_API_URL;
 
 let currentPublicUrl = DEFAULT_PUBLIC_URL;
 let currentAdminUrl = DEFAULT_ADMIN_URL;
