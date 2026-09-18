@@ -1,5 +1,7 @@
 export type TransactionType = 'income' | 'expense';
 
+export type PocketType = 'simpanan_pertama' | 'pocket_nabung';
+
 export type Transaction = {
   id: string;
   userId: string;
@@ -7,6 +9,7 @@ export type Transaction = {
   amount: number;
   category: string;
   note?: string;
+  pocket?: PocketType;
   date: string; // ISO string
   createdAt: number;
 };

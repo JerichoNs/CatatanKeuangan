@@ -22,6 +22,13 @@ import { CalendarModal } from '../../components/CalendarModal';
 import { ScreenTransitionWrapper } from '../../components/ScreenTransitionWrapper';
 import { currentMonthKey, formatBulanTahun, monthKey, shiftMonth } from '../../utils/date';
 import { iconForCategory } from '../../constants/categories';
+import {
+  calculatePocketMetrics,
+  getPocket,
+  cleanPocketNote,
+  POCKET_CONFIG,
+  POCKET_LIST,
+} from '../../constants/pockets';
 import type { Transaction } from '../../types';
 import { useFocusEffect } from 'expo-router';
 
@@ -70,6 +77,12 @@ export default function LaporanScreen() {
   const totalExpense = monthTransactions.filter((t) => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
   const net = totalIncome - totalExpense;
 
+  // Split Pocket Metrics untuk bulan terpilih
+  const pocketMetrics = useMemo(
+    () => calculatePocketMetrics(monthTransactions),
+    [monthTransactions]
+  );
+
   const byCategory = useMemo(() => {
     const map = new Map<string, number>();
     monthTransactions
@@ -98,6 +111,9 @@ export default function LaporanScreen() {
           const color = isIncome ? '#16A34A' : '#DC2626';
           const sign = isIncome ? '+' : '-';
           const bg = index % 2 === 0 ? '#FFFFFF' : '#F8FAFC';
+          const tPocket = getPocket(t);
+          const pocketCfg = POCKET_CONFIG[tPocket];
+          const cleanNote = cleanPocketNote(t.note);
           return `<tr style="background-color: ${bg};">
             <td style="padding: 10px 12px; border-bottom: 1px solid #E2E8F0; font-size: 12px; color: #475569;">${t.date}</td>
             <td style="padding: 10px 12px; border-bottom: 1px solid #E2E8F0; font-weight: 600; font-size: 12px; color: #1E293B;">
@@ -105,7 +121,12 @@ export default function LaporanScreen() {
                 ${t.category}
               </span>
             </td>
-            <td style="padding: 10px 12px; border-bottom: 1px solid #E2E8F0; font-size: 12px; color: #64748B;">${t.note || '-'}</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E2E8F0; font-size: 11px;">
+              <span style="display: inline-block; padding: 2px 6px; border-radius: 4px; font-weight: 700; background: ${tPocket === 'pocket_nabung' ? '#DCFCE7' : '#DBEAFE'}; color: ${tPocket === 'pocket_nabung' ? '#15803D' : '#1E40AF'};">
+                ${pocketCfg.name}
+              </span>
+            </td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E2E8F0; font-size: 12px; color: #64748B;">${cleanNote || '-'}</td>
             <td style="padding: 10px 12px; border-bottom: 1px solid #E2E8F0; text-align: right; font-weight: 800; font-size: 12px; color: ${color};">
               ${sign}Rp ${t.amount.toLocaleString('id-ID')}
             </td>
@@ -319,6 +340,7 @@ export default function LaporanScreen() {
                 <tr>
                   <th>Tanggal</th>
                   <th>Kategori</th>
+                  <th>Pocket</th>
                   <th>Catatan / Keterangan</th>
                   <th style="text-align: right;">Jumlah Nominal</th>
                 </tr>
@@ -536,6 +558,126 @@ export default function LaporanScreen() {
             </View>
           </View>
 
+          {/* 3.5. Analisis Split Pocket Kas Bulanan */}
+          <View style={styles.pocketAnalysisBox}>
+            <SectionLabel>Alokasi Split Pocket Bulan Ini</SectionLabel>
+            <View
+              style={[
+                styles.sectionBox,
+                { backgroundColor: colors.surface, borderColor: colors.border },
+                isDark ? shadow.cardDark : shadow.card,
+              ]}
+            >
+              <View style={styles.pocketAnalysisHeader}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <Ionicons name="albums-outline" size={18} color={colors.primary} />
+                  <Text style={[styles.pocketAnalysisTitle, { color: colors.ink }]}>
+                    Perbandingan Dua Kantong Kas
+                  </Text>
+                </View>
+                <Text style={[styles.pocketAnalysisSub, { color: colors.inkMuted }]}>
+                  {formatBulanTahun(month)}
+                </Text>
+              </View>
+
+              {/* Progress Bar Dual Tone */}
+              <View style={styles.pocketBarTrack}>
+                <View
+                  style={[
+                    styles.pocketBarFill,
+                    {
+                      width: `${pocketMetrics.simpanan.share}%`,
+                      backgroundColor: '#2563EB',
+                    },
+                  ]}
+                />
+                <View
+                  style={[
+                    styles.pocketBarFill,
+                    {
+                      width: `${pocketMetrics.nabung.share}%`,
+                      backgroundColor: '#10B981',
+                    },
+                  ]}
+                />
+              </View>
+
+              <View style={isDesktop ? styles.pocketCardsRowDesktop : styles.pocketCardsRowMobile}>
+                {/* Simpanan Pertama Card */}
+                <View
+                  style={[
+                    styles.pocketCardItem,
+                    {
+                      backgroundColor: isDark ? 'rgba(37, 99, 235, 0.08)' : 'rgba(37, 99, 235, 0.04)',
+                      borderColor: isDark ? 'rgba(37, 99, 235, 0.25)' : 'rgba(37, 99, 235, 0.18)',
+                    },
+                  ]}
+                >
+                  <View style={styles.pocketCardItemTop}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                      <Ionicons name="wallet-outline" size={16} color="#2563EB" />
+                      <Text style={[styles.pocketCardItemTitle, { color: colors.ink }]}>
+                        Simpanan Pertama
+                      </Text>
+                    </View>
+                    <View style={[styles.pocketCardShareBadge, { backgroundColor: 'rgba(37, 99, 235, 0.12)' }]}>
+                      <Text style={[styles.pocketCardShareText, { color: '#2563EB' }]}>
+                        {pocketMetrics.simpanan.share}%
+                      </Text>
+                    </View>
+                  </View>
+                  <Text style={[styles.pocketCardItemSaldo, { color: colors.ink }]}>
+                    {pocketMetrics.simpanan.saldo < 0 ? '-' : ''}{formatRupiah(pocketMetrics.simpanan.saldo)}
+                  </Text>
+                  <View style={styles.pocketCardMiniRow}>
+                    <Text style={[styles.pocketCardMiniText, { color: colors.inkMuted }]}>
+                      Masuk: <Text style={{ color: '#16A34A', fontWeight: '700' }}>+{formatRupiah(pocketMetrics.simpanan.income)}</Text>
+                    </Text>
+                    <Text style={[styles.pocketCardMiniText, { color: colors.inkMuted }]}>
+                      Keluar: <Text style={{ color: '#DC2626', fontWeight: '700' }}>-{formatRupiah(pocketMetrics.simpanan.expense)}</Text>
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Pocket Nabung Card */}
+                <View
+                  style={[
+                    styles.pocketCardItem,
+                    {
+                      backgroundColor: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.04)',
+                      borderColor: isDark ? 'rgba(16, 185, 129, 0.25)' : 'rgba(16, 185, 129, 0.18)',
+                    },
+                  ]}
+                >
+                  <View style={styles.pocketCardItemTop}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                      <Ionicons name="leaf-outline" size={16} color="#10B981" />
+                      <Text style={[styles.pocketCardItemTitle, { color: colors.ink }]}>
+                        Pocket Nabung
+                      </Text>
+                    </View>
+                    <View style={[styles.pocketCardShareBadge, { backgroundColor: 'rgba(16, 185, 129, 0.12)' }]}>
+                      <Text style={[styles.pocketCardShareText, { color: '#10B981' }]}>
+                        {pocketMetrics.nabung.share}%
+                      </Text>
+                    </View>
+                  </View>
+                  <Text style={[styles.pocketCardItemSaldo, { color: '#10B981' }]}>
+                    {pocketMetrics.nabung.saldo < 0 ? '-' : ''}{formatRupiah(pocketMetrics.nabung.saldo)}
+                  </Text>
+                  <View style={styles.pocketCardMiniRow}>
+                    <Text style={[styles.pocketCardMiniText, { color: colors.inkMuted }]}>
+                      Ditabung: <Text style={{ color: '#16A34A', fontWeight: '700' }}>+{formatRupiah(pocketMetrics.nabung.income)}</Text>
+                    </Text>
+                    <Text style={[styles.pocketCardMiniText, { color: colors.inkMuted }]}>
+                      Tarik: <Text style={{ color: '#DC2626', fontWeight: '700' }}>-{formatRupiah(pocketMetrics.nabung.expense)}</Text>
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+
           {/* 4. Desktop 2-Column Section: Kategori Belanja & Alat Ekspor PDF */}
           <View style={isDesktop ? styles.twoColDesktop : styles.twoColMobile}>
             {/* Kolom Kiri: Breakdown Pengeluaran */}
@@ -736,9 +878,40 @@ export default function LaporanScreen() {
                                 {isIncome ? 'Masuk' : 'Keluar'}
                               </Text>
                             </View>
+                            {(() => {
+                              const tPocket = getPocket(t);
+                              const pocketCfg = POCKET_CONFIG[tPocket];
+                              return (
+                                <View
+                                  style={[
+                                    styles.miniPocketBadge,
+                                    {
+                                      backgroundColor:
+                                        tPocket === 'pocket_nabung'
+                                          ? 'rgba(16, 185, 129, 0.12)'
+                                          : 'rgba(37, 99, 235, 0.12)',
+                                    },
+                                  ]}
+                                >
+                                  <Ionicons
+                                    name={pocketCfg.icon}
+                                    size={10}
+                                    color={tPocket === 'pocket_nabung' ? '#10B981' : '#2563EB'}
+                                  />
+                                  <Text
+                                    style={[
+                                      styles.miniPocketBadgeText,
+                                      { color: tPocket === 'pocket_nabung' ? '#059669' : '#2563EB' },
+                                    ]}
+                                  >
+                                    {pocketCfg.shortName}
+                                  </Text>
+                                </View>
+                              );
+                            })()}
                           </View>
                           <Text style={[styles.txTableSub, { color: colors.inkMuted }]}>
-                            {t.date} {t.note ? `• ${t.note}` : ''}
+                            {t.date} {cleanPocketNote(t.note) ? `• ${cleanPocketNote(t.note)}` : ''}
                           </Text>
                         </View>
                         <Text
@@ -1088,5 +1261,95 @@ const styles = StyleSheet.create({
   txTableAmount: {
     fontSize: 14,
     fontWeight: '800',
+  },
+
+  // Pocket Analysis Styles
+  pocketAnalysisBox: {
+    marginBottom: spacing.lg,
+  },
+  pocketAnalysisHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  pocketAnalysisTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  pocketAnalysisSub: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  pocketBarTrack: {
+    height: 10,
+    borderRadius: radius.pill,
+    flexDirection: 'row',
+    overflow: 'hidden',
+    marginBottom: 16,
+    backgroundColor: 'rgba(150, 150, 150, 0.12)',
+  },
+  pocketBarFill: {
+    height: '100%',
+  },
+  pocketCardsRowDesktop: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  pocketCardsRowMobile: {
+    flexDirection: 'column',
+    gap: 10,
+  },
+  pocketCardItem: {
+    flex: 1,
+    padding: 12,
+    borderRadius: radius.md,
+    borderWidth: 1,
+  },
+  pocketCardItemTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  pocketCardItemTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  pocketCardShareBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: radius.pill,
+  },
+  pocketCardShareText: {
+    fontSize: 10,
+    fontWeight: '800',
+  },
+  pocketCardItemSaldo: {
+    fontSize: 18,
+    fontWeight: '800',
+    marginBottom: 8,
+  },
+  pocketCardMiniRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderColor: 'rgba(150, 150, 150, 0.1)',
+    paddingTop: 6,
+  },
+  pocketCardMiniText: {
+    fontSize: 11,
+  },
+  miniPocketBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: radius.pill,
+  },
+  miniPocketBadgeText: {
+    fontSize: 9,
+    fontWeight: '700',
   },
 });

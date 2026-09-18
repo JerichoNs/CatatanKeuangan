@@ -21,8 +21,15 @@ import { Card, SectionLabel, Chip, Button } from '../../components/ui';
 import { CalendarModal } from '../../components/CalendarModal';
 import { ScreenTransitionWrapper } from '../../components/ScreenTransitionWrapper';
 import { expenseCategories, incomeCategories } from '../../constants/categories';
+import {
+  POCKET_LIST,
+  POCKET_CONFIG,
+  getPocket,
+  formatNoteWithPocket,
+  cleanPocketNote,
+} from '../../constants/pockets';
 import { todayISO, yesterdayISO, formatTanggalPanjang, monthKey } from '../../utils/date';
-import type { TransactionType } from '../../types';
+import type { TransactionType, PocketType } from '../../types';
 
 function formatRupiah(value: number) {
   if (!value) return '0';
@@ -38,6 +45,7 @@ export default function TransaksiScreen() {
   const isEditing = !!id;
 
   const [type, setType] = useState<TransactionType>('expense');
+  const [pocket, setPocket] = useState<PocketType>('simpanan_pertama');
   const [amountText, setAmountText] = useState('');
   const [category, setCategory] = useState('');
   const [note, setNote] = useState('');
@@ -56,9 +64,10 @@ export default function TransaksiScreen() {
       try {
         const data = await api.get<any>(`/transactions/${id}`);
         setType(data.type);
+        setPocket(getPocket({ pocket: data.pocket, note: data.note }));
         setAmountText(String(data.amount ?? ''));
         setCategory(data.category ?? '');
-        setNote(data.note ?? '');
+        setNote(cleanPocketNote(data.note ?? ''));
         setDate(data.date ?? todayISO());
       } catch {
         setError('Gagal memuat transaksi.');
@@ -76,6 +85,7 @@ export default function TransaksiScreen() {
 
   const resetForm = () => {
     setType('expense');
+    setPocket('simpanan_pertama');
     setAmountText('');
     setCategory('');
     setNote('');
@@ -94,27 +104,26 @@ export default function TransaksiScreen() {
       return;
     }
 
+    const finalNote = formatNoteWithPocket(note.trim(), pocket);
+
     setLoading(true);
     try {
+      const payload = {
+        type,
+        amount,
+        category,
+        note: finalNote || null,
+        pocket,
+        date,
+      };
+
       if (isEditing) {
-        await api.put(`/transactions/${id}`, {
-          type,
-          amount,
-          category,
-          note: note.trim() || null,
-          date,
-        });
+        await api.put(`/transactions/${id}`, payload);
         Alert.alert('Sukses', 'Transaksi berhasil diperbarui.', [
           { text: 'OK', onPress: () => router.back() },
         ]);
       } else {
-        await api.post('/transactions', {
-          type,
-          amount,
-          category,
-          note: note.trim() || null,
-          date,
-        });
+        await api.post('/transactions', payload);
         resetForm();
         Alert.alert('Sukses', 'Transaksi berhasil dicatat.', [
           { text: 'Lihat Riwayat', onPress: () => router.push('/riwayat') },
@@ -193,12 +202,75 @@ export default function TransaksiScreen() {
           />
         </View>
 
-        {error ? (
-          <View style={[styles.errorBox, { backgroundColor: colors.expenseBg }]}>
-            <Ionicons name="alert-circle" size={16} color={colors.expense} />
-            <Text style={[styles.errorText, { color: colors.expense }]}>{error}</Text>
+        {/* Pilih Pocket / Kantong Dana */}
+        <View style={styles.block}>
+          <SectionLabel>Alokasi Pocket / Kantong</SectionLabel>
+          <View style={styles.pocketSelectorRow}>
+            {POCKET_LIST.map((p) => {
+              const isSelected = pocket === p.id;
+              const activeColor = isDark ? p.darkColor : p.color;
+              return (
+                <TouchableOpacity
+                  key={p.id}
+                  style={[
+                    styles.pocketCardBtn,
+                    {
+                      backgroundColor: isSelected
+                        ? isDark
+                          ? 'rgba(37, 99, 235, 0.16)'
+                          : 'rgba(37, 99, 235, 0.08)'
+                        : colors.surface,
+                      borderColor: isSelected ? activeColor : colors.border,
+                      borderWidth: isSelected ? 1.5 : 1,
+                    },
+                  ]}
+                  onPress={() => setPocket(p.id)}
+                  activeOpacity={0.8}
+                >
+                  <View style={styles.pocketInnerRow}>
+                    <View
+                      style={[
+                        styles.pocketIconWrap,
+                        {
+                          backgroundColor: isSelected
+                            ? activeColor
+                            : isDark
+                            ? 'rgba(255,255,255,0.08)'
+                            : 'rgba(0,0,0,0.05)',
+                        },
+                      ]}
+                    >
+                      <Ionicons
+                        name={p.icon}
+                        size={16}
+                        color={isSelected ? '#FFFFFF' : colors.inkMuted}
+                      />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text
+                        style={[
+                          styles.pocketBtnTitle,
+                          {
+                            color: isSelected ? colors.ink : colors.inkMuted,
+                            fontWeight: isSelected ? '700' : '600',
+                          },
+                        ]}
+                      >
+                        {p.name}
+                      </Text>
+                      <Text style={[styles.pocketBtnSub, { color: colors.inkMuted }]} numberOfLines={1}>
+                        {p.tagline}
+                      </Text>
+                    </View>
+                    {isSelected && (
+                      <Ionicons name="checkmark-circle" size={18} color={activeColor} />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           </View>
-        ) : null}
+        </View>
 
         {/* Input Nominal */}
         <SectionLabel>Nominal</SectionLabel>
@@ -354,6 +426,37 @@ const styles = StyleSheet.create({
   },
   amountPreview: { fontSize: 13, fontWeight: '700', marginTop: spacing.xs },
   block: { marginTop: spacing.md },
+  pocketSelectorRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.xs,
+  },
+  pocketCardBtn: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: radius.md,
+  },
+  pocketInnerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  pocketIconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pocketBtnTitle: {
+    fontSize: 13,
+    letterSpacing: -0.2,
+  },
+  pocketBtnSub: {
+    fontSize: 10,
+    marginTop: 1,
+  },
   noteBlock: { marginBottom: spacing.lg },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
   dateCard: {

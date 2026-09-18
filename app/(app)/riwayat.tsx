@@ -17,7 +17,13 @@ import {
   monthKey,
   shiftMonth,
 } from '../../utils/date';
-import type { Transaction } from '../../types';
+import {
+  POCKET_LIST,
+  POCKET_CONFIG,
+  getPocket,
+  cleanPocketNote,
+} from '../../constants/pockets';
+import type { Transaction, PocketType } from '../../types';
 
 function formatRupiah(value: number) {
   return 'Rp' + Math.round(Math.abs(value)).toLocaleString('id-ID');
@@ -34,6 +40,7 @@ export default function RiwayatScreen() {
   const [month, setMonth] = useState(currentMonthKey());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activePocket, setActivePocket] = useState<'all' | PocketType>('all');
   const [calendarVisible, setCalendarVisible] = useState(false);
 
   const fetchTransactions = useCallback(async () => {
@@ -84,7 +91,7 @@ export default function RiwayatScreen() {
     [monthTransactions]
   );
 
-  // Filter berdasar tanggal spesifik dan/atau kategori
+  // Filter berdasar tanggal spesifik, kategori, dan/atau pocket
   const filtered = useMemo(() => {
     let list = monthTransactions;
     if (selectedDate) {
@@ -93,8 +100,11 @@ export default function RiwayatScreen() {
     if (activeCategory) {
       list = list.filter((t) => t.category === activeCategory);
     }
+    if (activePocket !== 'all') {
+      list = list.filter((t) => getPocket(t) === activePocket);
+    }
     return list;
-  }, [monthTransactions, selectedDate, activeCategory]);
+  }, [monthTransactions, selectedDate, activeCategory, activePocket]);
 
   const totalIncome = filtered.filter((t) => t.type === 'income').reduce((s, t) => s + t.amount, 0);
   const totalExpense = filtered.filter((t) => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
@@ -104,11 +114,13 @@ export default function RiwayatScreen() {
     setMonth((m) => shiftMonth(m, delta));
     setSelectedDate(null);
     setActiveCategory(null);
+    setActivePocket('all');
   };
 
   const handleSelectMonth = (newMonth: string) => {
     setMonth(newMonth);
     setActiveCategory(null);
+    setActivePocket('all');
   };
 
   const handleSelectDate = (dateISO: string | null) => {
@@ -240,6 +252,29 @@ export default function RiwayatScreen() {
         </View>
       )}
 
+      {/* Filter Pocket */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.pocketFilterScroll}
+        contentContainerStyle={styles.filterRow}
+      >
+        <Chip
+          label="Semua Pocket"
+          selected={activePocket === 'all'}
+          onPress={() => setActivePocket('all')}
+        />
+        {POCKET_LIST.map((p) => (
+          <Chip
+            key={p.id}
+            label={p.name}
+            icon={p.icon}
+            selected={activePocket === p.id}
+            onPress={() => setActivePocket(p.id)}
+          />
+        ))}
+      </ScrollView>
+
       {/* Filter Kategori */}
       {categoriesInMonth.length > 0 && (
         <ScrollView
@@ -248,7 +283,7 @@ export default function RiwayatScreen() {
           style={styles.filterScroll}
           contentContainerStyle={styles.filterRow}
         >
-          <Chip label="Semua" selected={activeCategory === null} onPress={() => setActiveCategory(null)} />
+          <Chip label="Semua Kategori" selected={activeCategory === null} onPress={() => setActiveCategory(null)} />
           {categoriesInMonth.map((c) => (
             <Chip
               key={c}
@@ -274,57 +309,90 @@ export default function RiwayatScreen() {
             description={
               selectedDate
                 ? `Belum ada catatan transaksi pada tanggal ${selectedDate}.`
-                : 'Nggak ada transaksi buat bulan/kategori ini.'
+                : 'Nggak ada transaksi buat filter bulan / pocket ini.'
             }
           />
         ) : (
-          filtered.map((t, i) => (
-            <TouchableOpacity
-              key={t.id}
-              style={[
-                styles.txRow,
-                i > 0 && [styles.txRowBorder, { borderTopColor: colors.border }],
-              ]}
-              onPress={() => router.push({ pathname: '/transaksi', params: { id: t.id } })}
-              activeOpacity={0.7}
-            >
-              <View
+          filtered.map((t, i) => {
+            const itemPocket = getPocket(t);
+            const pocketCfg = POCKET_CONFIG[itemPocket];
+            const cleanNote = cleanPocketNote(t.note);
+
+            return (
+              <TouchableOpacity
+                key={t.id}
                 style={[
-                  styles.txIconWrap,
-                  {
-                    backgroundColor: t.type === 'income' ? colors.incomeBg : colors.expenseBg,
-                  },
+                  styles.txRow,
+                  i > 0 && [styles.txRowBorder, { borderTopColor: colors.border }],
                 ]}
+                onPress={() => router.push({ pathname: '/transaksi', params: { id: t.id } })}
+                activeOpacity={0.7}
               >
-                <Ionicons
-                  name={iconForCategory(t.category)}
-                  size={18}
-                  color={t.type === 'income' ? colors.income : colors.expense}
-                />
-              </View>
-
-              <View style={styles.flex1}>
-                <Text style={[styles.txCategory, { color: colors.ink }]}>{t.category}</Text>
-                <Text style={[styles.txMeta, { color: colors.inkMuted }]} numberOfLines={1}>
-                  {t.date}
-                  {t.note ? ` · ${t.note}` : ''}
-                </Text>
-              </View>
-
-              <View style={styles.txRight}>
-                <Text
+                <View
                   style={[
-                    styles.txAmount,
-                    { color: t.type === 'income' ? colors.income : colors.expense },
+                    styles.txIconWrap,
+                    {
+                      backgroundColor: t.type === 'income' ? colors.incomeBg : colors.expenseBg,
+                    },
                   ]}
                 >
-                  {t.type === 'income' ? '+' : '-'}
-                  {formatRupiah(t.amount)}
-                </Text>
-                <Ionicons name="chevron-forward" size={14} color={colors.inkMuted} />
-              </View>
-            </TouchableOpacity>
-          ))
+                  <Ionicons
+                    name={iconForCategory(t.category)}
+                    size={18}
+                    color={t.type === 'income' ? colors.income : colors.expense}
+                  />
+                </View>
+
+                <View style={styles.flex1}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                    <Text style={[styles.txCategory, { color: colors.ink }]}>{t.category}</Text>
+                    <View
+                      style={[
+                        styles.miniPocketBadge,
+                        {
+                          backgroundColor:
+                            itemPocket === 'pocket_nabung'
+                              ? 'rgba(16, 185, 129, 0.12)'
+                              : 'rgba(37, 99, 235, 0.12)',
+                        },
+                      ]}
+                    >
+                      <Ionicons
+                        name={pocketCfg.icon}
+                        size={10}
+                        color={itemPocket === 'pocket_nabung' ? '#10B981' : '#2563EB'}
+                      />
+                      <Text
+                        style={[
+                          styles.miniPocketBadgeText,
+                          { color: itemPocket === 'pocket_nabung' ? '#059669' : '#2563EB' },
+                        ]}
+                      >
+                        {pocketCfg.shortName}
+                      </Text>
+                    </View>
+                  </View>
+                  <Text style={[styles.txMeta, { color: colors.inkMuted }]} numberOfLines={1}>
+                    {t.date}
+                    {cleanNote ? ` · ${cleanNote}` : ''}
+                  </Text>
+                </View>
+
+                <View style={styles.txRight}>
+                  <Text
+                    style={[
+                      styles.txAmount,
+                      { color: t.type === 'income' ? colors.income : colors.expense },
+                    ]}
+                  >
+                    {t.type === 'income' ? '+' : '-'}
+                    {formatRupiah(t.amount)}
+                  </Text>
+                  <Ionicons name="chevron-forward" size={14} color={colors.inkMuted} />
+                </View>
+              </TouchableOpacity>
+            );
+          })
         )}
       </Card>
 
@@ -534,5 +602,20 @@ const styles = StyleSheet.create({
   txAmount: {
     fontSize: 15,
     fontWeight: '800',
+  },
+  pocketFilterScroll: {
+    marginBottom: spacing.xs,
+  },
+  miniPocketBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: radius.pill,
+  },
+  miniPocketBadgeText: {
+    fontSize: 9,
+    fontWeight: '700',
   },
 });
