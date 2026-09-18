@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Modal,
   Pressable,
   TextInput,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
@@ -315,6 +316,101 @@ export function MarketTicker() {
     return Math.round(qty * calcItem.rateInIDR);
   };
 
+  const scrollRef = useRef<ScrollView>(null);
+  const currentScrollX = useRef<number>(0);
+
+  // Efek scroll horizontal dengan Mouse Wheel & Drag-to-Scroll di PC / Web
+  useEffect(() => {
+    if (Platform.OS === 'web' && scrollRef.current) {
+      const node = (scrollRef.current as any).getScrollableNode?.() || (scrollRef.current as any);
+      if (node && node.addEventListener) {
+        // 1. Mouse wheel horizontal scrolling
+        const handleWheel = (e: WheelEvent) => {
+          if (e.deltaY !== 0 || e.deltaX !== 0) {
+            e.preventDefault();
+            const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+            node.scrollLeft += delta;
+            currentScrollX.current = node.scrollLeft;
+          }
+        };
+
+        // 2. Click & drag to scroll di browser PC
+        let isDown = false;
+        let startX = 0;
+        let startScrollLeft = 0;
+
+        const handleMouseDown = (e: MouseEvent) => {
+          isDown = true;
+          startX = e.pageX - node.offsetLeft;
+          startScrollLeft = node.scrollLeft;
+          node.style.cursor = 'grabbing';
+          node.style.userSelect = 'none';
+        };
+
+        const handleMouseLeave = () => {
+          isDown = false;
+          node.style.cursor = 'grab';
+          node.style.removeProperty('user-select');
+        };
+
+        const handleMouseUp = () => {
+          isDown = false;
+          node.style.cursor = 'grab';
+          node.style.removeProperty('user-select');
+        };
+
+        const handleMouseMove = (e: MouseEvent) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - node.offsetLeft;
+          const walk = (x - startX) * 1.5;
+          node.scrollLeft = startScrollLeft - walk;
+          currentScrollX.current = node.scrollLeft;
+        };
+
+        node.style.cursor = 'grab';
+        node.addEventListener('wheel', handleWheel, { passive: false });
+        node.addEventListener('mousedown', handleMouseDown);
+        node.addEventListener('mouseleave', handleMouseLeave);
+        node.addEventListener('mouseup', handleMouseUp);
+        node.addEventListener('mousemove', handleMouseMove);
+
+        return () => {
+          node.removeEventListener('wheel', handleWheel);
+          node.removeEventListener('mousedown', handleMouseDown);
+          node.removeEventListener('mouseleave', handleMouseLeave);
+          node.removeEventListener('mouseup', handleMouseUp);
+          node.removeEventListener('mousemove', handleMouseMove);
+        };
+      }
+    }
+  }, []);
+
+  const scrollHorizontally = (delta: number) => {
+    if (Platform.OS === 'web' && scrollRef.current) {
+      const node = (scrollRef.current as any).getScrollableNode?.() || (scrollRef.current as any);
+      if (node && typeof node.scrollBy === 'function') {
+        node.scrollBy({ left: delta, behavior: 'smooth' });
+        currentScrollX.current = node.scrollLeft + delta;
+        return;
+      }
+    }
+    const newX = Math.max(0, currentScrollX.current + delta);
+    currentScrollX.current = newX;
+    scrollRef.current?.scrollTo({ x: newX, animated: true });
+  };
+
+  const tickerGlassStyle = {
+    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255, 255, 255, 0.78)',
+    borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.65)',
+    ...(Platform.OS === 'web'
+      ? ({
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+        } as any)
+      : {}),
+  };
+
   return (
     <View style={styles.container}>
       {/* Header Bar Kurs & Pasar */}
@@ -338,46 +434,83 @@ export function MarketTicker() {
           </View>
         </View>
 
-        <TouchableOpacity
-          onPress={fetchRates}
-          style={[
-            styles.refreshBtn,
-            {
-              backgroundColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
-              borderColor: colors.border,
-            },
-          ]}
-          activeOpacity={0.7}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator size="small" color={colors.primary} />
-          ) : (
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-              <Ionicons name="sync-outline" size={13} color={colors.primary} />
-              <Text style={[styles.updateText, { color: colors.inkMuted }]}>
-                {lastUpdated || 'Segarkan'}
-              </Text>
-            </View>
-          )}
-        </TouchableOpacity>
+        <View style={styles.headerRight}>
+          {/* Tombol Geser Kurs untuk PC / Desktop */}
+          <View style={styles.navArrowsWrap}>
+            <TouchableOpacity
+              onPress={() => scrollHorizontally(-260)}
+              style={[
+                styles.navArrowBtn,
+                {
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+                  borderColor: colors.border,
+                },
+              ]}
+              activeOpacity={0.7}
+              accessibilityLabel="Geser Kurs Kiri"
+            >
+              <Ionicons name="chevron-back" size={14} color={colors.ink} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => scrollHorizontally(260)}
+              style={[
+                styles.navArrowBtn,
+                {
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+                  borderColor: colors.border,
+                },
+              ]}
+              activeOpacity={0.7}
+              accessibilityLabel="Geser Kurs Kanan"
+            >
+              <Ionicons name="chevron-forward" size={14} color={colors.ink} />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            onPress={fetchRates}
+            style={[
+              styles.refreshBtn,
+              {
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
+                borderColor: colors.border,
+              },
+            ]}
+            activeOpacity={0.7}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator size="small" color={colors.primary} />
+            ) : (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                <Ionicons name="sync-outline" size={13} color={colors.primary} />
+                <Text style={[styles.updateText, { color: colors.inkMuted }]}>
+                  {lastUpdated || 'Segarkan'}
+                </Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Horizontal Scrollable Ticker Cards */}
       <ScrollView
+        ref={scrollRef}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollList}
+        onScroll={(e) => {
+          currentScrollX.current = e.nativeEvent.contentOffset.x;
+        }}
+        scrollEventThrottle={16}
       >
         {marketData.map((item) => (
           <TouchableOpacity
             key={item.id}
             style={[
               styles.tickerCard,
-              {
-                backgroundColor: colors.surface,
-                borderColor: colors.border,
-              },
+              tickerGlassStyle,
               isDark ? shadow.cardDark : shadow.card,
             ]}
             onPress={() => openCalculator(item)}
@@ -607,6 +740,24 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: '900',
     letterSpacing: 0.5,
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  navArrowsWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  navArrowBtn: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   refreshBtn: {
     paddingVertical: 5,
