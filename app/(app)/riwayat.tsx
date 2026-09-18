@@ -26,7 +26,7 @@ import {
 import type { Transaction, PocketType } from '../../types';
 
 function formatRupiah(value: number) {
-  return 'Rp' + Math.round(Math.abs(value)).toLocaleString('id-ID');
+  return 'Rp ' + Math.round(Math.abs(value)).toLocaleString('id-ID');
 }
 
 export default function RiwayatScreen() {

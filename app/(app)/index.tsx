@@ -36,7 +36,7 @@ import {
 import type { Transaction, PocketType } from '../../types';
 
 function formatRupiah(value: number) {
-  return 'Rp' + Math.round(Math.abs(value)).toLocaleString('id-ID');
+  return 'Rp ' + Math.round(Math.abs(value)).toLocaleString('id-ID');
 }
 
 function getGreeting(): string {
@@ -537,21 +537,23 @@ export default function DashboardScreen() {
                     style={[
                       styles.splitQuickActionBtn,
                       {
-                        backgroundColor: isDark ? 'rgba(37, 99, 235, 0.12)' : 'rgba(37, 99, 235, 0.08)',
+                        backgroundColor: isDark ? 'rgba(37, 99, 235, 0.14)' : 'rgba(37, 99, 235, 0.08)',
+                        borderColor: isDark ? 'rgba(37, 99, 235, 0.35)' : 'rgba(37, 99, 235, 0.25)',
                       },
                     ]}
                     onPress={() => router.push('/transaksi')}
                     activeOpacity={0.7}
                   >
-                    <Ionicons name="add" size={13} color={colors.primary} />
-                    <Text style={[styles.splitQuickActionText, { color: colors.primary }]}>Isi Kas</Text>
+                    <Ionicons name="add" size={14} color={colors.primary} />
+                    <Text style={[styles.splitQuickActionText, { color: colors.primary }]}>+ Isi Kas</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     style={[
                       styles.splitQuickActionBtn,
                       {
-                        backgroundColor: isDark ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.08)',
+                        backgroundColor: isDark ? 'rgba(16, 185, 129, 0.14)' : 'rgba(16, 185, 129, 0.08)',
+                        borderColor: isDark ? 'rgba(16, 185, 129, 0.35)' : 'rgba(16, 185, 129, 0.25)',
                       },
                     ]}
                     onPress={() => handleOpenTransfer('simpanan_pertama')}
@@ -626,14 +628,14 @@ export default function DashboardScreen() {
                       styles.splitQuickActionBtn,
                       {
                         backgroundColor: isDark ? 'rgba(16, 185, 129, 0.16)' : 'rgba(16, 185, 129, 0.1)',
-                        flex: 1,
+                        borderColor: isDark ? 'rgba(16, 185, 129, 0.35)' : 'rgba(16, 185, 129, 0.25)',
                       },
                     ]}
                     onPress={() => handleOpenTransfer('simpanan_pertama')}
                     activeOpacity={0.7}
                   >
                     <Ionicons name="add-circle" size={14} color="#10B981" />
-                    <Text style={[styles.splitQuickActionText, { color: '#10B981', fontWeight: '700' }]}>
+                    <Text style={[styles.splitQuickActionText, { color: '#10B981' }]}>
                       + Tambah Tabungan
                     </Text>
                   </TouchableOpacity>
@@ -643,6 +645,7 @@ export default function DashboardScreen() {
                       styles.splitQuickActionBtn,
                       {
                         backgroundColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
+                        borderColor: colors.border,
                       },
                     ]}
                     onPress={() => handleOpenTransfer('pocket_nabung')}
@@ -772,13 +775,16 @@ export default function DashboardScreen() {
                   <TouchableOpacity
                     style={[
                       styles.actionTile,
-                      { backgroundColor: isDark ? 'rgba(34, 197, 94, 0.08)' : 'rgba(34, 197, 94, 0.06)', borderColor: 'rgba(34, 197, 94, 0.2)' },
+                      { backgroundColor: isDark ? 'rgba(34, 197, 94, 0.08)' : 'rgba(34, 197, 94, 0.06)', borderColor: 'rgba(34, 197, 94, 0.25)' },
                     ]}
                     onPress={() => router.push('/transaksi')}
                     activeOpacity={0.7}
                   >
-                    <View style={[styles.actionTileIcon, { backgroundColor: '#16A34A' }]}>
-                      <Ionicons name="arrow-down" size={18} color="#FFFFFF" />
+                    <View style={styles.actionTileTopRow}>
+                      <View style={[styles.actionTileIcon, { backgroundColor: '#16A34A' }]}>
+                        <Ionicons name="arrow-down" size={16} color="#FFFFFF" />
+                      </View>
+                      <Ionicons name="arrow-forward" size={13} color="#16A34A" />
                     </View>
                     <Text style={[styles.actionTileTitle, { color: colors.ink }]}>Tambah Kas</Text>
                     <Text style={[styles.actionTileSub, { color: colors.inkMuted }]}>Catat uang masuk</Text>
@@ -787,13 +793,16 @@ export default function DashboardScreen() {
                   <TouchableOpacity
                     style={[
                       styles.actionTile,
-                      { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.08)' : 'rgba(239, 68, 68, 0.06)', borderColor: 'rgba(239, 68, 68, 0.2)' },
+                      { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.08)' : 'rgba(239, 68, 68, 0.06)', borderColor: 'rgba(239, 68, 68, 0.25)' },
                     ]}
                     onPress={() => router.push('/transaksi')}
                     activeOpacity={0.7}
                   >
-                    <View style={[styles.actionTileIcon, { backgroundColor: '#DC2626' }]}>
-                      <Ionicons name="arrow-up" size={18} color="#FFFFFF" />
+                    <View style={styles.actionTileTopRow}>
+                      <View style={[styles.actionTileIcon, { backgroundColor: '#DC2626' }]}>
+                        <Ionicons name="arrow-up" size={16} color="#FFFFFF" />
+                      </View>
+                      <Ionicons name="arrow-forward" size={13} color="#DC2626" />
                     </View>
                     <Text style={[styles.actionTileTitle, { color: colors.ink }]}>Pengeluaran</Text>
                     <Text style={[styles.actionTileSub, { color: colors.inkMuted }]}>Catat belanja/biaya</Text>
@@ -802,13 +811,16 @@ export default function DashboardScreen() {
                   <TouchableOpacity
                     style={[
                       styles.actionTile,
-                      { backgroundColor: isDark ? 'rgba(59, 130, 246, 0.08)' : 'rgba(59, 130, 246, 0.06)', borderColor: 'rgba(59, 130, 246, 0.2)' },
+                      { backgroundColor: isDark ? 'rgba(59, 130, 246, 0.08)' : 'rgba(59, 130, 246, 0.06)', borderColor: 'rgba(59, 130, 246, 0.25)' },
                     ]}
                     onPress={() => router.push('/laporan')}
                     activeOpacity={0.7}
                   >
-                    <View style={[styles.actionTileIcon, { backgroundColor: colors.primary }]}>
-                      <Ionicons name="document-text" size={18} color="#FFFFFF" />
+                    <View style={styles.actionTileTopRow}>
+                      <View style={[styles.actionTileIcon, { backgroundColor: colors.primary }]}>
+                        <Ionicons name="document-text" size={16} color="#FFFFFF" />
+                      </View>
+                      <Ionicons name="arrow-forward" size={13} color={colors.primary} />
                     </View>
                     <Text style={[styles.actionTileTitle, { color: colors.ink }]}>Laporan PDF</Text>
                     <Text style={[styles.actionTileSub, { color: colors.inkMuted }]}>Ekspor & analisa</Text>
@@ -817,13 +829,16 @@ export default function DashboardScreen() {
                   <TouchableOpacity
                     style={[
                       styles.actionTile,
-                      { backgroundColor: isDark ? 'rgba(168, 85, 247, 0.08)' : 'rgba(168, 85, 247, 0.06)', borderColor: 'rgba(168, 85, 247, 0.2)' },
+                      { backgroundColor: isDark ? 'rgba(168, 85, 247, 0.08)' : 'rgba(168, 85, 247, 0.06)', borderColor: 'rgba(168, 85, 247, 0.25)' },
                     ]}
                     onPress={() => router.push('/riwayat')}
                     activeOpacity={0.7}
                   >
-                    <View style={[styles.actionTileIcon, { backgroundColor: '#9333EA' }]}>
-                      <Ionicons name="time" size={18} color="#FFFFFF" />
+                    <View style={styles.actionTileTopRow}>
+                      <View style={[styles.actionTileIcon, { backgroundColor: '#9333EA' }]}>
+                        <Ionicons name="time" size={16} color="#FFFFFF" />
+                      </View>
+                      <Ionicons name="arrow-forward" size={13} color="#9333EA" />
                     </View>
                     <Text style={[styles.actionTileTitle, { color: colors.ink }]}>Riwayat Kas</Text>
                     <Text style={[styles.actionTileSub, { color: colors.inkMuted }]}>Filter & kelola</Text>
@@ -1007,27 +1022,88 @@ export default function DashboardScreen() {
                 )}
               </View>
 
-              {/* Card Tips Finansial */}
+              {/* Card Panduan Finansial Cerdas 50 / 30 / 20 */}
               <View
                 style={[
                   styles.contentCard,
                   {
-                    backgroundColor: isDark ? 'rgba(30, 41, 59, 0.5)' : '#F8FAFC',
+                    backgroundColor: colors.surface,
                     borderColor: colors.border,
                   },
+                  isDark ? shadow.cardDark : shadow.card,
                 ]}
               >
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                  <Ionicons name="bulb" size={18} color="#F59E0B" />
-                  <Text style={[styles.cardTitle, { color: colors.ink, fontSize: 14 }]}>
-                    Formula Cerdas 50 / 30 / 20
+                <View style={styles.cardHeader}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                    <Ionicons name="bulb-outline" size={19} color="#F59E0B" />
+                    <Text style={[styles.cardTitle, { color: colors.ink }]}>
+                      Formula Cerdas 50 / 30 / 20
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      styles.statusPill,
+                      { backgroundColor: isDark ? 'rgba(245, 158, 11, 0.14)' : 'rgba(245, 158, 11, 0.1)' },
+                    ]}
+                  >
+                    <Text style={[styles.statusPillText, { color: '#F59E0B' }]}>Panduan Ideal</Text>
+                  </View>
+                </View>
+
+                {/* Progress Bar 3 Porsi Finansial */}
+                <View style={styles.formulaTrack}>
+                  <View style={[styles.formulaFill, { width: '50%', backgroundColor: '#3B82F6' }]} />
+                  <View style={[styles.formulaFill, { width: '30%', backgroundColor: '#8B5CF6' }]} />
+                  <View style={[styles.formulaFill, { width: '20%', backgroundColor: '#10B981' }]} />
+                </View>
+
+                {/* 3 Kotak Alokasi Ideal */}
+                <View style={styles.formulaGrid}>
+                  <View style={[styles.formulaItem, { backgroundColor: isDark ? 'rgba(59, 130, 246, 0.08)' : 'rgba(59, 130, 246, 0.05)', borderColor: 'rgba(59, 130, 246, 0.2)' }]}>
+                    <View style={styles.formulaItemHeader}>
+                      <View style={[styles.formulaDot, { backgroundColor: '#3B82F6' }]} />
+                      <Text style={[styles.formulaPct, { color: '#3B82F6' }]}>50%</Text>
+                    </View>
+                    <Text style={[styles.formulaItemTitle, { color: colors.ink }]}>Pokok</Text>
+                    <Text style={[styles.formulaItemSub, { color: colors.inkMuted }]}>Sewa & tagihan</Text>
+                  </View>
+
+                  <View style={[styles.formulaItem, { backgroundColor: isDark ? 'rgba(139, 92, 246, 0.08)' : 'rgba(139, 92, 246, 0.05)', borderColor: 'rgba(139, 92, 246, 0.2)' }]}>
+                    <View style={styles.formulaItemHeader}>
+                      <View style={[styles.formulaDot, { backgroundColor: '#8B5CF6' }]} />
+                      <Text style={[styles.formulaPct, { color: '#8B5CF6' }]}>30%</Text>
+                    </View>
+                    <Text style={[styles.formulaItemTitle, { color: colors.ink }]}>Keinginan</Text>
+                    <Text style={[styles.formulaItemSub, { color: colors.inkMuted }]}>Hobi & santai</Text>
+                  </View>
+
+                  <View style={[styles.formulaItem, { backgroundColor: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.05)', borderColor: 'rgba(16, 185, 129, 0.2)' }]}>
+                    <View style={styles.formulaItemHeader}>
+                      <View style={[styles.formulaDot, { backgroundColor: '#10B981' }]} />
+                      <Text style={[styles.formulaPct, { color: '#10B981' }]}>20%</Text>
+                    </View>
+                    <Text style={[styles.formulaItemTitle, { color: colors.ink }]}>Tabungan</Text>
+                    <Text style={[styles.formulaItemSub, { color: colors.inkMuted }]}>Pocket Nabung</Text>
+                  </View>
+                </View>
+
+                {/* Insight Panduan */}
+                <View
+                  style={[
+                    styles.formulaInsight,
+                    {
+                      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+                      borderColor: colors.border,
+                    },
+                  ]}
+                >
+                  <Ionicons name="sparkles" size={16} color="#F59E0B" />
+                  <Text style={[styles.formulaInsightText, { color: colors.inkMuted }]}>
+                    {savingsRate >= 20
+                      ? `Luar biasa! Rasio simpanan kasmu (${savingsRate}%) telah mencapai target minimal 20%. Pertahankan kedisiplinan ini!`
+                      : `Target tabungan ideal adalah minimal 20% dari pemasukan. Sisihkan langsung ke Pocket Nabung setiap awal bulan.`}
                   </Text>
                 </View>
-                <Text style={[styles.tipsText, { color: colors.inkMuted }]}>
-                  Alokasikan <Text style={{ fontWeight: '700', color: colors.ink }}>50%</Text> pemasukan untuk kebutuhan pokok,{' '}
-                  <Text style={{ fontWeight: '700', color: colors.ink }}>30%</Text> untuk keinginan, dan minimal{' '}
-                  <Text style={{ fontWeight: '700', color: colors.ink }}>20%</Text> disisihkan langsung sebagai tabungan & dana darurat.
-                </Text>
               </View>
             </View>
           </View>
@@ -1711,11 +1787,11 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   leftColDesktop: {
-    flex: 1.15,
+    flex: 1,
     gap: 20,
   },
   rightColDesktop: {
-    flex: 0.85,
+    flex: 1,
     gap: 20,
   },
   colMobile: {
@@ -1812,26 +1888,91 @@ const styles = StyleSheet.create({
   },
   actionTile: {
     flex: 1,
-    minWidth: '45%',
+    minWidth: '46%',
     borderRadius: radius.lg,
     borderWidth: 1,
     padding: 14,
   },
+  actionTileTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
   actionTileIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 34,
+    height: 34,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
   },
   actionTileTitle: {
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   actionTileSub: {
     fontSize: 11,
     marginTop: 2,
+  },
+
+  // Formula Cerdas 50 / 30 / 20 Styles
+  formulaTrack: {
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: 'rgba(148, 163, 184, 0.2)',
+    flexDirection: 'row',
+    overflow: 'hidden',
+    marginBottom: 14,
+  },
+  formulaFill: {
+    height: '100%',
+  },
+  formulaGrid: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 14,
+  },
+  formulaItem: {
+    flex: 1,
+    padding: 10,
+    borderRadius: radius.md,
+    borderWidth: 1,
+  },
+  formulaItemHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 4,
+  },
+  formulaDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  formulaPct: {
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  formulaItemTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  formulaItemSub: {
+    fontSize: 10,
+  },
+  formulaInsight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    padding: 10,
+    borderRadius: radius.md,
+    borderWidth: 1,
+  },
+  formulaInsightText: {
+    flex: 1,
+    fontSize: 11,
+    lineHeight: 16,
   },
 
   // Recent Transactions List
@@ -2113,19 +2254,23 @@ const styles = StyleSheet.create({
   splitCardFooter: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
+    marginTop: 4,
   },
   splitQuickActionBtn: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingVertical: 6,
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 8,
     paddingHorizontal: 10,
-    borderRadius: radius.pill,
+    borderRadius: radius.md,
+    borderWidth: 1,
   },
   splitQuickActionText: {
     fontSize: 11,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 
   // Recent Pocket Filter Chips & Badges

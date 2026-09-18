@@ -33,7 +33,7 @@ import type { Transaction } from '../../types';
 import { useFocusEffect } from 'expo-router';
 
 function formatRupiah(value: number) {
-  return 'Rp' + Math.round(Math.abs(value)).toLocaleString('id-ID');
+  return 'Rp ' + Math.round(Math.abs(value)).toLocaleString('id-ID');
 }
 
 export default function LaporanScreen() {
