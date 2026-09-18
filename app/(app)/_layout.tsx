@@ -44,14 +44,18 @@ function CustomHeaderTitle({
   iconColor: string;
 }) {
   const { colors, isDark } = useTheme();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
+
+  const shortTitle = title.split(' ')[0] || title;
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 2 }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: isDesktop ? 10 : 7, paddingVertical: 2 }}>
       <View
         style={{
-          width: 36,
-          height: 36,
-          borderRadius: 11,
+          width: isDesktop ? 36 : 30,
+          height: isDesktop ? 36 : 30,
+          borderRadius: isDesktop ? 11 : 9,
           backgroundColor: iconBg,
           alignItems: 'center',
           justifyContent: 'center',
@@ -59,30 +63,34 @@ function CustomHeaderTitle({
           borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
         }}
       >
-        <Ionicons name={icon} size={18} color={iconColor} />
+        <Ionicons name={icon} size={isDesktop ? 18 : 16} color={iconColor} />
       </View>
       <View style={{ justifyContent: 'center' }}>
         <Text
           style={{
             color: colors.ink,
             fontWeight: '900',
-            fontSize: 16,
+            fontSize: isDesktop ? 16 : 14,
             letterSpacing: -0.3,
-            lineHeight: 20,
+            lineHeight: isDesktop ? 20 : 17,
           }}
+          numberOfLines={1}
         >
-          {title}
+          {isDesktop ? title : shortTitle}
         </Text>
-        <Text
-          style={{
-            color: colors.inkMuted,
-            fontSize: 11,
-            fontWeight: '600',
-            lineHeight: 14,
-          }}
-        >
-          {subtitle}
-        </Text>
+        {isDesktop && (
+          <Text
+            style={{
+              color: colors.inkMuted,
+              fontSize: 11,
+              fontWeight: '600',
+              lineHeight: 14,
+            }}
+            numberOfLines={1}
+          >
+            {subtitle}
+          </Text>
+        )}
       </View>
     </View>
   );
@@ -93,16 +101,23 @@ function HeaderRightActions({ isDesktop }: { isDesktop: boolean }) {
   const { colors, isDark } = useTheme();
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginRight: spacing.md }}>
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: isDesktop ? 10 : 6,
+        marginRight: isDesktop ? spacing.md : 10,
+      }}
+    >
       {/* User profile badge */}
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 8,
-          backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
-          paddingHorizontal: 10,
-          paddingVertical: 5,
+          gap: 6,
+          backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
+          paddingHorizontal: isDesktop ? 10 : 7,
+          paddingVertical: isDesktop ? 5 : 4,
           borderRadius: radius.pill,
           borderWidth: 1,
           borderColor: colors.border,
@@ -110,15 +125,15 @@ function HeaderRightActions({ isDesktop }: { isDesktop: boolean }) {
       >
         <View
           style={{
-            width: 24,
-            height: 24,
+            width: isDesktop ? 24 : 22,
+            height: isDesktop ? 24 : 22,
             borderRadius: 12,
             backgroundColor: colors.primary,
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <Text style={{ color: '#fff', fontSize: 11, fontWeight: '700' }}>
+          <Text style={{ color: '#fff', fontSize: isDesktop ? 11 : 10, fontWeight: '700' }}>
             {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
           </Text>
         </View>
@@ -152,11 +167,11 @@ function HeaderRightActions({ isDesktop }: { isDesktop: boolean }) {
         accessibilityLabel="Keluar"
         style={{
           backgroundColor: isDark ? 'rgba(239, 68, 68, 0.12)' : 'rgba(239, 68, 68, 0.08)',
-          padding: 7,
+          padding: isDesktop ? 7 : 6,
           borderRadius: radius.pill,
         }}
       >
-        <Ionicons name="log-out-outline" size={19} color={colors.expense} />
+        <Ionicons name="log-out-outline" size={isDesktop ? 19 : 17} color={colors.expense} />
       </TouchableOpacity>
     </View>
   );

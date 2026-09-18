@@ -121,6 +121,62 @@ export default function DashboardScreen() {
   const expensePercent = totalVolume > 0 ? Math.round((totalExpense / totalVolume) * 100) : 0;
   const savingsRate = totalIncome > 0 ? Math.round((Math.max(0, saldo) / totalIncome) * 100) : 0;
 
+  // Liquid Glass Styling Tokens
+  const glassCardStyle = {
+    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255, 255, 255, 0.78)',
+    borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.65)',
+    ...(Platform.OS === 'web'
+      ? ({
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+        } as any)
+      : {}),
+  };
+
+  const simpananGlassStyle = {
+    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.76)' : 'rgba(255, 255, 255, 0.82)',
+    borderColor: isDark ? 'rgba(59, 130, 246, 0.42)' : 'rgba(37, 99, 235, 0.32)',
+    ...(Platform.OS === 'web'
+      ? ({
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+        } as any)
+      : {}),
+  };
+
+  const nabungGlassStyle = {
+    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.76)' : 'rgba(255, 255, 255, 0.82)',
+    borderColor: isDark ? 'rgba(16, 185, 129, 0.42)' : 'rgba(16, 185, 129, 0.32)',
+    ...(Platform.OS === 'web'
+      ? ({
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+        } as any)
+      : {}),
+  };
+
+  const incomeGlassStyle = {
+    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255, 255, 255, 0.78)',
+    borderColor: isDark ? 'rgba(34, 197, 94, 0.38)' : 'rgba(34, 197, 94, 0.28)',
+    ...(Platform.OS === 'web'
+      ? ({
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+        } as any)
+      : {}),
+  };
+
+  const expenseGlassStyle = {
+    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255, 255, 255, 0.78)',
+    borderColor: isDark ? 'rgba(239, 68, 68, 0.38)' : 'rgba(239, 68, 68, 0.28)',
+    ...(Platform.OS === 'web'
+      ? ({
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+        } as any)
+      : {}),
+  };
+
   const handleOpenTransfer = (defaultSource: PocketType = 'simpanan_pertama') => {
     setTransferSource(defaultSource);
     setTransferAmount('');
@@ -226,7 +282,7 @@ export default function DashboardScreen() {
           {
             maxWidth: isDesktop ? 1160 : 540,
             paddingHorizontal: isDesktop ? 28 : 16,
-            paddingBottom: isDesktop ? 110 : 85,
+            paddingBottom: isDesktop ? 140 : 120,
           },
         ]}
         showsVerticalScrollIndicator={false}
@@ -373,66 +429,66 @@ export default function DashboardScreen() {
               </View>
             </LinearGradient>
 
-            {/* Kartu Pemasukan */}
-            <View
-              style={[
-                styles.summaryKpiCard,
-                isDesktop ? styles.kpiCardDesktop : styles.kpiCardMobile,
-                {
-                  backgroundColor: colors.surface,
-                  borderColor: isDark ? 'rgba(34, 197, 94, 0.25)' : 'rgba(34, 197, 94, 0.2)',
-                },
-                isDark ? shadow.cardDark : shadow.card,
-              ]}
-            >
-              <View style={styles.kpiTopRow}>
-                <View style={[styles.kpiIconWrap, { backgroundColor: 'rgba(34, 197, 94, 0.12)' }]}>
-                  <Ionicons name="arrow-down" size={18} color="#16A34A" />
+            <View style={isDesktop ? styles.kpiPairDesktop : styles.kpiPairMobile}>
+              {/* Kartu Pemasukan */}
+              <View
+                style={[
+                  styles.summaryKpiCard,
+                  incomeGlassStyle,
+                  isDark ? shadow.cardDark : shadow.card,
+                ]}
+              >
+                <View style={styles.kpiTopRow}>
+                  <View style={[styles.kpiIconWrap, { backgroundColor: 'rgba(34, 197, 94, 0.14)' }]}>
+                    <Ionicons name="arrow-down" size={isDesktop ? 18 : 16} color="#16A34A" />
+                  </View>
+                  <View style={[styles.kpiBadge, { backgroundColor: 'rgba(34, 197, 94, 0.12)' }]}>
+                    <Text style={[styles.kpiBadgeText, { color: '#16A34A' }]}>
+                      {incomePercent}% Arus
+                    </Text>
+                  </View>
                 </View>
-                <View style={[styles.kpiBadge, { backgroundColor: 'rgba(34, 197, 94, 0.1)' }]}>
-                  <Text style={[styles.kpiBadgeText, { color: '#16A34A' }]}>
-                    {incomePercent}% Arus
-                  </Text>
-                </View>
+                <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>PEMASUKAN</Text>
+                <Text
+                  style={[styles.kpiValue, { color: '#16A34A', fontSize: isDesktop ? 24 : 17 }]}
+                  numberOfLines={1}
+                >
+                  {formatRupiah(totalIncome)}
+                </Text>
+                <Text style={[styles.kpiHint, { color: colors.inkMuted }]} numberOfLines={1}>
+                  {totalIncome > 0 ? (isDesktop ? 'Sumber pendapatan tercatat' : 'Arus masuk') : 'Belum ada'}
+                </Text>
               </View>
-              <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>TOTAL PEMASUKAN</Text>
-              <Text style={[styles.kpiValue, { color: '#16A34A' }]}>
-                {formatRupiah(totalIncome)}
-              </Text>
-              <Text style={[styles.kpiHint, { color: colors.inkMuted }]}>
-                {totalIncome > 0 ? 'Sumber pendapatan tercatat' : 'Belum ada pemasukan'}
-              </Text>
-            </View>
 
-            {/* Kartu Pengeluaran */}
-            <View
-              style={[
-                styles.summaryKpiCard,
-                isDesktop ? styles.kpiCardDesktop : styles.kpiCardMobile,
-                {
-                  backgroundColor: colors.surface,
-                  borderColor: isDark ? 'rgba(239, 68, 68, 0.25)' : 'rgba(239, 68, 68, 0.2)',
-                },
-                isDark ? shadow.cardDark : shadow.card,
-              ]}
-            >
-              <View style={styles.kpiTopRow}>
-                <View style={[styles.kpiIconWrap, { backgroundColor: 'rgba(239, 68, 68, 0.12)' }]}>
-                  <Ionicons name="arrow-up" size={18} color="#DC2626" />
+              {/* Kartu Pengeluaran */}
+              <View
+                style={[
+                  styles.summaryKpiCard,
+                  expenseGlassStyle,
+                  isDark ? shadow.cardDark : shadow.card,
+                ]}
+              >
+                <View style={styles.kpiTopRow}>
+                  <View style={[styles.kpiIconWrap, { backgroundColor: 'rgba(239, 68, 68, 0.14)' }]}>
+                    <Ionicons name="arrow-up" size={isDesktop ? 18 : 16} color="#DC2626" />
+                  </View>
+                  <View style={[styles.kpiBadge, { backgroundColor: 'rgba(239, 68, 68, 0.12)' }]}>
+                    <Text style={[styles.kpiBadgeText, { color: '#DC2626' }]}>
+                      {expensePercent}% Arus
+                    </Text>
+                  </View>
                 </View>
-                <View style={[styles.kpiBadge, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]}>
-                  <Text style={[styles.kpiBadgeText, { color: '#DC2626' }]}>
-                    {expensePercent}% Arus
-                  </Text>
-                </View>
+                <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>PENGELUARAN</Text>
+                <Text
+                  style={[styles.kpiValue, { color: '#DC2626', fontSize: isDesktop ? 24 : 17 }]}
+                  numberOfLines={1}
+                >
+                  {formatRupiah(totalExpense)}
+                </Text>
+                <Text style={[styles.kpiHint, { color: colors.inkMuted }]} numberOfLines={1}>
+                  {totalExpense > 0 ? (isDesktop ? 'Total pengeluaran tercatat' : 'Total keluar') : 'Nihil (aman)'}
+                </Text>
               </View>
-              <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>TOTAL PENGELUARAN</Text>
-              <Text style={[styles.kpiValue, { color: '#DC2626' }]}>
-                {formatRupiah(totalExpense)}
-              </Text>
-              <Text style={[styles.kpiHint, { color: colors.inkMuted }]}>
-                {totalExpense > 0 ? 'Total pengeluaran tercatat' : 'Pengeluaran nihil (aman)'}
-              </Text>
             </View>
           </View>
 
@@ -479,10 +535,7 @@ export default function DashboardScreen() {
               <View
                 style={[
                   styles.splitCard,
-                  {
-                    backgroundColor: colors.surface,
-                    borderColor: isDark ? 'rgba(37, 99, 235, 0.3)' : 'rgba(37, 99, 235, 0.25)',
-                  },
+                  simpananGlassStyle,
                   isDark ? shadow.cardDark : shadow.card,
                 ]}
               >
@@ -571,10 +624,7 @@ export default function DashboardScreen() {
               <View
                 style={[
                   styles.splitCard,
-                  {
-                    backgroundColor: colors.surface,
-                    borderColor: isDark ? 'rgba(16, 185, 129, 0.3)' : 'rgba(16, 185, 129, 0.25)',
-                  },
+                  nabungGlassStyle,
                   isDark ? shadow.cardDark : shadow.card,
                 ]}
               >
@@ -669,7 +719,7 @@ export default function DashboardScreen() {
               <View
                 style={[
                   styles.contentCard,
-                  { backgroundColor: colors.surface, borderColor: colors.border },
+                  glassCardStyle,
                   isDark ? shadow.cardDark : shadow.card,
                 ]}
               >
@@ -762,7 +812,7 @@ export default function DashboardScreen() {
               <View
                 style={[
                   styles.contentCard,
-                  { backgroundColor: colors.surface, borderColor: colors.border },
+                  glassCardStyle,
                   isDark ? shadow.cardDark : shadow.card,
                 ]}
               >
@@ -855,7 +905,7 @@ export default function DashboardScreen() {
               <View
                 style={[
                   styles.contentCard,
-                  { backgroundColor: colors.surface, borderColor: colors.border },
+                  glassCardStyle,
                   isDark ? shadow.cardDark : shadow.card,
                 ]}
               >
@@ -1028,10 +1078,7 @@ export default function DashboardScreen() {
               <View
                 style={[
                   styles.contentCard,
-                  {
-                    backgroundColor: colors.surface,
-                    borderColor: colors.border,
-                  },
+                  glassCardStyle,
                   isDark ? shadow.cardDark : shadow.card,
                 ]}
               >
@@ -1637,16 +1684,18 @@ const styles = StyleSheet.create({
   },
   metricGridMobile: {
     flexDirection: 'column',
-    gap: 14,
-    marginBottom: 20,
+    gap: 12,
+    marginBottom: 16,
   },
   saldoHeroCard: {
     borderRadius: radius.xl,
     padding: 22,
     justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.22)',
   },
   saldoHeroCardDesktop: {
-    flex: 1.4,
+    flex: 1.3,
     minHeight: 180,
   },
   saldoTopRow: {
@@ -1728,18 +1777,21 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
+  kpiPairDesktop: {
+    flex: 2,
+    flexDirection: 'row',
+    gap: 16,
+  },
+  kpiPairMobile: {
+    flexDirection: 'row',
+    gap: 10,
+  },
   summaryKpiCard: {
-    borderRadius: radius.xl,
-    padding: 20,
-    borderWidth: 1,
-    justifyContent: 'space-between',
-  },
-  kpiCardDesktop: {
     flex: 1,
-    minHeight: 180,
-  },
-  kpiCardMobile: {
-    width: '100%',
+    borderRadius: radius.xl,
+    padding: 16,
+    borderWidth: 1.5,
+    justifyContent: 'space-between',
   },
   kpiTopRow: {
     flexDirection: 'row',
