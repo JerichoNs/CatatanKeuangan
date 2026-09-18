@@ -560,7 +560,9 @@ export default function DashboardScreen() {
                     activeOpacity={0.7}
                   >
                     <Ionicons name="arrow-forward" size={13} color="#10B981" />
-                    <Text style={[styles.splitQuickActionText, { color: '#10B981' }]}>Nabung ke Pocket</Text>
+                    <Text style={[styles.splitQuickActionText, { color: '#10B981' }]} numberOfLines={1}>
+                      {isDesktop ? 'Nabung ke Pocket' : 'Nabung'}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -635,8 +637,8 @@ export default function DashboardScreen() {
                     activeOpacity={0.7}
                   >
                     <Ionicons name="add-circle" size={14} color="#10B981" />
-                    <Text style={[styles.splitQuickActionText, { color: '#10B981' }]}>
-                      + Tambah Tabungan
+                    <Text style={[styles.splitQuickActionText, { color: '#10B981' }]} numberOfLines={1}>
+                      {isDesktop ? '+ Tambah Tabungan' : '+ Tabungan'}
                     </Text>
                   </TouchableOpacity>
 
