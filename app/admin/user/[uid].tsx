@@ -10,7 +10,7 @@ import { iconForCategory } from '../../../constants/categories';
 import type { Transaction } from '../../../types';
 
 function formatRupiah(value: number) {
-  return 'Rp' + Math.round(Math.abs(value)).toLocaleString('id-ID');
+  return 'Rp ' + Math.round(Math.abs(value)).toLocaleString('id-ID');
 }
 
 type UserProfile = { id: string; name: string; email: string; isAdmin: boolean };
