@@ -36,6 +36,14 @@ function RootNavigation() {
                         color 0.25s ease;
           }
 
+          /* Hilangkan outline kotak biru bawaan browser Chrome/Edge */
+          input, textarea, select, button,
+          input:focus, textarea:focus, select:focus, button:focus,
+          input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible {
+            outline: none !important;
+            box-shadow: none;
+          }
+
           /* Proteksi mutlak agar font ikon Ionicons tidak tertimpa oleh font teks */
           [style*="font-family: ionicons"],
           [style*="font-family: 'ionicons'"],

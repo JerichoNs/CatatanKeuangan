@@ -439,7 +439,7 @@ export function InputField({
   keyboardType?: KeyboardTypeOptions;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
 }) {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(!!secureTextEntry);
 
@@ -448,13 +448,21 @@ export function InputField({
       style={[
         styles.inputWrapper,
         {
-          backgroundColor: colors.surface,
-          borderColor: focused ? colors.primary : colors.border,
-          borderWidth: 1,
+          backgroundColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.92)',
+          borderColor: focused
+            ? colors.primary
+            : isDark
+            ? 'rgba(255, 255, 255, 0.14)'
+            : 'rgba(208, 212, 228, 0.85)',
         },
+        focused && Platform.OS === 'web'
+          ? ({
+              boxShadow: '0 0 0 3.5px rgba(97, 97, 255, 0.25)',
+            } as any)
+          : null,
       ]}
     >
-      <Ionicons name={icon} size={18} color={focused ? colors.primary : colors.inkMuted} />
+      <Ionicons name={icon} size={19} color={focused ? colors.primary : colors.inkMuted} />
       <TextInput
         style={[styles.inputField, { color: colors.ink }]}
         value={value}
@@ -475,7 +483,7 @@ export function InputField({
           accessibilityRole="button"
           accessibilityLabel={hidden ? 'Tampilkan password' : 'Sembunyikan password'}
         >
-          <Ionicons name={hidden ? 'eye-outline' : 'eye-off-outline'} size={18} color={colors.inkMuted} />
+          <Ionicons name={hidden ? 'eye-outline' : 'eye-off-outline'} size={19} color={colors.inkMuted} />
         </TouchableOpacity>
       ) : null}
     </View>
@@ -588,14 +596,22 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    borderRadius: radius.inputs,
+    gap: 12,
+    borderRadius: 14,
     paddingHorizontal: spacing.md,
-    height: 48,
+    height: 52,
+    borderWidth: 1.5,
   },
   inputField: {
     flex: 1,
     fontSize: 15,
     height: '100%',
+    ...(Platform.OS === 'web'
+      ? ({
+          outline: 'none',
+          outlineStyle: 'none',
+          outlineWidth: 0,
+        } as any)
+      : {}),
   },
 });

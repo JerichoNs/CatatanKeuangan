@@ -10,11 +10,12 @@ import {
   Platform,
 } from 'react-native';
 import { router } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth, translateApiError } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { spacing, radius, shadow } from '../../constants/theme';
-import { Button, InputField } from '../../components/ui';
+import { Button, InputField, LiquidSheenBeam } from '../../components/ui';
 import { ThemeToggle } from '../../components/ThemeToggle';
 import { AuthAmbientBubbles } from '../../components/AuthAmbientBubbles';
 
@@ -131,11 +132,15 @@ export default function ForgotPasswordScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Navigasi Atas */}
+        {/* Navigasi Atas */}
         <View style={styles.topBar}>
           <TouchableOpacity
             style={[
               styles.backButton,
-              { backgroundColor: colors.surface, borderColor: colors.border },
+              {
+                backgroundColor: isDark ? 'rgba(97, 97, 255, 0.16)' : 'rgba(255, 255, 255, 0.82)',
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.14)' : 'rgba(208, 212, 228, 0.85)',
+              },
             ]}
             onPress={() => router.back()}
             hitSlop={8}
@@ -143,42 +148,59 @@ export default function ForgotPasswordScreen() {
             accessibilityRole="button"
             accessibilityLabel="Kembali"
           >
-            <Ionicons name="arrow-back" size={18} color={colors.ink} />
+            <Ionicons name="arrow-back" size={17} color={colors.ink} />
             <Text style={[styles.backButtonText, { color: colors.ink }]}>Kembali</Text>
           </TouchableOpacity>
 
           <ThemeToggle size="small" />
         </View>
 
-        {/* Kartu Reset Password dengan Animasi */}
+        {/* Kartu Reset Password Frosted Liquid Glass */}
         <Animated.View
           style={[
             styles.cardContainer,
             {
-              backgroundColor: colors.surface,
-              borderColor: colors.border,
+              backgroundColor: isDark ? 'rgba(26, 29, 46, 0.65)' : 'rgba(255, 255, 255, 0.78)',
+              borderColor: isDark ? 'rgba(255, 255, 255, 0.16)' : 'rgba(255, 255, 255, 0.95)',
               opacity: fadeAnim,
               transform: [{ translateY: slideAnim }],
             },
-            isDark ? shadow.cardDark : shadow.card,
+            Platform.OS === 'web'
+              ? ({
+                  backdropFilter: 'blur(36px) saturate(220%)',
+                  WebkitBackdropFilter: 'blur(36px) saturate(220%)',
+                  boxShadow: isDark
+                    ? '0 24px 64px rgba(0, 0, 0, 0.65), 0 0 45px rgba(97, 97, 255, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.2)'
+                    : '0 24px 64px rgba(97, 97, 255, 0.18), 0 4px 16px rgba(0, 0, 0, 0.03), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95)',
+                } as any)
+              : (isDark ? shadow.cardDark : shadow.card),
           ]}
         >
-          {/* Ikon Kunci Melayang Beranimasi */}
+          {/* Kilau Specular Cair Beranimasi */}
+          <LiquidSheenBeam />
+
+          {/* Ikon Kunci Melayang Apple Glow Orb */}
           <View style={styles.iconCenterWrap}>
             <Animated.View
               style={[
                 styles.iconFloatingWrap,
                 {
-                  backgroundColor: colors.primaryLight,
                   transform: [{ translateY: floatAnim }, { scale: pulseAnim }],
                 },
               ]}
             >
-              <Ionicons
-                name={message ? 'mail-unread-outline' : 'key-outline'}
-                size={34}
-                color={colors.primary}
-              />
+              <LinearGradient
+                colors={['#7C7CFF', '#6161FF', '#4E4EFF']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.iconGradientCircle}
+              >
+                <Ionicons
+                  name={message ? 'mail-unread-outline' : 'key-outline'}
+                  size={32}
+                  color="#FFFFFF"
+                />
+              </LinearGradient>
             </Animated.View>
           </View>
 
@@ -266,12 +288,12 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: spacing.md,
+    padding: spacing.lg,
     paddingVertical: spacing.xl,
   },
   topBar: {
     width: '100%',
-    maxWidth: 460,
+    maxWidth: 440,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -281,10 +303,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: radius.buttons,
-    borderWidth: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 999,
+    borderWidth: 1.5,
   },
   backButtonText: {
     fontSize: 13,
@@ -292,53 +314,68 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     width: '100%',
-    maxWidth: 460,
-    borderRadius: radius.cards,
-    borderWidth: 1,
-    padding: spacing.xl,
+    maxWidth: 440,
+    borderRadius: 28,
+    borderWidth: 1.5,
+    padding: 32,
+    position: 'relative',
+    overflow: 'hidden',
   },
   iconCenterWrap: {
     alignItems: 'center',
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
   },
   iconFloatingWrap: {
+    borderRadius: 36,
+  },
+  iconGradientCircle: {
     width: 72,
     height: 72,
-    borderRadius: radius.buttons,
+    borderRadius: 36,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#6161FF',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 12,
-    elevation: 6,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
+    ...(Platform.OS === 'web'
+      ? ({
+          boxShadow: '0 10px 30px rgba(97, 97, 255, 0.55), inset 0 2px 2px rgba(255, 255, 255, 0.6)',
+        } as any)
+      : {
+          elevation: 8,
+          shadowColor: '#6161FF',
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.45,
+          shadowRadius: 16,
+        }),
   },
   title: {
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 28,
+    fontWeight: '800',
     textAlign: 'center',
-    letterSpacing: -0.5,
-    marginBottom: spacing.xs,
+    letterSpacing: -0.7,
+    marginBottom: 6,
   },
   subtitle: {
     fontSize: 14,
     textAlign: 'center',
-    lineHeight: 21,
-    marginBottom: spacing.lg,
+    lineHeight: 20,
+    marginBottom: spacing.xl,
   },
   formWrap: {
     width: '100%',
   },
   field: {
-    marginBottom: spacing.md,
+    marginBottom: 18,
   },
   errorBox: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    borderRadius: radius.inputs,
-    padding: spacing.sm,
+    borderRadius: 12,
+    padding: spacing.md,
     marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(225, 29, 72, 0.25)',
   },
   errorText: {
     fontSize: 13,
