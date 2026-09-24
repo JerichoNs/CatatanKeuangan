@@ -117,7 +117,7 @@ export default function LoginScreen() {
         {/* Top Navigation Bar */}
         <View style={styles.topBar}>
           <View style={styles.brandBadge}>
-            <Ionicons name="sparkles" size={14} color={colors.primary} />
+            <Ionicons name="wallet" size={14} color={colors.primary} />
             <Text style={[styles.brandBadgeText, { color: colors.primary }]}>Catatan Keuangan</Text>
           </View>
           <ThemeToggle size="small" />

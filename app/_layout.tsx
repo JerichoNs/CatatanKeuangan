@@ -28,6 +28,57 @@ function RootNavigation() {
                         border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                         color 0.25s ease !important;
           }
+          /* Liquid Glass Animations & Sheen (iOS Liquid Glass Effect) */
+          @keyframes liquidShimmer {
+            0% {
+              transform: translateX(-120%) rotate(25deg);
+              opacity: 0;
+            }
+            20% {
+              opacity: 0.7;
+            }
+            80% {
+              opacity: 0.7;
+            }
+            100% {
+              transform: translateX(240%) rotate(25deg);
+              opacity: 0;
+            }
+          }
+
+          @keyframes liquidFloatSoft {
+            0%, 100% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(-5px);
+            }
+          }
+
+          @keyframes liquidPulseGlow {
+            0%, 100% {
+              opacity: 0.65;
+              transform: scale(1);
+            }
+            50% {
+              opacity: 0.95;
+              transform: scale(1.04);
+            }
+          }
+
+          /* Fluid smooth glass card hover */
+          .liquid-glass-interactive {
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.25s ease,
+                        backdrop-filter 0.25s ease !important;
+          }
+          .liquid-glass-interactive:hover {
+            transform: translateY(-2px);
+          }
+          .liquid-glass-interactive:active {
+            transform: scale(0.985);
+          }
+
           /* Hilangkan latar kuning/biru autofill bawaan Chrome & Edge */
           input:-webkit-autofill,
           input:-webkit-autofill:hover,

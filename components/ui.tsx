@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState, useRef, useEffect, type ReactNode } from 'react';
 import {
   View,
   Text,
@@ -8,23 +8,47 @@ import {
   StyleSheet,
   ViewStyle,
   KeyboardTypeOptions,
+  Platform,
+  Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { spacing, radius, shadow } from '../constants/theme';
 
-export function Card({ children, style }: { children: ReactNode; style?: ViewStyle }) {
+export function Card({
+  children,
+  style,
+  liquidGlass = true,
+}: {
+  children: ReactNode;
+  style?: ViewStyle;
+  liquidGlass?: boolean;
+}) {
   const { colors, isDark } = useTheme();
+  const isWeb = Platform.OS === 'web';
+  const glassBg = isDark
+    ? (colors.surfaceGlass || 'rgba(30, 34, 53, 0.72)')
+    : (colors.surfaceGlass || 'rgba(255, 255, 255, 0.76)');
+  const glassBorder = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.75)';
+
   return (
     <View
       style={[
         styles.card,
         {
-          backgroundColor: colors.surface,
-          borderColor: colors.border,
+          backgroundColor: liquidGlass ? glassBg : colors.surface,
+          borderColor: liquidGlass ? glassBorder : colors.border,
           borderWidth: 1,
         },
-        isDark ? shadow.cardDark : shadow.card,
+        liquidGlass
+          ? (isDark ? shadow.liquidGlassDark : shadow.liquidGlass)
+          : (isDark ? shadow.cardDark : shadow.card),
+        isWeb && liquidGlass
+          ? ({
+              backdropFilter: 'blur(24px) saturate(190%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(190%)',
+            } as any)
+          : null,
         style,
       ]}
     >
@@ -39,14 +63,39 @@ export function PastelCard({
   children,
   tone = 'sky',
   style,
+  liquidGlass = true,
 }: {
   children: ReactNode;
   tone?: PastelTone;
   style?: ViewStyle;
+  liquidGlass?: boolean;
 }) {
   const { colors, isDark } = useTheme();
+  const isWeb = Platform.OS === 'web';
 
   const getToneBg = () => {
+    if (liquidGlass) {
+      switch (tone) {
+        case 'mint':
+          return isDark ? 'rgba(30, 58, 47, 0.72)' : 'rgba(188, 254, 144, 0.65)';
+        case 'sky':
+          return isDark ? 'rgba(30, 50, 68, 0.72)' : 'rgba(171, 240, 255, 0.68)';
+        case 'apricot':
+          return isDark ? 'rgba(58, 39, 28, 0.72)' : 'rgba(255, 232, 214, 0.72)';
+        case 'lavender':
+          return isDark ? 'rgba(47, 35, 60, 0.72)' : 'rgba(237, 223, 247, 0.72)';
+        case 'periwinkle':
+          return isDark ? 'rgba(36, 42, 69, 0.72)' : 'rgba(231, 236, 255, 0.75)';
+        case 'aqua':
+          return isDark ? 'rgba(26, 53, 58, 0.72)' : 'rgba(209, 250, 255, 0.72)';
+        case 'peony':
+          return isDark ? 'rgba(58, 30, 53, 0.72)' : 'rgba(252, 208, 248, 0.72)';
+        case 'cottonCandy':
+          return isDark ? 'rgba(61, 32, 64, 0.72)' : 'rgba(252, 231, 254, 0.72)';
+        default:
+          return isDark ? 'rgba(36, 42, 69, 0.72)' : 'rgba(231, 236, 255, 0.75)';
+      }
+    }
     switch (tone) {
       case 'mint':
         return colors.mint;
@@ -69,20 +118,67 @@ export function PastelCard({
     }
   };
 
+  const glassBorder = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.75)';
+
   return (
     <View
       style={[
         styles.card,
         {
           backgroundColor: getToneBg(),
-          borderColor: isDark ? colors.border : 'rgba(0, 0, 0, 0.05)',
+          borderColor: liquidGlass ? glassBorder : (isDark ? colors.border : 'rgba(0, 0, 0, 0.05)'),
           borderWidth: 1,
         },
-        isDark ? shadow.cardDark : shadow.card,
+        liquidGlass
+          ? (isDark ? shadow.liquidGlassDark : shadow.liquidGlass)
+          : (isDark ? shadow.cardDark : shadow.card),
+        isWeb && liquidGlass
+          ? ({
+              backdropFilter: 'blur(22px) saturate(190%)',
+              WebkitBackdropFilter: 'blur(22px) saturate(190%)',
+            } as any)
+          : null,
         style,
       ]}
     >
       {children}
+    </View>
+  );
+}
+
+export function LiquidSheenBeam({ style }: { style?: ViewStyle }) {
+  const sheenAnim = useRef(new Animated.Value(-1)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(sheenAnim, {
+          toValue: 2,
+          duration: 4000,
+          useNativeDriver: true,
+        }),
+        Animated.delay(1600),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, []);
+
+  const translateX = sheenAnim.interpolate({
+    inputRange: [-1, 2],
+    outputRange: [-200, 600],
+  });
+
+  return (
+    <View style={[styles.sheenContainer, style]} pointerEvents="none">
+      <Animated.View
+        style={[
+          styles.sheenBeam,
+          {
+            transform: [{ translateX }, { rotate: '25deg' }],
+          },
+        ]}
+      />
     </View>
   );
 }
@@ -252,6 +348,7 @@ export function Button({
   icon?: keyof typeof Ionicons.glyphMap;
 }) {
   const { colors } = useTheme();
+  const scaleAnim = useRef(new Animated.Value(1)).current;
   const isDisabled = disabled || loading;
   const textColor =
     variant === 'ghost'
@@ -262,36 +359,66 @@ export function Button({
       ? colors.primaryDark
       : '#FFFFFF';
 
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.96,
+      useNativeDriver: true,
+      speed: 24,
+      bounciness: 4,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      speed: 20,
+      bounciness: 6,
+    }).start();
+  };
+
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      disabled={isDisabled}
-      activeOpacity={0.85}
-      style={[
-        styles.button,
-        variant === 'primary' && { backgroundColor: colors.primary, ...shadow.button },
-        variant === 'accent' && { backgroundColor: colors.accent, ...shadow.button },
-        variant === 'outlined' && {
-          backgroundColor: 'transparent',
-          borderWidth: 1,
-          borderColor: colors.border,
-        },
-        variant === 'ghost' && styles.buttonGhost,
-        isDisabled && styles.buttonDisabled,
-      ]}
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ disabled: isDisabled, busy: loading }}
-    >
-      {loading ? (
-        <ActivityIndicator color={textColor} />
-      ) : (
-        <View style={styles.buttonContent}>
-          {icon ? <Ionicons name={icon} size={18} color={textColor} /> : null}
-          <Text style={[styles.buttonText, { color: textColor }]}>{label}</Text>
-        </View>
-      )}
-    </TouchableOpacity>
+    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <TouchableOpacity
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={isDisabled}
+        activeOpacity={0.88}
+        style={[
+          styles.button,
+          variant === 'primary' && {
+            backgroundColor: colors.primary,
+            ...shadow.button,
+            ...(Platform.OS === 'web'
+              ? ({
+                  boxShadow: '0 8px 24px rgba(97, 97, 255, 0.38), inset 0 1px 1px rgba(255, 255, 255, 0.55)',
+                } as any)
+              : {}),
+          },
+          variant === 'accent' && { backgroundColor: colors.accent, ...shadow.button },
+          variant === 'outlined' && {
+            backgroundColor: 'transparent',
+            borderWidth: 1,
+            borderColor: colors.border,
+          },
+          variant === 'ghost' && styles.buttonGhost,
+          isDisabled && styles.buttonDisabled,
+        ]}
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityState={{ disabled: isDisabled, busy: loading }}
+      >
+        {loading ? (
+          <ActivityIndicator color={textColor} />
+        ) : (
+          <View style={styles.buttonContent}>
+            {icon ? <Ionicons name={icon} size={18} color={textColor} /> : null}
+            <Text style={[styles.buttonText, { color: textColor }]}>{label}</Text>
+          </View>
+        )}
+      </TouchableOpacity>
+    </Animated.View>
   );
 }
 
@@ -359,6 +486,29 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: radius.cards,
     padding: spacing.md,
+  },
+  sheenContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'hidden',
+    borderRadius: radius.cards,
+    zIndex: 1,
+  },
+  sheenBeam: {
+    position: 'absolute',
+    top: -100,
+    width: 140,
+    height: 480,
+    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+    ...(Platform.OS === 'web'
+      ? ({
+          filter: 'blur(18px)',
+          WebkitFilter: 'blur(18px)',
+        } as any)
+      : {}),
   },
   sectionLabel: {
     fontSize: 12,

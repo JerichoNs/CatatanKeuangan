@@ -20,7 +20,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { api } from '../../services/api';
 import { spacing, radius, shadow } from '../../constants/theme';
-import { Card, SectionLabel, EmptyState, ErrorState } from '../../components/ui';
+import { Card, SectionLabel, EmptyState, ErrorState, LiquidSheenBeam } from '../../components/ui';
 import { ServerConfigModal } from '../../components/ServerConfigModal';
 import { MarketTicker } from '../../components/MarketTicker';
 import { ScreenTransitionWrapper } from '../../components/ScreenTransitionWrapper';
@@ -121,35 +121,66 @@ export default function DashboardScreen() {
   const expensePercent = totalVolume > 0 ? Math.round((totalExpense / totalVolume) * 100) : 0;
   const savingsRate = totalIncome > 0 ? Math.round((Math.max(0, saldo) / totalIncome) * 100) : 0;
 
-  // monday.com Style Surfaces: White workshop with pastel cards
+  // monday.com + iOS Liquid Glass Surfaces
+  const isWeb = Platform.OS === 'web';
   const glassCardStyle = {
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
+    backgroundColor: isDark ? 'rgba(30, 34, 53, 0.74)' : 'rgba(255, 255, 255, 0.76)',
+    borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.75)',
     borderRadius: radius.cards,
+    ...(isWeb
+      ? ({
+          backdropFilter: 'blur(24px) saturate(190%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(190%)',
+        } as any)
+      : {}),
   };
 
   const simpananGlassStyle = {
-    backgroundColor: isDark ? '#242A45' : '#E7ECFF',
-    borderColor: isDark ? colors.border : 'rgba(97, 97, 255, 0.25)',
+    backgroundColor: isDark ? 'rgba(36, 42, 69, 0.75)' : 'rgba(231, 236, 255, 0.75)',
+    borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.75)',
     borderRadius: radius.cards,
+    ...(isWeb
+      ? ({
+          backdropFilter: 'blur(22px) saturate(190%)',
+          WebkitBackdropFilter: 'blur(22px) saturate(190%)',
+        } as any)
+      : {}),
   };
 
   const nabungGlassStyle = {
-    backgroundColor: isDark ? '#1E3A2F' : '#EAFBE1',
-    borderColor: isDark ? colors.border : 'rgba(42, 92, 78, 0.25)',
+    backgroundColor: isDark ? 'rgba(30, 58, 47, 0.75)' : 'rgba(188, 254, 144, 0.65)',
+    borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.75)',
     borderRadius: radius.cards,
+    ...(isWeb
+      ? ({
+          backdropFilter: 'blur(22px) saturate(190%)',
+          WebkitBackdropFilter: 'blur(22px) saturate(190%)',
+        } as any)
+      : {}),
   };
 
   const incomeGlassStyle = {
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
+    backgroundColor: isDark ? 'rgba(30, 34, 53, 0.74)' : 'rgba(255, 255, 255, 0.76)',
+    borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.75)',
     borderRadius: radius.cards,
+    ...(isWeb
+      ? ({
+          backdropFilter: 'blur(24px) saturate(190%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(190%)',
+        } as any)
+      : {}),
   };
 
   const expenseGlassStyle = {
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
+    backgroundColor: isDark ? 'rgba(30, 34, 53, 0.74)' : 'rgba(255, 255, 255, 0.76)',
+    borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.75)',
     borderRadius: radius.cards,
+    ...(isWeb
+      ? ({
+          backdropFilter: 'blur(24px) saturate(190%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(190%)',
+        } as any)
+      : {}),
   };
 
   const handleOpenTransfer = (defaultSource: PocketType = 'simpanan_pertama') => {
@@ -372,6 +403,7 @@ export default function DashboardScreen() {
                 isDark ? shadow.cardDark : shadow.card,
               ]}
             >
+              <LiquidSheenBeam />
               <View style={styles.saldoTopRow}>
                 <View style={styles.saldoHeaderWrap}>
                   <View style={styles.saldoIconCircle}>
@@ -1666,7 +1698,14 @@ const styles = StyleSheet.create({
     padding: 24,
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.22)',
+    borderColor: 'rgba(255, 255, 255, 0.32)',
+    overflow: 'hidden',
+    position: 'relative',
+    ...(Platform.OS === 'web'
+      ? ({
+          boxShadow: '0 16px 44px rgba(97, 97, 255, 0.42), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.65)',
+        } as any)
+      : {}),
   },
   saldoHeroCardDesktop: {
     flex: 1.3,

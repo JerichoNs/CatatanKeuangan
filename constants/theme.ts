@@ -56,6 +56,11 @@ export const lightColors = {
   peony: '#FCD0F8',
   cottonCandy: '#E98DFE',
   forest: '#2A5C4E',
+  // Liquid Glass Tokens (iOS Liquid Glass aesthetic)
+  surfaceGlass: 'rgba(255, 255, 255, 0.72)',
+  surfaceGlassStrong: 'rgba(255, 255, 255, 0.86)',
+  borderGlass: 'rgba(255, 255, 255, 0.65)',
+  glassHighlight: 'rgba(255, 255, 255, 0.9)',
 };
 
 export const darkColors = {
@@ -86,6 +91,11 @@ export const darkColors = {
   peony: '#3A1E35',
   cottonCandy: '#3D2040',
   forest: '#132822',
+  // Liquid Glass Tokens (Dark Mode)
+  surfaceGlass: 'rgba(30, 34, 53, 0.72)',
+  surfaceGlassStrong: 'rgba(30, 34, 53, 0.88)',
+  borderGlass: 'rgba(255, 255, 255, 0.12)',
+  glassHighlight: 'rgba(255, 255, 255, 0.18)',
 };
 
 export type ThemeColors = typeof lightColors;
@@ -131,5 +141,17 @@ export const shadow = {
   popover: {
     boxShadow: '0px 10px 48px rgba(205, 208, 223, 0.6)',
     elevation: 8,
+  },
+  liquidGlass: {
+    boxShadow: '0px 10px 36px rgba(97, 97, 255, 0.08), 0px 2px 8px rgba(0, 0, 0, 0.03), inset 0px 1.5px 1.5px rgba(255, 255, 255, 0.9)',
+    elevation: 4,
+  },
+  liquidGlassDark: {
+    boxShadow: '0px 12px 36px rgba(0, 0, 0, 0.45), inset 0px 1px 1px rgba(255, 255, 255, 0.15)',
+    elevation: 5,
+  },
+  liquidHero: {
+    boxShadow: '0px 14px 44px rgba(97, 97, 255, 0.38), inset 0px 1.5px 1.5px rgba(255, 255, 255, 0.6)',
+    elevation: 6,
   },
 } as const;

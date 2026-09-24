@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import { View, StyleSheet, Animated, Platform } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 
 export function AuthAmbientBubbles() {
@@ -187,36 +187,60 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -70,
     right: -70,
-    width: 320,
-    height: 320,
-    borderRadius: 160,
-    filter: 'blur(30px)',
+    width: 340,
+    height: 340,
+    borderRadius: 9999,
+    ...(Platform.OS === 'web'
+      ? ({
+          filter: 'blur(75px)',
+          WebkitFilter: 'blur(75px)',
+          willChange: 'transform',
+        } as any)
+      : {}),
   },
   glowOrb2: {
     position: 'absolute',
     bottom: -80,
     left: -80,
-    width: 300,
-    height: 300,
-    borderRadius: 150,
-    filter: 'blur(30px)',
+    width: 320,
+    height: 320,
+    borderRadius: 9999,
+    ...(Platform.OS === 'web'
+      ? ({
+          filter: 'blur(75px)',
+          WebkitFilter: 'blur(75px)',
+          willChange: 'transform',
+        } as any)
+      : {}),
   },
   glowOrb3: {
     position: 'absolute',
     top: '38%',
     right: -40,
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    filter: 'blur(24px)',
+    width: 220,
+    height: 220,
+    borderRadius: 9999,
+    ...(Platform.OS === 'web'
+      ? ({
+          filter: 'blur(65px)',
+          WebkitFilter: 'blur(65px)',
+          willChange: 'transform',
+        } as any)
+      : {}),
   },
   glowOrb4: {
     position: 'absolute',
     top: '18%',
     left: -30,
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    filter: 'blur(20px)',
+    width: 180,
+    height: 180,
+    borderRadius: 9999,
+    ...(Platform.OS === 'web'
+      ? ({
+          filter: 'blur(55px)',
+          WebkitFilter: 'blur(55px)',
+          willChange: 'transform',
+        } as any)
+      : {}),
   },
 });

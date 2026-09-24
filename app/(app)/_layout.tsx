@@ -197,12 +197,18 @@ export default function AppTabsLayout() {
         screenOptions={{
           sceneStyle: { backgroundColor: 'transparent' },
           headerStyle: {
-            backgroundColor: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+            backgroundColor: isDark ? 'rgba(26, 27, 41, 0.78)' : 'rgba(255, 255, 255, 0.78)',
             shadowColor: 'transparent',
             elevation: 0,
             borderBottomWidth: 1,
-            borderBottomColor: colors.border,
+            borderBottomColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.7)',
             height: isDesktop ? 70 : 64,
+            ...(Platform.OS === 'web'
+              ? ({
+                  backdropFilter: 'blur(24px) saturate(190%)',
+                  WebkitBackdropFilter: 'blur(24px) saturate(190%)',
+                } as any)
+              : {}),
           },
           headerShadowVisible: false,
           headerRight: () => <HeaderRightActions isDesktop={isDesktop} />,
@@ -211,28 +217,46 @@ export default function AppTabsLayout() {
           tabBarStyle: isDesktop
             ? ({
                 position: 'absolute',
-                bottom: 16,
+                bottom: 18,
                 left: '50%',
                 marginLeft: -dockWidth / 2,
                 width: dockWidth,
-                height: 64,
-                borderRadius: 24,
-                backgroundColor: isDark ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.92)',
+                height: 66,
+                borderRadius: 160,
+                backgroundColor: isDark ? 'rgba(26, 27, 41, 0.78)' : 'rgba(255, 255, 255, 0.78)',
                 borderWidth: 1,
-                borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 8 },
-                shadowOpacity: isDark ? 0.35 : 0.08,
-                shadowRadius: 18,
-                elevation: 10,
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.85)',
+                ...(Platform.OS === 'web'
+                  ? ({
+                      backdropFilter: 'blur(28px) saturate(200%)',
+                      WebkitBackdropFilter: 'blur(28px) saturate(200%)',
+                      boxShadow: isDark
+                        ? '0px 14px 44px rgba(0, 0, 0, 0.5), inset 0px 1px 1px rgba(255, 255, 255, 0.16)'
+                        : '0px 14px 44px rgba(97, 97, 255, 0.14), inset 0px 1.5px 1.5px rgba(255, 255, 255, 0.95)',
+                    } as any)
+                  : {
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 8 },
+                      shadowOpacity: isDark ? 0.35 : 0.08,
+                      shadowRadius: 18,
+                      elevation: 10,
+                    }),
                 paddingBottom: 8,
                 paddingTop: 8,
               } as any)
             : {
-                backgroundColor: isDark ? 'rgba(15, 23, 42, 0.96)' : 'rgba(255, 255, 255, 0.96)',
-                borderTopColor: colors.border,
+                backgroundColor: isDark ? 'rgba(26, 27, 41, 0.84)' : 'rgba(255, 255, 255, 0.84)',
+                borderTopColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.8)',
                 borderTopWidth: 1,
-                elevation: isDark ? 0 : 4,
+                ...(Platform.OS === 'web'
+                  ? ({
+                      backdropFilter: 'blur(24px) saturate(190%)',
+                      WebkitBackdropFilter: 'blur(24px) saturate(190%)',
+                      boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.7)',
+                    } as any)
+                  : {
+                      elevation: isDark ? 0 : 4,
+                    }),
                 height: mobileTabHeight,
                 paddingBottom: bottomInset + 2,
                 paddingTop: 8,
