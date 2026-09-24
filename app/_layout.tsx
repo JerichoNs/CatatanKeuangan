@@ -3,6 +3,8 @@ import { Slot, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, ActivityIndicator, Platform } from 'react-native';
+import { useFonts } from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
 
@@ -11,6 +13,11 @@ function RootNavigation() {
   const { colors, isDark } = useTheme();
   const segments = useSegments();
   const router = useRouter();
+
+  // Pastikan font Ionicons terload secara sempurna agar ikon tidak menjadi kotak [F2 F9]
+  const [fontsLoaded] = useFonts({
+    ...Ionicons.font,
+  });
 
   // Transisi warna halus saat dark/light mode aktif di web browser
   useEffect(() => {
@@ -22,11 +29,19 @@ function RootNavigation() {
         style.innerHTML = `
           @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-          body, #root, div, span, p, a, input, button, textarea, select {
-            font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+          body, input, textarea, select {
+            font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                         border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                        color 0.25s ease !important;
+                        color 0.25s ease;
+          }
+
+          /* Proteksi mutlak agar font ikon Ionicons tidak tertimpa oleh font teks */
+          [style*="font-family: ionicons"],
+          [style*="font-family: 'ionicons'"],
+          [style*="font-family: Ionicons"],
+          [style*="font-family: 'Ionicons'"] {
+            font-family: ionicons, Ionicons !important;
           }
           /* Liquid Glass Animations & Sheen (iOS Liquid Glass Effect) */
           @keyframes liquidShimmer {
@@ -143,7 +158,7 @@ function RootNavigation() {
     }
   }, [colors.background]);
 
-  if (loading) {
+  if (loading || !fontsLoaded) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
         <ActivityIndicator size="large" color={colors.primary} />
