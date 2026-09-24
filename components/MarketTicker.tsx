@@ -776,7 +776,7 @@ const styles = StyleSheet.create({
   },
   tickerCard: {
     width: 155,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     borderWidth: 1,
     padding: 14,
     justifyContent: 'space-between',
@@ -800,7 +800,7 @@ const styles = StyleSheet.create({
     gap: 2,
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: radius.pill,
+    borderRadius: radius.badges,
   },
   changeText: {
     fontSize: 10,
@@ -833,9 +833,9 @@ const styles = StyleSheet.create({
   calcSheet: {
     width: '100%',
     maxWidth: 420,
-    borderRadius: 20,
+    borderRadius: radius.cards,
     borderWidth: 1,
-    padding: 20,
+    padding: 24,
   },
   calcSheetHeader: {
     flexDirection: 'row',
@@ -867,7 +867,7 @@ const styles = StyleSheet.create({
   calcInputWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: radius.md,
+    borderRadius: radius.inputs,
     borderWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -891,9 +891,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   quickChip: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: radius.pill,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: radius.buttons,
     borderWidth: 1,
   },
   quickChipText: {
@@ -922,7 +922,7 @@ const styles = StyleSheet.create({
   },
   calcCloseBtn: {
     paddingVertical: 12,
-    borderRadius: radius.md,
+    borderRadius: radius.buttons,
     alignItems: 'center',
   },
   calcCloseBtnText: {

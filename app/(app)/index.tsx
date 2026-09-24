@@ -121,60 +121,35 @@ export default function DashboardScreen() {
   const expensePercent = totalVolume > 0 ? Math.round((totalExpense / totalVolume) * 100) : 0;
   const savingsRate = totalIncome > 0 ? Math.round((Math.max(0, saldo) / totalIncome) * 100) : 0;
 
-  // Liquid Glass Styling Tokens
+  // monday.com Style Surfaces: White workshop with pastel cards
   const glassCardStyle = {
-    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255, 255, 255, 0.78)',
-    borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.65)',
-    ...(Platform.OS === 'web'
-      ? ({
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-        } as any)
-      : {}),
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.cards,
   };
 
   const simpananGlassStyle = {
-    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.76)' : 'rgba(255, 255, 255, 0.82)',
-    borderColor: isDark ? 'rgba(59, 130, 246, 0.42)' : 'rgba(37, 99, 235, 0.32)',
-    ...(Platform.OS === 'web'
-      ? ({
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-        } as any)
-      : {}),
+    backgroundColor: isDark ? '#242A45' : '#E7ECFF',
+    borderColor: isDark ? colors.border : 'rgba(97, 97, 255, 0.25)',
+    borderRadius: radius.cards,
   };
 
   const nabungGlassStyle = {
-    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.76)' : 'rgba(255, 255, 255, 0.82)',
-    borderColor: isDark ? 'rgba(16, 185, 129, 0.42)' : 'rgba(16, 185, 129, 0.32)',
-    ...(Platform.OS === 'web'
-      ? ({
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-        } as any)
-      : {}),
+    backgroundColor: isDark ? '#1E3A2F' : '#EAFBE1',
+    borderColor: isDark ? colors.border : 'rgba(42, 92, 78, 0.25)',
+    borderRadius: radius.cards,
   };
 
   const incomeGlassStyle = {
-    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255, 255, 255, 0.78)',
-    borderColor: isDark ? 'rgba(34, 197, 94, 0.38)' : 'rgba(34, 197, 94, 0.28)',
-    ...(Platform.OS === 'web'
-      ? ({
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-        } as any)
-      : {}),
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.cards,
   };
 
   const expenseGlassStyle = {
-    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.72)' : 'rgba(255, 255, 255, 0.78)',
-    borderColor: isDark ? 'rgba(239, 68, 68, 0.38)' : 'rgba(239, 68, 68, 0.28)',
-    ...(Platform.OS === 'web'
-      ? ({
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-        } as any)
-      : {}),
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radius.cards,
   };
 
   const handleOpenTransfer = (defaultSource: PocketType = 'simpanan_pertama') => {
@@ -294,8 +269,8 @@ export default function DashboardScreen() {
             style={[
               styles.datePill,
               {
-                backgroundColor: isDark ? 'rgba(59, 130, 246, 0.16)' : 'rgba(37, 99, 235, 0.08)',
-                borderColor: isDark ? 'rgba(59, 130, 246, 0.35)' : 'rgba(37, 99, 235, 0.22)',
+                backgroundColor: isDark ? 'rgba(97, 97, 255, 0.16)' : '#E7ECFF',
+                borderColor: isDark ? 'rgba(97, 97, 255, 0.35)' : '#D0D4E4',
               },
             ]}
           >
@@ -349,18 +324,18 @@ export default function DashboardScreen() {
       {/* 2. Admin VIP Banner (jika admin) */}
       {isAdmin && (
         <TouchableOpacity
-          style={[styles.adminBanner, { backgroundColor: isDark ? 'rgba(245, 158, 11, 0.14)' : 'rgba(245, 158, 11, 0.12)' }]}
+          style={[styles.adminBanner, { backgroundColor: isDark ? 'rgba(253, 169, 0, 0.14)' : '#FFF3E0', borderColor: isDark ? 'rgba(253, 169, 0, 0.3)' : '#FFE0B2' }]}
           onPress={() => router.push('/admin')}
           activeOpacity={0.85}
         >
           <View style={styles.adminBadgeIcon}>
-            <Ionicons name="shield-checkmark" size={18} color="#F59E0B" />
+            <Ionicons name="shield-checkmark" size={18} color="#D97706" />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={[styles.adminBannerTitle, { color: isDark ? '#FCD34D' : '#B45309' }]}>
+            <Text style={[styles.adminBannerTitle, { color: isDark ? '#FCD34D' : '#92400E' }]}>
               Hak Akses Administrator Aktif
             </Text>
-            <Text style={[styles.adminBannerSub, { color: isDark ? '#E5E7EB' : '#92400E' }]}>
+            <Text style={[styles.adminBannerSub, { color: isDark ? '#E5E7EB' : '#78350F' }]}>
               Kelola daftar pengguna, monitoring server API, dan seluruh transaksi sistem.
             </Text>
           </View>
@@ -382,12 +357,12 @@ export default function DashboardScreen() {
 
           {/* 3. Top Financial Metric Cards Grid */}
           <View style={isDesktop ? styles.metricGridDesktop : styles.metricGridMobile}>
-            {/* Kartu Saldo Utama (Hero) */}
+            {/* Kartu Saldo Utama (Hero) - Monday Brand Panel #6161FF */}
             <LinearGradient
               colors={
                 isDark
-                  ? ['#1E3A8A', '#0F172A']
-                  : ['#2563EB', '#1E40AF']
+                  ? ['#6161FF', '#3D3DBE']
+                  : ['#6161FF', '#4E4EFF']
               }
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
@@ -419,12 +394,12 @@ export default function DashboardScreen() {
                   {saldo >= 0 ? 'Surplus kas keuangan stabil' : 'Defisit - pengeluaran melampaui pemasukan'}
                 </Text>
                 <TouchableOpacity
-                  style={styles.cardQuickBtn}
+                  style={[styles.cardQuickBtn, { backgroundColor: '#FFFFFF' }]}
                   onPress={() => router.push('/transaksi')}
-                  activeOpacity={0.8}
+                  activeOpacity={0.85}
                 >
-                  <Ionicons name="add" size={14} color="#FFFFFF" />
-                  <Text style={styles.cardQuickBtnText}>Catat Transaksi</Text>
+                  <Ionicons name="add" size={15} color="#6161FF" />
+                  <Text style={[styles.cardQuickBtnText, { color: '#6161FF' }]}>Catat Transaksi</Text>
                 </TouchableOpacity>
               </View>
             </LinearGradient>
@@ -439,18 +414,18 @@ export default function DashboardScreen() {
                 ]}
               >
                 <View style={styles.kpiTopRow}>
-                  <View style={[styles.kpiIconWrap, { backgroundColor: 'rgba(34, 197, 94, 0.14)' }]}>
-                    <Ionicons name="arrow-down" size={isDesktop ? 18 : 16} color="#16A34A" />
+                  <View style={[styles.kpiIconWrap, { backgroundColor: isDark ? 'rgba(188, 254, 144, 0.2)' : 'rgba(188, 254, 144, 0.45)' }]}>
+                    <Ionicons name="arrow-down" size={isDesktop ? 18 : 16} color="#059669" />
                   </View>
-                  <View style={[styles.kpiBadge, { backgroundColor: 'rgba(34, 197, 94, 0.12)' }]}>
-                    <Text style={[styles.kpiBadgeText, { color: '#16A34A' }]}>
+                  <View style={[styles.kpiBadge, { backgroundColor: isDark ? 'rgba(188, 254, 144, 0.2)' : '#BCFE90' }]}>
+                    <Text style={[styles.kpiBadgeText, { color: isDark ? '#BCFE90' : '#14532D' }]}>
                       {incomePercent}% Arus
                     </Text>
                   </View>
                 </View>
                 <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>PEMASUKAN</Text>
                 <Text
-                  style={[styles.kpiValue, { color: '#16A34A', fontSize: isDesktop ? 24 : 17 }]}
+                  style={[styles.kpiValue, { color: '#059669', fontSize: isDesktop ? 24 : 17 }]}
                   numberOfLines={1}
                 >
                   {formatRupiah(totalIncome)}
@@ -469,18 +444,18 @@ export default function DashboardScreen() {
                 ]}
               >
                 <View style={styles.kpiTopRow}>
-                  <View style={[styles.kpiIconWrap, { backgroundColor: 'rgba(239, 68, 68, 0.14)' }]}>
-                    <Ionicons name="arrow-up" size={isDesktop ? 18 : 16} color="#DC2626" />
+                  <View style={[styles.kpiIconWrap, { backgroundColor: isDark ? 'rgba(252, 208, 248, 0.2)' : '#FCE7F3' }]}>
+                    <Ionicons name="arrow-up" size={isDesktop ? 18 : 16} color="#E11D48" />
                   </View>
-                  <View style={[styles.kpiBadge, { backgroundColor: 'rgba(239, 68, 68, 0.12)' }]}>
-                    <Text style={[styles.kpiBadgeText, { color: '#DC2626' }]}>
+                  <View style={[styles.kpiBadge, { backgroundColor: isDark ? 'rgba(252, 208, 248, 0.2)' : '#FCD0F8' }]}>
+                    <Text style={[styles.kpiBadgeText, { color: isDark ? '#FCD0F8' : '#9F1239' }]}>
                       {expensePercent}% Arus
                     </Text>
                   </View>
                 </View>
                 <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>PENGELUARAN</Text>
                 <Text
-                  style={[styles.kpiValue, { color: '#DC2626', fontSize: isDesktop ? 24 : 17 }]}
+                  style={[styles.kpiValue, { color: '#E11D48', fontSize: isDesktop ? 24 : 17 }]}
                   numberOfLines={1}
                 >
                   {formatRupiah(totalExpense)}
@@ -1587,8 +1562,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 14,
     paddingVertical: 7,
-    borderRadius: radius.pill,
-    borderWidth: 1.5,
+    borderRadius: radius.buttons,
+    borderWidth: 1,
     marginBottom: 10,
   },
   dateIconCircle: {
@@ -1624,9 +1599,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: radius.pill,
+    borderRadius: radius.buttons,
     borderWidth: 1,
   },
   toolBtnText: {
@@ -1639,11 +1614,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    borderRadius: radius.lg,
-    padding: 14,
+    borderRadius: radius.cards,
+    padding: 16,
     marginBottom: 22,
     borderWidth: 1,
-    borderColor: 'rgba(245, 158, 11, 0.3)',
   },
   adminBadgeIcon: {
     width: 36,
@@ -1665,10 +1639,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: '#F59E0B',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: radius.pill,
+    backgroundColor: '#D97706',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: radius.buttons,
   },
   adminActionText: {
     color: '#FFFFFF',
@@ -1688,8 +1662,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   saldoHeroCard: {
-    borderRadius: radius.xl,
-    padding: 22,
+    borderRadius: radius.cards,
+    padding: 24,
     justifyContent: 'space-between',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.22)',
@@ -1729,7 +1703,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.18)',
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: radius.pill,
+    borderRadius: radius.badges,
   },
   activeDot: {
     width: 6,
@@ -1765,15 +1739,14 @@ const styles = StyleSheet.create({
   cardQuickBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: radius.pill,
+    gap: 5,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: radius.buttons,
   },
   cardQuickBtnText: {
     color: '#FFFFFF',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '700',
   },
 
@@ -1788,9 +1761,9 @@ const styles = StyleSheet.create({
   },
   summaryKpiCard: {
     flex: 1,
-    borderRadius: radius.xl,
-    padding: 16,
-    borderWidth: 1.5,
+    borderRadius: radius.cards,
+    padding: 20,
+    borderWidth: 1,
     justifyContent: 'space-between',
   },
   kpiTopRow: {
@@ -1809,7 +1782,7 @@ const styles = StyleSheet.create({
   kpiBadge: {
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: radius.pill,
+    borderRadius: radius.badges,
   },
   kpiBadgeText: {
     fontSize: 11,
@@ -1855,9 +1828,9 @@ const styles = StyleSheet.create({
 
   // Content Cards
   contentCard: {
-    borderRadius: radius.xl,
+    borderRadius: radius.cards,
     borderWidth: 1,
-    padding: 20,
+    padding: 22,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -1871,9 +1844,9 @@ const styles = StyleSheet.create({
     letterSpacing: -0.3,
   },
   statusPill: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: radius.pill,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: radius.badges,
   },
   statusPillText: {
     fontSize: 11,
@@ -1887,7 +1860,7 @@ const styles = StyleSheet.create({
   // Progress Bar
   progressTrack: {
     height: 12,
-    borderRadius: 6,
+    borderRadius: radius.buttons,
     backgroundColor: 'rgba(148, 163, 184, 0.2)',
     flexDirection: 'row',
     overflow: 'hidden',
@@ -1925,7 +1898,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: 10,
     padding: 12,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     borderWidth: 1,
   },
   insightText: {
@@ -1943,9 +1916,9 @@ const styles = StyleSheet.create({
   actionTile: {
     flex: 1,
     minWidth: '46%',
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     borderWidth: 1,
-    padding: 14,
+    padding: 16,
   },
   actionTileTopRow: {
     flexDirection: 'row',
@@ -1954,9 +1927,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   actionTileIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1972,7 +1945,7 @@ const styles = StyleSheet.create({
   // Formula Cerdas 50 / 30 / 20 Styles
   formulaTrack: {
     height: 10,
-    borderRadius: 5,
+    borderRadius: radius.buttons,
     backgroundColor: 'rgba(148, 163, 184, 0.2)',
     flexDirection: 'row',
     overflow: 'hidden',
@@ -2119,7 +2092,7 @@ const styles = StyleSheet.create({
   confirmCard: {
     width: '100%',
     maxWidth: 420,
-    borderRadius: radius.xl,
+    borderRadius: radius.cards,
     borderWidth: 1,
     padding: 24,
   },
@@ -2153,7 +2126,7 @@ const styles = StyleSheet.create({
     gap: 8,
     backgroundColor: 'rgba(239, 68, 68, 0.1)',
     padding: 10,
-    borderRadius: radius.md,
+    borderRadius: radius.inputs,
     marginBottom: 16,
   },
   errorBoxText: {
@@ -2168,7 +2141,7 @@ const styles = StyleSheet.create({
   btnCancel: {
     flex: 1,
     paddingVertical: 12,
-    borderRadius: radius.md,
+    borderRadius: radius.buttons,
     borderWidth: 1,
     alignItems: 'center',
   },
@@ -2180,7 +2153,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#DC2626',
     paddingVertical: 12,
-    borderRadius: radius.md,
+    borderRadius: radius.buttons,
     alignItems: 'center',
   },
   btnDangerText: {
@@ -2191,7 +2164,7 @@ const styles = StyleSheet.create({
 
   // 3.5. Split Pocket Section Styles
   splitPocketSection: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   splitPocketHeader: {
     flexDirection: 'row',
@@ -2202,7 +2175,7 @@ const styles = StyleSheet.create({
   splitHeaderIcon: {
     width: 32,
     height: 32,
-    borderRadius: 8,
+    borderRadius: radius.badges,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -2219,9 +2192,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
     paddingVertical: 7,
-    borderRadius: radius.pill,
+    borderRadius: radius.buttons,
     borderWidth: 1,
   },
   splitTransferBtnText: {
@@ -2239,9 +2212,9 @@ const styles = StyleSheet.create({
   },
   splitCard: {
     flex: 1,
-    padding: 16,
-    borderRadius: radius.lg,
-    borderWidth: 1.5,
+    padding: 20,
+    borderRadius: radius.cards,
+    borderWidth: 1,
   },
   splitCardTop: {
     flexDirection: 'row',
@@ -2250,9 +2223,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   splitPocketIconCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 9,
+    width: 34,
+    height: 34,
+    borderRadius: radius.badges,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -2267,8 +2240,8 @@ const styles = StyleSheet.create({
   },
   splitPillBadge: {
     paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: radius.pill,
+    paddingVertical: 3,
+    borderRadius: radius.badges,
   },
   splitPillBadgeText: {
     fontSize: 11,
@@ -2317,9 +2290,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: radius.md,
+    paddingVertical: 9,
+    paddingHorizontal: 12,
+    borderRadius: radius.buttons,
     borderWidth: 1,
   },
   splitQuickActionText: {
@@ -2330,7 +2303,7 @@ const styles = StyleSheet.create({
   // Recent Pocket Filter Chips & Badges
   recentPocketFilterRow: {
     flexDirection: 'row',
-    gap: 6,
+    gap: 8,
     marginBottom: 12,
     flexWrap: 'wrap',
   },
@@ -2338,9 +2311,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: radius.pill,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: radius.buttons,
     borderWidth: 1,
   },
   recentFilterChipText: {
@@ -2353,7 +2326,7 @@ const styles = StyleSheet.create({
     gap: 3,
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: radius.pill,
+    borderRadius: radius.badges,
   },
   miniPocketBadgeText: {
     fontSize: 9,
@@ -2364,9 +2337,9 @@ const styles = StyleSheet.create({
   transferSheet: {
     width: '100%',
     maxWidth: 480,
-    borderRadius: 20,
+    borderRadius: radius.cards,
     borderWidth: 1,
-    padding: 20,
+    padding: 24,
   },
   transferSheetSub: {
     fontSize: 11,
@@ -2417,7 +2390,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: radius.md,
+    borderRadius: radius.inputs,
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginBottom: 8,
@@ -2441,7 +2414,7 @@ const styles = StyleSheet.create({
   transferQuickPctBtn: {
     flex: 1,
     paddingVertical: 6,
-    borderRadius: radius.pill,
+    borderRadius: radius.buttons,
     borderWidth: 1,
     alignItems: 'center',
   },
@@ -2454,7 +2427,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     padding: 10,
-    borderRadius: radius.md,
+    borderRadius: radius.inputs,
     marginBottom: 14,
   },
   transferErrorText: {
@@ -2469,7 +2442,7 @@ const styles = StyleSheet.create({
   transferCancelBtn: {
     flex: 1,
     paddingVertical: 12,
-    borderRadius: radius.md,
+    borderRadius: radius.buttons,
     borderWidth: 1,
     alignItems: 'center',
   },
@@ -2484,7 +2457,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 6,
     paddingVertical: 12,
-    borderRadius: radius.md,
+    borderRadius: radius.buttons,
   },
   transferSubmitText: {
     color: '#FFFFFF',

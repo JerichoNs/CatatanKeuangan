@@ -607,14 +607,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 8,
-    borderRadius: radius.lg,
+    borderRadius: radius.cards,
     borderWidth: 1,
     marginBottom: 12,
   },
   monthArrow: {
     width: 34,
     height: 34,
-    borderRadius: radius.pill,
+    borderRadius: radius.buttons,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -640,11 +640,11 @@ const styles = StyleSheet.create({
   summaryRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: radius.lg,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    borderRadius: radius.cards,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: 14,
   },
   summaryItem: {
     flex: 1,
@@ -680,10 +680,10 @@ const styles = StyleSheet.create({
 
   // Filter Chips Scroll Rows
   filterSection: {
-    marginBottom: 8,
+    marginBottom: 10,
   },
   filterScrollRow: {
-    gap: 6,
+    gap: 8,
     paddingRight: 10,
   },
 
@@ -691,16 +691,16 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: radius.md,
+    borderRadius: radius.buttons,
     borderWidth: 1,
-    paddingHorizontal: 12,
-    height: 42,
-    marginBottom: 10,
+    paddingHorizontal: 14,
+    height: 44,
+    marginBottom: 12,
   },
   searchInput: {
     flex: 1,
     height: '100%',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '600',
   },
 
@@ -709,11 +709,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: radius.md,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: radius.badges,
     borderWidth: 1,
-    marginBottom: 10,
+    marginBottom: 12,
   },
   activeFilterText: {
     fontSize: 11,
@@ -732,7 +732,7 @@ const styles = StyleSheet.create({
 
   // List Card & Items
   listCard: {
-    borderRadius: radius.xl,
+    borderRadius: radius.cards,
   },
   loadingText: {
     textAlign: 'center',
@@ -750,7 +750,7 @@ const styles = StyleSheet.create({
   txIconWrap: {
     width: 36,
     height: 36,
-    borderRadius: 12,
+    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -777,7 +777,7 @@ const styles = StyleSheet.create({
     gap: 3,
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: radius.pill,
+    borderRadius: radius.badges,
   },
   miniPocketBadgeText: {
     fontSize: 9,

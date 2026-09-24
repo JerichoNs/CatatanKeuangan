@@ -34,17 +34,17 @@ export function ThemeToggle({ size = 'medium' }: { size?: 'small' | 'medium' }) 
 
   const containerBg = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#E2E8F0', '#1E293B'],
+    outputRange: ['#E7ECFF', '#161824'],
   });
 
   const containerBorder = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#CBD5E1', '#334155'],
+    outputRange: ['#D0D4E4', '#32374E'],
   });
 
   const knobBg = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#FFFFFF', '#38BDF8'],
+    outputRange: ['#FFFFFF', '#7C7CFF'],
   });
 
   // Cross-fade dan rotasi halus untuk ikon matahari

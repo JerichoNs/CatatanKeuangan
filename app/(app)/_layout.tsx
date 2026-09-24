@@ -257,7 +257,7 @@ export default function AppTabsLayout() {
                 title="Dashboard Keuangan"
                 subtitle="Ringkasan & Kesehatan Kas"
                 icon="grid"
-                iconBg={isDark ? 'rgba(37, 99, 235, 0.2)' : 'rgba(37, 99, 235, 0.12)'}
+                iconBg={isDark ? 'rgba(97, 97, 255, 0.2)' : '#E7ECFF'}
                 iconColor={colors.primary}
               />
             ),
@@ -275,8 +275,8 @@ export default function AppTabsLayout() {
                 title="Catat Transaksi"
                 subtitle="Input Arus Masuk & Keluar"
                 icon="add-circle"
-                iconBg={isDark ? 'rgba(34, 197, 94, 0.2)' : 'rgba(34, 197, 94, 0.12)'}
-                iconColor="#16A34A"
+                iconBg={isDark ? 'rgba(16, 185, 129, 0.2)' : '#E8FCED'}
+                iconColor={colors.income}
               />
             ),
             tabBarIcon: ({ color, focused }) => (
@@ -293,8 +293,8 @@ export default function AppTabsLayout() {
                 title="Riwayat Transaksi"
                 subtitle="Histori & Manajemen Kas"
                 icon="time"
-                iconBg={isDark ? 'rgba(168, 85, 247, 0.2)' : 'rgba(168, 85, 247, 0.12)'}
-                iconColor="#9333EA"
+                iconBg={isDark ? 'rgba(148, 80, 253, 0.2)' : '#EDDFF7'}
+                iconColor="#9450FD"
               />
             ),
             tabBarIcon: ({ color, focused }) => (
@@ -311,8 +311,8 @@ export default function AppTabsLayout() {
                 title="Laporan Keuangan"
                 subtitle="Analisis & Rekap Eksekutif"
                 icon="bar-chart"
-                iconBg={isDark ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.12)'}
-                iconColor={colors.primary}
+                iconBg={isDark ? 'rgba(58, 201, 255, 0.2)' : '#D1FAFF'}
+                iconColor="#0284C7"
               />
             ),
             tabBarIcon: ({ color, focused }) => (

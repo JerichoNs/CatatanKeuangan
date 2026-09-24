@@ -411,12 +411,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    borderRadius: radius.md,
+    borderRadius: radius.inputs,
     padding: spacing.sm,
     marginBottom: spacing.md,
   },
   errorText: { fontSize: 13, flex: 1, fontWeight: '600' },
-  amountCard: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  amountCard: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14 },
   amountPrefix: { fontSize: 22, fontWeight: '800' },
   amountInput: {
     flex: 1,
@@ -433,8 +433,8 @@ const styles = StyleSheet.create({
   },
   pocketCardBtn: {
     flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
     borderRadius: radius.md,
   },
   pocketInnerRow: {
@@ -443,9 +443,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   pocketIconWrap: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
+    width: 34,
+    height: 34,
+    borderRadius: radius.badges,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -148,8 +148,8 @@ export function AppAmbientBackground() {
           styles.orb1,
           {
             backgroundColor: isDark
-              ? 'rgba(37, 99, 235, 0.18)'
-              : 'rgba(59, 130, 246, 0.14)',
+              ? 'rgba(97, 97, 255, 0.14)'
+              : 'rgba(97, 97, 255, 0.08)',
             transform: [
               { translateY: orb1Y },
               { translateX: orb1X },
@@ -159,15 +159,15 @@ export function AppAmbientBackground() {
         ]}
       />
 
-      {/* Orb 2: Purple / Violet Nebula (Kanan Atas) */}
+      {/* Orb 2: Soft Sky / Lavender wash (Kanan Atas) */}
       <Animated.View
         style={[
           styles.orbBase,
           styles.orb2,
           {
             backgroundColor: isDark
-              ? 'rgba(139, 92, 246, 0.16)'
-              : 'rgba(168, 85, 247, 0.12)',
+              ? 'rgba(148, 80, 253, 0.12)'
+              : 'rgba(171, 240, 255, 0.16)',
             transform: [
               { translateY: orb2Y },
               { translateX: orb2X },
@@ -177,29 +177,29 @@ export function AppAmbientBackground() {
         ]}
       />
 
-      {/* Orb 3: Emerald / Cyan Glow (Kiri Bawah) */}
+      {/* Orb 3: Mint wash (Kiri Bawah) */}
       <Animated.View
         style={[
           styles.orbBase,
           styles.orb3,
           {
             backgroundColor: isDark
-              ? 'rgba(16, 185, 129, 0.14)'
-              : 'rgba(20, 184, 166, 0.12)',
+              ? 'rgba(42, 92, 78, 0.16)'
+              : 'rgba(188, 254, 144, 0.16)',
             transform: [{ translateY: orb3Y }, { scale: orb3Scale }],
           },
         ]}
       />
 
-      {/* Orb 4: Amber / Warm Gold subtle aura (Kanan Bawah) */}
+      {/* Orb 4: Peony / Apricot soft wash (Kanan Bawah) */}
       <View
         style={[
           styles.orbBase,
           styles.orb4,
           {
             backgroundColor: isDark
-              ? 'rgba(245, 158, 11, 0.08)'
-              : 'rgba(251, 191, 36, 0.1)',
+              ? 'rgba(233, 141, 254, 0.08)'
+              : 'rgba(252, 208, 248, 0.18)',
           },
         ]}
       />

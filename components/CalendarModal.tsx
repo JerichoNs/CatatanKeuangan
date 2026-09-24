@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
   modalContent: {
     width: '100%',
     maxWidth: 380,
-    borderRadius: radius.xl,
+    borderRadius: radius.cards,
     borderWidth: 1,
     padding: spacing.md,
     overflow: 'hidden',
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
   navArrow: {
     width: 34,
     height: 34,
-    borderRadius: radius.pill,
+    borderRadius: radius.buttons,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: spacing.md,
     paddingVertical: 6,
-    borderRadius: radius.pill,
+    borderRadius: radius.buttons,
   },
   jumpButtonText: {
     fontSize: 12,

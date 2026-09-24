@@ -127,45 +127,45 @@ export function AuthAmbientBubbles() {
 
   return (
     <View style={styles.ambientContainer} pointerEvents="none">
-      {/* Bubble 1: Large Primary Blue Glow Orb */}
+      {/* Bubble 1: Large Monday Violet Glow Orb */}
       <Animated.View
         style={[
           styles.glowOrb1,
           {
-            backgroundColor: isDark ? 'rgba(79, 125, 249, 0.16)' : 'rgba(43, 92, 230, 0.10)',
+            backgroundColor: isDark ? 'rgba(97, 97, 255, 0.16)' : 'rgba(97, 97, 255, 0.08)',
             transform: [{ translateY: bubble1Float }, { scale: bubble1Scale }],
           },
         ]}
       />
 
-      {/* Bubble 2: Warm Amber / Golden Glow Orb */}
+      {/* Bubble 2: Soft Mint Pastel Glow Orb */}
       <Animated.View
         style={[
           styles.glowOrb2,
           {
-            backgroundColor: isDark ? 'rgba(251, 191, 36, 0.12)' : 'rgba(255, 193, 69, 0.11)',
+            backgroundColor: isDark ? 'rgba(42, 92, 78, 0.16)' : 'rgba(188, 254, 144, 0.15)',
             transform: [{ translateY: bubble2Float }, { scale: bubble2Scale }],
           },
         ]}
       />
 
-      {/* Bubble 3: Soft Cyan / Indigo Mid Orb */}
+      {/* Bubble 3: Soft Sky / Lavender Mid Orb */}
       <Animated.View
         style={[
           styles.glowOrb3,
           {
-            backgroundColor: isDark ? 'rgba(99, 102, 241, 0.13)' : 'rgba(147, 197, 253, 0.12)',
+            backgroundColor: isDark ? 'rgba(148, 80, 253, 0.12)' : 'rgba(171, 240, 255, 0.15)',
             transform: [{ translateY: bubble3Float }, { scale: bubble3Scale }],
           },
         ]}
       />
 
-      {/* Bubble 4: Small Accent Orb */}
+      {/* Bubble 4: Small Peony / Apricot Accent Orb */}
       <Animated.View
         style={[
           styles.glowOrb4,
           {
-            backgroundColor: isDark ? 'rgba(56, 189, 248, 0.14)' : 'rgba(96, 165, 250, 0.12)',
+            backgroundColor: isDark ? 'rgba(233, 141, 254, 0.10)' : 'rgba(252, 208, 248, 0.16)',
             transform: [{ translateY: bubble4Float }],
           },
         ]}

@@ -20,7 +20,10 @@ function RootNavigation() {
         const style = document.createElement('style');
         style.id = styleId;
         style.innerHTML = `
-          body, #root, div, span, p, a, input, button {
+          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+          body, #root, div, span, p, a, input, button, textarea, select {
+            font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
             transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                         border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                         color 0.25s ease !important;
@@ -42,11 +45,11 @@ function RootNavigation() {
             background: transparent;
           }
           ::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.3);
+            background: rgba(208, 212, 228, 0.6);
             border-radius: 9999px;
           }
           ::-webkit-scrollbar-thumb:hover {
-            background: rgba(148, 163, 184, 0.5);
+            background: rgba(97, 97, 255, 0.4);
           }
           /* Aturan khusus cetak (Print/PDF) */
           @media print {
@@ -55,7 +58,7 @@ function RootNavigation() {
             }
             body, #root {
               background: #ffffff !important;
-              color: #0f172a !important;
+              color: #333333 !important;
             }
           }
         `;

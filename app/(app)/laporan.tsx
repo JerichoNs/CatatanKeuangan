@@ -1211,12 +1211,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
     paddingVertical: 14,
-    borderRadius: radius.lg,
+    borderRadius: radius.buttons,
   },
   btnExportPdfText: {
     color: '#FFFFFF',
     fontSize: 14,
-    fontWeight: '800',
+    fontWeight: '700',
   },
   exportHintNote: {
     fontSize: 11,
@@ -1237,7 +1237,7 @@ const styles = StyleSheet.create({
   txTableIcon: {
     width: 36,
     height: 36,
-    borderRadius: 12,
+    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1248,7 +1248,7 @@ const styles = StyleSheet.create({
   typeBadge: {
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: 4,
+    borderRadius: radius.badges,
   },
   typeBadgeText: {
     fontSize: 10,
@@ -1283,7 +1283,7 @@ const styles = StyleSheet.create({
   },
   pocketBarTrack: {
     height: 10,
-    borderRadius: radius.pill,
+    borderRadius: radius.buttons,
     flexDirection: 'row',
     overflow: 'hidden',
     marginBottom: 16,
@@ -1302,8 +1302,8 @@ const styles = StyleSheet.create({
   },
   pocketCardItem: {
     flex: 1,
-    padding: 12,
-    borderRadius: radius.md,
+    padding: 14,
+    borderRadius: radius.cards,
     borderWidth: 1,
   },
   pocketCardItemTop: {
@@ -1319,7 +1319,7 @@ const styles = StyleSheet.create({
   pocketCardShareBadge: {
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: radius.pill,
+    borderRadius: radius.badges,
   },
   pocketCardShareText: {
     fontSize: 10,
@@ -1346,7 +1346,7 @@ const styles = StyleSheet.create({
     gap: 3,
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: radius.pill,
+    borderRadius: radius.badges,
   },
   miniPocketBadgeText: {
     fontSize: 9,

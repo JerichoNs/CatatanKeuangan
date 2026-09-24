@@ -21,9 +21,64 @@ export function Card({ children, style }: { children: ReactNode; style?: ViewSty
         styles.card,
         {
           backgroundColor: colors.surface,
-          borderColor: isDark ? colors.border : '#EAEFF8',
+          borderColor: colors.border,
           borderWidth: 1,
         },
+        isDark ? shadow.cardDark : shadow.card,
+        style,
+      ]}
+    >
+      {children}
+    </View>
+  );
+}
+
+export type PastelTone = 'mint' | 'sky' | 'apricot' | 'lavender' | 'periwinkle' | 'aqua' | 'peony' | 'cottonCandy';
+
+export function PastelCard({
+  children,
+  tone = 'sky',
+  style,
+}: {
+  children: ReactNode;
+  tone?: PastelTone;
+  style?: ViewStyle;
+}) {
+  const { colors, isDark } = useTheme();
+
+  const getToneBg = () => {
+    switch (tone) {
+      case 'mint':
+        return colors.mint;
+      case 'sky':
+        return colors.sky;
+      case 'apricot':
+        return isDark ? colors.apricot : '#FFE8D6';
+      case 'lavender':
+        return colors.lavender;
+      case 'periwinkle':
+        return colors.periwinkle;
+      case 'aqua':
+        return colors.aqua;
+      case 'peony':
+        return colors.peony;
+      case 'cottonCandy':
+        return isDark ? colors.cottonCandy : '#FCE7FE';
+      default:
+        return colors.periwinkle;
+    }
+  };
+
+  return (
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: getToneBg(),
+          borderColor: isDark ? colors.border : 'rgba(0, 0, 0, 0.05)',
+          borderWidth: 1,
+        },
+        isDark ? shadow.cardDark : shadow.card,
         style,
       ]}
     >
@@ -38,6 +93,51 @@ export function SectionLabel({ children }: { children: ReactNode }) {
     <Text style={[styles.sectionLabel, { color: colors.inkMuted }]} accessibilityRole="header">
       {children}
     </Text>
+  );
+}
+
+export function StatusPill({
+  label,
+  tone = 'mint',
+  icon,
+}: {
+  label: string;
+  tone?: 'mint' | 'sky' | 'apricot' | 'lavender' | 'periwinkle' | 'peony' | 'violet' | 'forest';
+  icon?: keyof typeof Ionicons.glyphMap;
+}) {
+  const { colors, isDark } = useTheme();
+
+  let bg = colors.mint;
+  let textColor = isDark ? '#E5E7EB' : '#14532D';
+
+  if (tone === 'violet') {
+    bg = isDark ? 'rgba(97, 97, 255, 0.25)' : '#DBDBFF';
+    textColor = isDark ? '#C7D2FE' : '#4338CA';
+  } else if (tone === 'sky') {
+    bg = colors.sky;
+    textColor = isDark ? '#E0F2FE' : '#0369A1';
+  } else if (tone === 'apricot') {
+    bg = isDark ? colors.apricot : '#FFE4D6';
+    textColor = isDark ? '#FED7AA' : '#C2410C';
+  } else if (tone === 'peony') {
+    bg = colors.peony;
+    textColor = isDark ? '#FCE7F3' : '#BE185D';
+  } else if (tone === 'lavender') {
+    bg = colors.lavender;
+    textColor = isDark ? '#EDE9FE' : '#6D28D9';
+  } else if (tone === 'periwinkle') {
+    bg = colors.periwinkle;
+    textColor = isDark ? '#E0E7FF' : '#3730A3';
+  } else if (tone === 'forest') {
+    bg = isDark ? 'rgba(42, 92, 78, 0.35)' : '#D1FAE5';
+    textColor = isDark ? '#6EE7B7' : '#065F46';
+  }
+
+  return (
+    <View style={[styles.statusPill, { backgroundColor: bg }]}>
+      {icon ? <Ionicons name={icon} size={11} color={textColor} style={{ marginRight: 3 }} /> : null}
+      <Text style={[styles.statusPillText, { color: textColor }]}>{label}</Text>
+    </View>
   );
 }
 
@@ -81,7 +181,7 @@ export function ErrorState({
       <Text style={[styles.emptyDescription, { color: colors.inkMuted }]}>{description}</Text>
       <TouchableOpacity
         onPress={onRetry}
-        style={[styles.retryButton, { borderColor: colors.primary }]}
+        style={[styles.retryButton, { borderColor: colors.primary, backgroundColor: colors.surface }]}
         accessibilityRole="button"
         accessibilityLabel="Coba lagi"
       >
@@ -134,7 +234,7 @@ export function Chip({
   );
 }
 
-type ButtonVariant = 'primary' | 'accent' | 'ghost';
+type ButtonVariant = 'primary' | 'accent' | 'outlined' | 'ghost';
 
 export function Button({
   label,
@@ -153,7 +253,14 @@ export function Button({
 }) {
   const { colors } = useTheme();
   const isDisabled = disabled || loading;
-  const textColor = variant === 'ghost' ? colors.primary : variant === 'accent' ? colors.primaryDark : '#FFFFFF';
+  const textColor =
+    variant === 'ghost'
+      ? colors.primary
+      : variant === 'outlined'
+      ? colors.ink
+      : variant === 'accent'
+      ? colors.primaryDark
+      : '#FFFFFF';
 
   return (
     <TouchableOpacity
@@ -164,6 +271,11 @@ export function Button({
         styles.button,
         variant === 'primary' && { backgroundColor: colors.primary, ...shadow.button },
         variant === 'accent' && { backgroundColor: colors.accent, ...shadow.button },
+        variant === 'outlined' && {
+          backgroundColor: 'transparent',
+          borderWidth: 1,
+          borderColor: colors.border,
+        },
         variant === 'ghost' && styles.buttonGhost,
         isDisabled && styles.buttonDisabled,
       ]}
@@ -211,6 +323,7 @@ export function InputField({
         {
           backgroundColor: colors.surface,
           borderColor: focused ? colors.primary : colors.border,
+          borderWidth: 1,
         },
       ]}
     >
@@ -244,16 +357,28 @@ export function InputField({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: radius.lg,
+    borderRadius: radius.cards,
     padding: spacing.md,
-    ...shadow.card,
   },
   sectionLabel: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '700',
-    letterSpacing: 0.5,
+    letterSpacing: 0.6,
     textTransform: 'uppercase',
     marginBottom: spacing.sm,
+  },
+  statusPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: radius.badges,
+    alignSelf: 'flex-start',
+  },
+  statusPillText: {
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: -0.1,
   },
   empty: {
     alignItems: 'center',
@@ -276,15 +401,15 @@ const styles = StyleSheet.create({
     gap: 6,
     marginTop: spacing.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: 8,
-    borderRadius: radius.pill,
-    borderWidth: 1.5,
+    paddingVertical: 9,
+    borderRadius: radius.buttons,
+    borderWidth: 1,
   },
   retryText: { fontWeight: '700', fontSize: 13 },
   badge: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
-    borderRadius: radius.pill,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: radius.badges,
     alignSelf: 'flex-start',
     marginBottom: spacing.sm,
   },
@@ -293,31 +418,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    borderWidth: 1.5,
-    borderRadius: radius.pill,
+    borderWidth: 1,
+    borderRadius: radius.buttons,
     paddingHorizontal: spacing.md,
     paddingVertical: 8,
   },
   chipText: { fontSize: 13, fontWeight: '600' },
   button: {
-    borderRadius: radius.md,
-    paddingVertical: 14,
+    borderRadius: radius.buttons,
+    paddingVertical: 13,
+    paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonContent: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   buttonGhost: { backgroundColor: 'transparent' },
   buttonDisabled: { opacity: 0.55 },
-  buttonText: { fontWeight: '700', fontSize: 16 },
+  buttonText: { fontWeight: '600', fontSize: 15 },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    borderRadius: radius.md,
+    borderRadius: radius.inputs,
     paddingHorizontal: spacing.md,
-    height: 52,
-    borderWidth: 1.5,
-    ...shadow.card,
+    height: 48,
   },
   inputField: {
     flex: 1,
