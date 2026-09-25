@@ -19,7 +19,7 @@
 
 <br />
 
-> **Rekap.id** adalah platform keuangan pribadi modern lintas platform (Android · iOS · Web) yang dibangun dengan **Expo React Native** + **Laravel 12 REST API**. Desain terinspirasi estetika premium FintechX dengan animasi scroll Framer Motion, market ticker real-time, dan laporan PDF ekspor — semua **gratis tanpa syarat**.
+> **Rekap.id** adalah platform keuangan pribadi modern lintas platform (Android · iOS · Web) yang dibangun dengan **Expo React Native** + **Laravel 12 REST API**. Hadir dengan login page premium dua-kolom, animasi Framer Motion, market ticker real-time, kantong dompet virtual, dan laporan PDF ekspor format A4 — semua **gratis tanpa syarat, kode sumber privat**.
 
 <br />
 
@@ -35,6 +35,13 @@
 <tr>
 <td width="50%">
 
+### 🔐 Autentikasi & Onboarding
+- **Login premium dua-kolom** — panel kiri bergradien + form kanan glassmorphism
+- **Demo mode** — akses langsung tanpa daftar akun (tampil sebagai pengunjung)
+- Tombol *Coba Demo — Tanpa Akun* dengan badge **GRATIS** dan efek shimmer
+- Ambient glow blobs + floating wallet icon dengan orbit ring
+- Registrasi, lupa password, dark/light mode toggle
+
 ### 📈 Market Intelligence
 - **Market Ticker Real-Time** — IHSG, USD/IDR, EUR/IDR, SGD/IDR, JPY/IDR, Emas Antam
 - Badge fluktuasi naik/turun dengan warna dinamis
@@ -43,6 +50,7 @@
 ### 🏦 Dashboard Finansial
 - **KPI Cards** — Saldo bersih, pemasukan bulanan, pengeluaran harian
 - **Rasio Arus Kas** — Progress bar Surplus vs Defisit visual
+- **Kantong & Dompet** — Virtual pockets untuk alokasi dana
 - Tombol aksi cepat: catat, transfer, rekap
 
 ### 🗓️ Kalender Transaksi
@@ -54,21 +62,26 @@
 <td width="50%">
 
 ### 🎨 Desain Premium
-- **Landing page** bergaya FintechX dengan animasi Framer Motion
-- **Scroll-triggered animations** — fade-up, slide, scale-in
+- **Landing page Rekap.id** — hero section, floating pill navbar, comparison section
+- **Scroll-triggered animations** — fade-up, slide, scale-in (Framer Motion)
 - Dark mode / Light mode dengan transisi mulus
-- Ambient nebula glow background
-- Font premium: Bricolage Grotesque + Inter
+- Ambient nebula glow background di semua halaman
+- Responsive: mobile, tablet, desktop
 
 ### 📑 Laporan & Ekspor PDF
 - Grafik kategori pengeluaran terbesar
-- Ekspor langsung format **kertas A4** standar
+- Ekspor format **kertas A4** standar langsung dari app
 - Auto-hide navigasi saat mode cetak
 
 ### 🛡️ Panel Administrator
 - Akses terisolasi (`is_admin = true`)
 - Monitoring seluruh akun & volume dana sistem
 - Konfigurasi URL API server dari dalam aplikasi
+
+### 🆓 100% Gratis & Privat
+- Tidak ada tier berbayar, iklan, atau batasan fitur
+- Source code privat (bukan open-source)
+- Semua pengguna mendapat akses penuh selamanya
 
 </td>
 </tr>
@@ -100,16 +113,16 @@
 rekap.id (catatan-keuangan)/
 │
 ├── app/                            # Halaman Expo Router
-│   ├── landing.tsx                 # 🌟 Landing page FintechX-style
+│   ├── landing.tsx                 # 🌟 Landing page Rekap.id premium
 │   ├── (app)/
-│   │   ├── index.tsx               # Dashboard utama + KPI cards
+│   │   ├── index.tsx               # Dashboard utama + KPI cards + Kantong
 │   │   ├── transaksi.tsx           # Form input transaksi
 │   │   ├── riwayat.tsx             # Riwayat + filter kalender
-│   │   ├── laporan.tsx             # Rekap analitik + ekspor PDF
+│   │   ├── laporan.tsx             # Rekap analitik + ekspor PDF A4
 │   │   └── _layout.tsx             # Floating tab bar responsif
 │   ├── (auth)/
-│   │   ├── login.tsx               # Login teranimasi
-│   │   ├── register.tsx            # Registrasi akun
+│   │   ├── login.tsx               # 🎨 Login premium dua-kolom + demo mode
+│   │   ├── register.tsx            # Registrasi akun baru
 │   │   └── forgot-password.tsx     # Pemulihan password
 │   ├── admin/
 │   │   ├── index.tsx               # Admin dashboard + config server
@@ -119,12 +132,13 @@ rekap.id (catatan-keuangan)/
 ├── components/
 │   ├── MotionView.tsx              # 🎬 Universal Framer Motion wrapper
 │   ├── AppAmbientBackground.tsx    # Nebula floating glow particles
+│   ├── AuthAmbientBubbles.tsx      # Bubble background halaman auth
 │   ├── ScreenTransitionWrapper.tsx # Animasi antar tab
 │   ├── CalendarModal.tsx           # Modal kalender interaktif
 │   ├── MarketTicker.tsx            # Ticker pasar real-time
 │   ├── ServerConfigModal.tsx       # Modal URL server API
 │   ├── ThemeToggle.tsx             # Dark/Light mode toggle
-│   └── ui.tsx                      # Card, Button, Input, Badge
+│   └── ui.tsx                      # Card, Button, InputField, LiquidSheenBeam
 │
 ├── constants/
 │   ├── theme.ts                    # Skema warna, radius, shadow
@@ -165,7 +179,7 @@ npm run web
 npm start
 ```
 
-> 💡 **Tidak perlu setup backend!** Frontend sudah otomatis terhubung ke API produksi Railway. Langsung `npm run web` dan jalan.
+> 💡 **Tidak perlu setup backend!** Frontend sudah otomatis terhubung ke API produksi Railway. Langsung `npm run web` dan jalan. Atau klik **Coba Demo** di halaman login untuk langsung masuk tanpa akun.
 
 ---
 
@@ -204,6 +218,8 @@ php artisan tinker --execute="App\Models\User::where('email', 'email@domain.com'
 ```
 
 Login ulang → banner emas **Administrator** otomatis muncul di dashboard.
+
+> ⚠️ Akun demo (*Coba Demo*) masuk sebagai **pengunjung biasa** — tanpa hak admin, tanpa data nyata.
 
 ---
 
