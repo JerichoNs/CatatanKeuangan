@@ -74,12 +74,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loginAsDemo = async () => {
     const demoUser: AppUser = {
-      id: "demo-user-fintechx",
-      name: "Alex FintechX",
-      email: "alex.fintechx@example.com",
-      is_admin: true,
+      id: "demo-user-rekap",
+      name: "Jericho Nathanael",
+      email: "jericho.nathanael@rekap.id",
+      is_admin: false,
     };
-    await persistUser("demo_fintechx_token", demoUser);
+    await persistUser("demo_rekap_token", demoUser);
   };
 
   const logout = async () => {
