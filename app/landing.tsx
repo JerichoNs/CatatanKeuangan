@@ -107,7 +107,7 @@ export default function FintechXLandingScreen() {
             activeOpacity={0.8}
           >
             <View style={styles.brandIconWrap}>
-              <Ionicons name="sparkles" size={17} color="#FFFFFF" />
+              <Ionicons name="sparkles" size={21} color="#FFFFFF" />
             </View>
             <Text style={[styles.brandText, { color: colors.ink }]}>
               Rekap<Text style={{ color: '#3B82F6' }}>.id</Text>
@@ -932,172 +932,69 @@ export default function FintechXLandingScreen() {
         <MotionView preset="fade-up" delay={0.05} style={styles.sectionContainer}>
           <Text style={[styles.sectionTag, { color: '#10B981' }]}>100% Gratis Forever</Text>
           <Text style={[styles.sectionHeading, { color: colors.ink }]}>
-            Dukung Developer,{' \n'}Tetap Nikmati Semua Fitur
+            Suka Aplikasinya?{'\n'}Traktir Developer Dong ☕
           </Text>
           <Text style={[styles.sectionSubtitle, { color: colors.inkMuted }]}>
-            Rekap.id sepenuhnya gratis. Kalau aplikasi ini membantu keuanganmu,{' '}
-            traktir developer kopi ☕ — bukan kewajiban, tapi sangat berarti.
+            Rekap.id gratis sepenuhnya. Kalau mau support, boleh — kalau nggak, juga nggak apa-apa 😄
           </Text>
 
-          {/* Free badge banner */}
-          <View
-            style={[
-              styles.supportFreeBanner,
-              {
-                backgroundColor: isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.08)',
-                borderColor: 'rgba(16, 185, 129, 0.3)',
-              },
-            ]}
-          >
-            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-            <Text style={[styles.supportFreeBannerText, { color: isDark ? '#6EE7B7' : '#065F46' }]}>
-              Semua fitur — Catat Transaksi, Market Ticker, AI Command, Ekspor PDF — <Text style={{ fontWeight: '800' }}>GRATIS selamanya</Text>
-            </Text>
-          </View>
+          {/* Donation Cards — Simple */}
+          <View style={[styles.supportSimpleRow, { flexDirection: isDesktop ? 'row' : 'column' }]}>
 
-          {/* Donation Cards Grid */}
-          <View style={[styles.pricingCardsGrid, { flexDirection: isDesktop ? 'row' : 'column' }]}>
-
-            {/* Tier 1: Kopi */}
-            <View
+            {/* Kopi */}
+            <TouchableOpacity
+              onPress={handleGoToApp}
               style={[
-                styles.pricingCard,
+                styles.supportSimpleCard,
                 {
                   backgroundColor: isDark ? '#111827' : '#FFFFFF',
-                  borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E2E8F0',
+                  borderColor: isDark ? 'rgba(255,255,255,0.08)' : '#E2E8F0',
                 },
               ]}
+              activeOpacity={0.85}
             >
-              <Text style={{ fontSize: 36, marginBottom: 8 }}>☕</Text>
-              <Text style={[styles.pricingPlanName, { color: colors.ink }]}>Traktir Kopi</Text>
-              <Text style={[styles.pricingPlanDesc, { color: colors.inkMuted }]}>
-                Donasi kecil yang berarti besar. Bantu developer tetap semangat ngoding.
-              </Text>
-              <Text style={[styles.pricingPrice, { color: colors.ink }]}>Rp 10.000</Text>
-              <Text style={[styles.pricingPerMonth, { color: colors.inkMuted }]}>sekali, sukarela</Text>
+              <Text style={styles.supportSimpleEmoji}>☕</Text>
+              <Text style={[styles.supportSimpleName, { color: colors.ink }]}>Kopi</Text>
+              <Text style={[styles.supportSimpleAmount, { color: colors.ink }]}>Rp 10.000</Text>
+              <Text style={[styles.supportSimpleLabel, { color: colors.inkMuted }]}>Traktir sekarang</Text>
+            </TouchableOpacity>
 
-              <View style={styles.pricingFeatureList}>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#EF4444" />
-                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Nama kamu di halaman Thanks</Text>
-                </View>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#EF4444" />
-                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Badge "Supporter" di profil</Text>
-                </View>
-              </View>
-
-              <TouchableOpacity
-                onPress={handleGoToApp}
-                style={[
-                  styles.pricingCardButtonOutlined,
-                  { borderColor: isDark ? 'rgba(255,255,255,0.2)' : '#CBD5E1' },
-                ]}
-              >
-                <Text style={[styles.pricingCardButtonTextOutlined, { color: colors.ink }]}>
-                  Traktir Sekarang ☕
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Tier 2: Supporter (Featured) */}
-            <View
+            {/* Makan Siang — Featured */}
+            <TouchableOpacity
+              onPress={handleGoToApp}
               style={[
-                styles.pricingCard,
-                styles.pricingCardFeatured,
+                styles.supportSimpleCard,
+                styles.supportSimpleCardFeatured,
                 {
                   backgroundColor: isDark ? '#141E33' : '#0F172A',
                   borderColor: '#10B981',
                 },
               ]}
+              activeOpacity={0.85}
             >
-              <View style={[styles.popularBadge, { backgroundColor: '#10B981' }]}>
-                <Text style={styles.popularBadgeText}>PALING BANYAK DIPILIH</Text>
-              </View>
-              <Text style={{ fontSize: 36, marginBottom: 8 }}>🚀</Text>
-              <Text style={[styles.pricingPlanName, { color: '#FFFFFF' }]}>Super Supporter</Text>
-              <Text style={[styles.pricingPlanDesc, { color: '#94A3B8' }]}>
-                Kontribusi yang bikin server tetap nyala dan fitur baru terus hadir.
-              </Text>
-              <Text style={[styles.pricingPrice, { color: '#FFFFFF' }]}>Rp 25.000</Text>
-              <Text style={[styles.pricingPerMonth, { color: '#94A3B8' }]}>sekali, sukarela</Text>
+              <Text style={styles.supportSimpleEmoji}>🍱</Text>
+              <Text style={[styles.supportSimpleName, { color: '#FFFFFF' }]}>Makan Siang</Text>
+              <Text style={[styles.supportSimpleAmount, { color: '#FFFFFF' }]}>Rp 25.000</Text>
+              <Text style={[styles.supportSimpleLabel, { color: '#94A3B8' }]}>Paling sering dipilih</Text>
+            </TouchableOpacity>
 
-              <View style={styles.pricingFeatureList}>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#10B981" />
-                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Semua dari Tier Kopi</Text>
-                </View>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#10B981" />
-                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Badge eksklusif "Super Supporter" 🚀</Text>
-                </View>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#10B981" />
-                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Vote fitur yang mau dikembangkan</Text>
-                </View>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#10B981" />
-                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Early access fitur baru</Text>
-                </View>
-              </View>
-
-              <TouchableOpacity
-                onPress={handleGoToApp}
-                style={[styles.pricingCardButtonSolid, { backgroundColor: '#10B981' }]}
-              >
-                <Text style={styles.pricingCardButtonTextSolid}>Dukung Sekarang 🚀</Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Tier 3: Patron */}
-            <View
+            {/* Dinner */}
+            <TouchableOpacity
+              onPress={handleGoToApp}
               style={[
-                styles.pricingCard,
+                styles.supportSimpleCard,
                 {
                   backgroundColor: isDark ? '#111827' : '#FFFFFF',
-                  borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E2E8F0',
+                  borderColor: isDark ? 'rgba(255,255,255,0.08)' : '#E2E8F0',
                 },
               ]}
+              activeOpacity={0.85}
             >
-              <Text style={{ fontSize: 36, marginBottom: 8 }}>👑</Text>
-              <Text style={[styles.pricingPlanName, { color: colors.ink }]}>Patron</Text>
-              <Text style={[styles.pricingPlanDesc, { color: colors.inkMuted }]}>
-                Kamu serius mendukung open source Indonesia. Terima kasih dari hati!
-              </Text>
-              <Text style={[styles.pricingPrice, { color: colors.ink }]}>Rp 50.000</Text>
-              <Text style={[styles.pricingPerMonth, { color: colors.inkMuted }]}>sekali, sukarela</Text>
-
-              <View style={styles.pricingFeatureList}>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#F59E0B" />
-                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Semua dari Tier Sebelumnya</Text>
-                </View>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#F59E0B" />
-                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Nama + link di README GitHub</Text>
-                </View>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#F59E0B" />
-                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Badge "Patron" eksklusif 👑</Text>
-                </View>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="heart" size={16} color="#F59E0B" />
-                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Satu permintaan fitur langsung ke developer</Text>
-                </View>
-              </View>
-
-              <TouchableOpacity
-                onPress={handleGoToApp}
-                style={[
-                  styles.pricingCardButtonOutlined,
-                  { borderColor: isDark ? 'rgba(255,255,255,0.2)' : '#CBD5E1' },
-                ]}
-              >
-                <Text style={[styles.pricingCardButtonTextOutlined, { color: colors.ink }]}>
-                  Jadi Patron 👑
-                </Text>
-              </TouchableOpacity>
-            </View>
+              <Text style={styles.supportSimpleEmoji}>🍣</Text>
+              <Text style={[styles.supportSimpleName, { color: colors.ink }]}>Dinner</Text>
+              <Text style={[styles.supportSimpleAmount, { color: colors.ink }]}>Rp 50.000</Text>
+              <Text style={[styles.supportSimpleLabel, { color: colors.inkMuted }]}>Makasih bro! ❤️</Text>
+            </TouchableOpacity>
 
           </View>
         </MotionView>
@@ -1170,7 +1067,7 @@ export default function FintechXLandingScreen() {
         >
           <View style={styles.footerBrand}>
             <View style={styles.brandIconWrap}>
-              <Ionicons name="sparkles" size={16} color="#FFFFFF" />
+              <Ionicons name="sparkles" size={20} color="#FFFFFF" />
             </View>
             <Text style={[styles.brandText, { color: colors.ink }]}>
               Rekap<Text style={{ color: '#3B82F6' }}>.id</Text>
@@ -1231,37 +1128,42 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     maxWidth: 1120,
-    height: 58,
+    height: 64,
     borderRadius: 9999,
     borderWidth: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 22,
   },
   navBrand: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
   },
   brandIconWrap: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     backgroundColor: '#3B82F6',
     alignItems: 'center',
     justifyContent: 'center',
+    ...(Platform.OS === 'web'
+      ? ({
+          boxShadow: '0 4px 14px rgba(59, 130, 246, 0.45)',
+        } as any)
+      : {}),
   },
   brandText: {
-    fontSize: 18,
-    fontWeight: '800',
-    letterSpacing: -0.5,
+    fontSize: 24,
+    fontWeight: '900',
+    letterSpacing: -0.7,
   },
   brandBadge: {
     backgroundColor: 'rgba(59, 130, 246, 0.15)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingHorizontal: 7,
+    paddingVertical: 2.5,
     borderRadius: 6,
   },
   brandBadgeText: {
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: '800',
     color: '#3B82F6',
   },
@@ -2017,88 +1919,55 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
   },
-  pricingCardsGrid: {
+  supportSimpleRow: {
     width: '100%',
-    maxWidth: 1100,
-    gap: 24,
+    maxWidth: 860,
+    gap: 16,
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    marginTop: 10,
   },
-  pricingCard: {
+  supportSimpleCard: {
     flex: 1,
-    borderRadius: 24,
+    minWidth: 200,
+    borderRadius: 20,
     borderWidth: 1,
-    padding: 32,
-    position: 'relative',
-  },
-  pricingCardFeatured: {
-    borderWidth: 2,
-    boxShadow: '0 20px 40px -10px rgba(59, 130, 246, 0.3)',
-  },
-  popularBadge: {
-    position: 'absolute',
-    top: -12,
-    right: 24,
-    backgroundColor: '#3B82F6',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 9999,
-  },
-  popularBadgeText: {
-    color: '#FFFFFF',
-    fontSize: 10,
-    fontWeight: '800',
-  },
-  pricingPlanName: {
-    fontSize: 22,
-    fontWeight: '800',
-  },
-  pricingPlanDesc: {
-    fontSize: 13,
-    marginTop: 6,
-    marginBottom: 20,
-    lineHeight: 18,
-  },
-  pricingPrice: {
-    fontSize: 34,
-    fontWeight: '800',
-    letterSpacing: -1,
-  },
-  pricingPerMonth: {
-    fontSize: 12,
-    marginBottom: 24,
-  },
-  pricingFeatureList: {
-    gap: 12,
-    marginBottom: 28,
-  },
-  pricingFeatureItem: {
-    flexDirection: 'row',
+    paddingVertical: 28,
+    paddingHorizontal: 20,
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
+    cursor: 'pointer',
+    ...(Platform.OS === 'web'
+      ? ({
+          transition: 'all 0.2s ease',
+        } as any)
+      : {}),
   },
-  pricingFeatureText: {
-    fontSize: 13,
+  supportSimpleCardFeatured: {
+    borderWidth: 2,
+    ...(Platform.OS === 'web'
+      ? ({
+          boxShadow: '0 12px 30px -8px rgba(16, 185, 129, 0.4)',
+        } as any)
+      : {}),
+  },
+  supportSimpleEmoji: {
+    fontSize: 42,
+    marginBottom: 6,
+  },
+  supportSimpleName: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  supportSimpleAmount: {
+    fontSize: 24,
+    fontWeight: '800',
+    letterSpacing: -0.5,
+  },
+  supportSimpleLabel: {
+    fontSize: 12,
     fontWeight: '500',
-  },
-  pricingCardButtonOutlined: {
-    paddingVertical: 12,
-    borderRadius: 9999,
-    borderWidth: 1,
-    alignItems: 'center',
-  },
-  pricingCardButtonTextOutlined: {
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  pricingCardButtonSolid: {
-    backgroundColor: '#3B82F6',
-    paddingVertical: 12,
-    borderRadius: 9999,
-    alignItems: 'center',
-  },
-  pricingCardButtonTextSolid: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '700',
   },
   faqList: {
     width: '100%',

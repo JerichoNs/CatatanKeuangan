@@ -236,21 +236,14 @@ Login ulang → banner emas **Administrator** otomatis muncul di dashboard.
 
 ## ❤️ Support Creator
 
-**Rekap.id sepenuhnya gratis dan open source.** Kalau aplikasi ini membantu keuanganmu, traktir developer kopi ☕ — bukan kewajiban, tapi sangat berarti!
+**Rekap.id sepenuhnya gratis dan open source.** Kalau aplikasi ini membantu keuanganmu dan kamu mau traktir developer, boleh banget:
 
-| Tier | Nominal | Manfaat |
-|:---|:---|:---|
-| ☕ **Traktir Kopi** | Rp 10.000 | Nama di halaman Thanks + badge Supporter |
-| 🚀 **Super Supporter** | Rp 25.000 | + Vote fitur + Early access + Badge eksklusif |
-| 👑 **Patron** | Rp 50.000 | + Nama di README ini + Request fitur langsung |
+- ☕ **Kopi** — Rp 10.000
+- 🍱 **Makan Siang** — Rp 25.000
+- 🍣 **Dinner** — Rp 50.000
+- 💖 **Donasi Sukarela** via [Saweria](https://saweria.co) / QRIS
 
-> 🙏 *Terima kasih sudah mendukung open source Indonesia!*
-
----
-
-### 👑 Patron Wall
-
-*Jadilah yang pertama mendukung Rekap.id sebagai Patron — nama kamu akan muncul di sini!*
+> 🙏 *Nggak wajib sama sekali, Rekap.id tetap 100% gratis selamanya. Tapi kalau mau support, makasih banyak bro!*
 
 ---
 
