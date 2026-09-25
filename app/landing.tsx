@@ -29,7 +29,7 @@ export default function FintechXLandingScreen() {
     scrollViewRef.current?.scrollTo({ y, animated: true });
   };
 
-  const [activeTab, setActiveTab] = useState<'monthly' | 'weekly' | 'daily'>('monthly');
+  const [activeTab, setActiveTab] = useState<'harian' | 'mingguan' | 'bulanan'>('bulanan');
   const [comparisonState, setComparisonState] = useState<'after' | 'before'>('after');
   const [pricingCycle, setPricingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
@@ -212,7 +212,9 @@ export default function FintechXLandingScreen() {
                     <View style={styles.sidebarLogoIcon}>
                       <Ionicons name="sparkles" size={15} color="#FFFFFF" />
                     </View>
-                    <Text style={styles.sidebarBrandTitle}>Rekap.id</Text>
+                    <Text style={styles.sidebarBrandTitle}>
+                      Rekap<Text style={{ color: '#3B82F6' }}>.id</Text>
+                    </Text>
                   </View>
 
                   <View style={styles.sidebarMenu}>
@@ -221,44 +223,40 @@ export default function FintechXLandingScreen() {
                       <Text style={styles.sidebarMenuTextActive}>Dashboard</Text>
                     </View>
                     <View style={styles.sidebarMenuItem}>
-                      <Ionicons name="briefcase-outline" size={16} color="#94A3B8" />
-                      <Text style={styles.sidebarMenuText}>Portfolio</Text>
+                      <Ionicons name="add-circle-outline" size={16} color="#94A3B8" />
+                      <Text style={styles.sidebarMenuText}>Catat Transaksi</Text>
                     </View>
                     <View style={styles.sidebarMenuItem}>
-                      <Ionicons name="trending-up-outline" size={16} color="#94A3B8" />
-                      <Text style={styles.sidebarMenuText}>Investments</Text>
+                      <Ionicons name="calendar-outline" size={16} color="#94A3B8" />
+                      <Text style={styles.sidebarMenuText}>Riwayat & Kalender</Text>
                     </View>
                     <View style={styles.sidebarMenuItem}>
-                      <Ionicons name="analytics-outline" size={16} color="#94A3B8" />
-                      <Text style={styles.sidebarMenuText}>Market Insights</Text>
-                    </View>
-                    <View style={styles.sidebarMenuItem}>
-                      <Ionicons name="hardware-chip-outline" size={16} color="#94A3B8" />
-                      <Text style={styles.sidebarMenuText}>AI Advisor</Text>
+                      <Ionicons name="bar-chart-outline" size={16} color="#94A3B8" />
+                      <Text style={styles.sidebarMenuText}>Laporan & PDF</Text>
                     </View>
                     <View style={styles.sidebarMenuItem}>
                       <Ionicons name="wallet-outline" size={16} color="#94A3B8" />
                       <Text style={styles.sidebarMenuText}>Kantong Dompet</Text>
                     </View>
                     <View style={styles.sidebarMenuItem}>
-                      <Ionicons name="person-outline" size={16} color="#94A3B8" />
-                      <Text style={styles.sidebarMenuText}>Users</Text>
+                      <Ionicons name="trending-up-outline" size={16} color="#94A3B8" />
+                      <Text style={styles.sidebarMenuText}>Kurs & Emas</Text>
                     </View>
                   </View>
 
-                  {/* Pro Banner in Sidebar */}
+                  {/* Free Forever Banner in Sidebar */}
                   <View style={styles.sidebarProCard}>
-                    <View style={styles.proCoinWrap}>
-                      <Text style={{ fontSize: 20 }}>🪙</Text>
+                    <View style={[styles.proCoinWrap, { backgroundColor: 'rgba(16, 185, 129, 0.2)' }]}>
+                      <Ionicons name="checkmark-circle" size={18} color="#10B981" />
                     </View>
-                    <Text style={styles.proCardTitle}>Upgrade to PRO</Text>
-                    <Text style={styles.proCardSub}>Unlock all AI signals & A4 reports</Text>
+                    <Text style={styles.proCardTitle}>100% Gratis</Text>
+                    <Text style={styles.proCardSub}>Semua fitur & ekspor PDF terbuka selamanya</Text>
                     <TouchableOpacity
                       onPress={handleStartDemo}
-                      style={styles.proCardButton}
+                      style={[styles.proCardButton, { backgroundColor: '#10B981' }]}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.proCardButtonText}>Get Pro Now</Text>
+                      <Text style={styles.proCardButtonText}>Coba Demo</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -317,21 +315,21 @@ export default function FintechXLandingScreen() {
                   </View>
                 </View>
 
-                {/* Subheader: Financial Command */}
+                {/* Subheader: Financial Overview */}
                 <View style={styles.commandBanner}>
                   <View>
                     <Text style={[styles.commandTitle, { color: colors.ink }]}>
-                      Financial Command
+                      Ringkasan Finansial
                     </Text>
                     <Text style={[styles.commandSubtitle, { color: colors.inkMuted }]}>
-                      Welcome back, Alex. Your portfolio is up{' '}
-                      <Text style={{ color: '#10B981', fontWeight: '700' }}>12.4%</Text> this quarter.
+                      Selamat datang kembali. Arus kas bulan ini dalam status{' '}
+                      <Text style={{ color: '#10B981', fontWeight: '700' }}>Surplus Sehat (+Rp 7,75jt)</Text>.
                     </Text>
                   </View>
 
                   <View style={styles.commandActions}>
                     <TouchableOpacity
-                      onPress={handleStartDemo}
+                      onPress={handleGoToApp}
                       style={[
                         styles.commandButton,
                         {
@@ -340,11 +338,11 @@ export default function FintechXLandingScreen() {
                         },
                       ]}
                     >
-                      <Text style={[styles.commandButtonText, { color: colors.ink }]}>Export CSV</Text>
+                      <Text style={[styles.commandButtonText, { color: colors.ink }]}>+ Catat Kas</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                      onPress={handleStartDemo}
+                      onPress={handleGoToApp}
                       style={[
                         styles.commandButton,
                         {
@@ -353,14 +351,14 @@ export default function FintechXLandingScreen() {
                         },
                       ]}
                     >
-                      <Text style={[styles.commandButtonText, { color: colors.ink }]}>Share Insights</Text>
+                      <Text style={[styles.commandButtonText, { color: colors.ink }]}>Cetak PDF A4</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
 
                 {/* 4 Stat KPI Cards */}
                 <View style={styles.kpiCardsGrid}>
-                  {/* Card 1 */}
+                  {/* Card 1: Saldo Kas */}
                   <View
                     style={[
                       styles.kpiCard,
@@ -372,19 +370,19 @@ export default function FintechXLandingScreen() {
                   >
                     <View style={styles.kpiCardTop}>
                       <View style={[styles.kpiIconWrap, { backgroundColor: '#8B5CF6' }]}>
-                        <Ionicons name="star" size={13} color="#FFFFFF" />
+                        <Ionicons name="wallet" size={13} color="#FFFFFF" />
                       </View>
                       <View style={[styles.kpiBadge, { backgroundColor: 'rgba(139, 92, 246, 0.15)' }]}>
-                        <Text style={[styles.kpiBadgeText, { color: '#8B5CF6' }]}>12.4% ↗</Text>
+                        <Text style={[styles.kpiBadgeText, { color: '#8B5CF6' }]}>Sehat ↗</Text>
                       </View>
                     </View>
                     <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>
-                      Total Portfolio Value
+                      Total Saldo Kas
                     </Text>
-                    <Text style={[styles.kpiValue, { color: colors.ink }]}>$58,420.00</Text>
+                    <Text style={[styles.kpiValue, { color: colors.ink }]}>Rp 24.850.000</Text>
                   </View>
 
-                  {/* Card 2 */}
+                  {/* Card 2: Pemasukan */}
                   <View
                     style={[
                       styles.kpiCard,
@@ -395,44 +393,20 @@ export default function FintechXLandingScreen() {
                     ]}
                   >
                     <View style={styles.kpiCardTop}>
-                      <View style={[styles.kpiIconWrap, { backgroundColor: '#F97316' }]}>
-                        <Ionicons name="stats-chart" size={13} color="#FFFFFF" />
+                      <View style={[styles.kpiIconWrap, { backgroundColor: '#10B981' }]}>
+                        <Ionicons name="arrow-down-circle" size={13} color="#FFFFFF" />
                       </View>
-                      <View style={[styles.kpiBadge, { backgroundColor: 'rgba(249, 115, 22, 0.15)' }]}>
-                        <Text style={[styles.kpiBadgeText, { color: '#F97316' }]}>2.1% ↗</Text>
-                      </View>
-                    </View>
-                    <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>
-                      Today's Gain/Loss
-                    </Text>
-                    <Text style={[styles.kpiValue, { color: colors.ink }]}>+$1,240.50</Text>
-                  </View>
-
-                  {/* Card 3 */}
-                  <View
-                    style={[
-                      styles.kpiCard,
-                      {
-                        backgroundColor: isDark ? '#141D2E' : '#FFFFFF',
-                        borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E2E8F0',
-                      },
-                    ]}
-                  >
-                    <View style={styles.kpiCardTop}>
-                      <View style={[styles.kpiIconWrap, { backgroundColor: '#06B6D4' }]}>
-                        <Ionicons name="briefcase" size={13} color="#FFFFFF" />
-                      </View>
-                      <View style={[styles.kpiBadge, { backgroundColor: 'rgba(6, 182, 212, 0.15)' }]}>
-                        <Text style={[styles.kpiBadgeText, { color: '#06B6D4' }]}>6 ↗</Text>
+                      <View style={[styles.kpiBadge, { backgroundColor: 'rgba(16, 185, 129, 0.15)' }]}>
+                        <Text style={[styles.kpiBadgeText, { color: '#10B981' }]}>+15% ↗</Text>
                       </View>
                     </View>
                     <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>
-                      Active Investments
+                      Pemasukan Bulan Ini
                     </Text>
-                    <Text style={[styles.kpiValue, { color: colors.ink }]}>24 Assets</Text>
+                    <Text style={[styles.kpiValue, { color: colors.ink }]}>+Rp 12.500.000</Text>
                   </View>
 
-                  {/* Card 4 */}
+                  {/* Card 3: Pengeluaran */}
                   <View
                     style={[
                       styles.kpiCard,
@@ -444,20 +418,44 @@ export default function FintechXLandingScreen() {
                   >
                     <View style={styles.kpiCardTop}>
                       <View style={[styles.kpiIconWrap, { backgroundColor: '#EF4444' }]}>
-                        <Ionicons name="time" size={13} color="#FFFFFF" />
+                        <Ionicons name="arrow-up-circle" size={13} color="#FFFFFF" />
                       </View>
                       <View style={[styles.kpiBadge, { backgroundColor: 'rgba(239, 68, 68, 0.15)' }]}>
-                        <Text style={[styles.kpiBadgeText, { color: '#EF4444' }]}>low ↘</Text>
+                        <Text style={[styles.kpiBadgeText, { color: '#EF4444' }]}>Terkendali ↘</Text>
                       </View>
                     </View>
-                    <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>Risk Score</Text>
-                    <Text style={[styles.kpiValue, { color: colors.ink }]}>18 / 100</Text>
+                    <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>
+                      Pengeluaran Bulan Ini
+                    </Text>
+                    <Text style={[styles.kpiValue, { color: colors.ink }]}>-Rp 4.750.000</Text>
+                  </View>
+
+                  {/* Card 4: Surplus */}
+                  <View
+                    style={[
+                      styles.kpiCard,
+                      {
+                        backgroundColor: isDark ? '#141D2E' : '#FFFFFF',
+                        borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E2E8F0',
+                      },
+                    ]}
+                  >
+                    <View style={styles.kpiCardTop}>
+                      <View style={[styles.kpiIconWrap, { backgroundColor: '#06B6D4' }]}>
+                        <Ionicons name="trending-up" size={13} color="#FFFFFF" />
+                      </View>
+                      <View style={[styles.kpiBadge, { backgroundColor: 'rgba(6, 182, 212, 0.15)' }]}>
+                        <Text style={[styles.kpiBadgeText, { color: '#06B6D4' }]}>62% Rasio ↗</Text>
+                      </View>
+                    </View>
+                    <Text style={[styles.kpiLabel, { color: colors.inkMuted }]}>Surplus Tabungan</Text>
+                    <Text style={[styles.kpiValue, { color: colors.ink }]}>+Rp 7.750.000</Text>
                   </View>
                 </View>
 
-                {/* Performance Chart & Donut Allocation Row */}
+                {/* Cash Flow Chart & Donut Allocation Row */}
                 <View style={[styles.chartsRow, { flexDirection: isDesktop ? 'row' : 'column' }]}>
-                  {/* Performance Spline Chart Card */}
+                  {/* Cash Flow Chart Card */}
                   <View
                     style={[
                       styles.chartCard,
@@ -471,10 +469,10 @@ export default function FintechXLandingScreen() {
                     <View style={styles.chartHeader}>
                       <View>
                         <Text style={[styles.chartCardTitle, { color: colors.ink }]}>
-                          Investment Performance
+                          Tren Arus Kas
                         </Text>
                         <Text style={[styles.chartCardSub, { color: colors.inkMuted }]}>
-                          Portfolio value over the last 6 months
+                          Pemasukan & pengeluaran 12 bulan terakhir
                         </Text>
                       </View>
 
@@ -487,7 +485,7 @@ export default function FintechXLandingScreen() {
                           },
                         ]}
                       >
-                        {(['daily', 'weekly', 'monthly'] as const).map((tab) => (
+                        {(['harian', 'mingguan', 'bulanan'] as const).map((tab) => (
                           <TouchableOpacity
                             key={tab}
                             onPress={() => setActiveTab(tab)}
@@ -545,7 +543,7 @@ export default function FintechXLandingScreen() {
                               ]}
                             />
                             <Text style={[styles.waveMonthLabel, { color: colors.inkMuted }]}>
-                              {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i]}
+                              {['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'][i]}
                             </Text>
                           </View>
                         ))}
@@ -566,17 +564,17 @@ export default function FintechXLandingScreen() {
                   >
                     <View style={styles.chartHeader}>
                       <Text style={[styles.chartCardTitle, { color: colors.ink }]}>
-                        Asset Allocation
+                        Alokasi Pengeluaran
                       </Text>
-                      <Text style={[styles.donutBadge, { color: '#3B82F6' }]}>All ▾</Text>
+                      <Text style={[styles.donutBadge, { color: '#3B82F6' }]}>Semua ▾</Text>
                     </View>
 
                     {/* Donut Simulation */}
                     <View style={styles.donutCenterWrap}>
                       <View style={styles.donutRing}>
                         <View style={[styles.donutInnerCircle, { backgroundColor: isDark ? '#141D2E' : '#FFFFFF' }]}>
-                          <Text style={[styles.donutInnerValue, { color: colors.ink }]}>$58.4k</Text>
-                          <Text style={[styles.donutInnerLabel, { color: colors.inkMuted }]}>Total Assets</Text>
+                          <Text style={[styles.donutInnerValue, { color: colors.ink }]}>Rp 4.75jt</Text>
+                          <Text style={[styles.donutInnerLabel, { color: colors.inkMuted }]}>Total Keluar</Text>
                         </View>
                       </View>
                     </View>
@@ -585,15 +583,15 @@ export default function FintechXLandingScreen() {
                     <View style={styles.donutLegendRow}>
                       <View style={styles.legendItem}>
                         <View style={[styles.legendDot, { backgroundColor: '#3B82F6' }]} />
-                        <Text style={[styles.legendText, { color: colors.ink }]}>55% Stocks</Text>
+                        <Text style={[styles.legendText, { color: colors.ink }]}>50% Kebutuhan</Text>
                       </View>
                       <View style={styles.legendItem}>
                         <View style={[styles.legendDot, { backgroundColor: '#10B981' }]} />
-                        <Text style={[styles.legendText, { color: colors.ink }]}>30% Crypto</Text>
+                        <Text style={[styles.legendText, { color: colors.ink }]}>30% Gaya Hidup</Text>
                       </View>
                       <View style={styles.legendItem}>
                         <View style={[styles.legendDot, { backgroundColor: '#F59E0B' }]} />
-                        <Text style={[styles.legendText, { color: colors.ink }]}>15% Cash</Text>
+                        <Text style={[styles.legendText, { color: colors.ink }]}>20% Tabungan</Text>
                       </View>
                     </View>
                   </View>
@@ -688,7 +686,7 @@ export default function FintechXLandingScreen() {
               <View style={{ flex: 1.5, paddingRight: isDesktop ? 32 : 0 }}>
                 <Text style={styles.comparisonTitle}>
                   {comparisonState === 'after'
-                    ? 'Smarter way to manage your investments'
+                    ? 'Manajemen Finansial Modern & Otomatis'
                     : 'Pencatatan Manual Konvensional'}
                 </Text>
 
@@ -697,25 +695,25 @@ export default function FintechXLandingScreen() {
                     <View style={styles.pointItem}>
                       <Ionicons name="checkmark-circle" size={18} color="#10B981" />
                       <Text style={styles.pointText}>
-                        Get clear recommendations based on real-time data
+                        Pencatatan arus kas masuk & keluar instan dalam hitungan detik
                       </Text>
                     </View>
                     <View style={styles.pointItem}>
                       <Ionicons name="checkmark-circle" size={18} color="#10B981" />
                       <Text style={styles.pointText}>
-                        Understand risks before making investment decisions
+                        Pisahkan tabungan & pos operasional lewat Kantong Dompet
                       </Text>
                     </View>
                     <View style={styles.pointItem}>
                       <Ionicons name="checkmark-circle" size={18} color="#10B981" />
                       <Text style={styles.pointText}>
-                        Monitor your portfolio in real time no manual effort required
+                        Pantau fluktuasi kurs mata uang & harga emas harian secara real-time
                       </Text>
                     </View>
                     <View style={styles.pointItem}>
                       <Ionicons name="checkmark-circle" size={18} color="#10B981" />
                       <Text style={styles.pointText}>
-                        Make consistent and informed investment choices
+                        Ekspor rekap pembukuan format A4 resmi langsung siap cetak
                       </Text>
                     </View>
                   </View>
@@ -736,7 +734,7 @@ export default function FintechXLandingScreen() {
                     <View style={styles.pointItem}>
                       <Ionicons name="close-circle" size={18} color="#EF4444" />
                       <Text style={styles.pointText}>
-                        Sulit memantau fluktuasi kurs mata uang dan harga emas harian
+                        Saldo tabungan dan biaya hidup bercampur aduk tanpa pos jelas
                       </Text>
                     </View>
                   </View>
@@ -746,13 +744,13 @@ export default function FintechXLandingScreen() {
               {/* Right Column: Key Stats Boxes */}
               <View style={styles.comparisonStatsCol}>
                 <View style={styles.statBoxGreen}>
-                  <Text style={styles.statBoxNumber}>3X Faster</Text>
-                  <Text style={styles.statBoxDesc}>Smart decisions</Text>
+                  <Text style={styles.statBoxNumber}>3X Cepat</Text>
+                  <Text style={styles.statBoxDesc}>Pencatatan kas instan</Text>
                 </View>
 
                 <View style={styles.statBoxGreen}>
-                  <Text style={styles.statBoxNumber}>24/7</Text>
-                  <Text style={styles.statBoxDesc}>Real-time tracking</Text>
+                  <Text style={styles.statBoxNumber}>100%</Text>
+                  <Text style={styles.statBoxDesc}>Gratis & bebas iklan</Text>
                 </View>
               </View>
             </View>
@@ -761,16 +759,16 @@ export default function FintechXLandingScreen() {
 
         {/* ================= CORE FEATURES BENTO GRID ================= */}
         <MotionView preset="fade-up" delay={0.1} style={styles.sectionContainer}>
-          <Text style={[styles.sectionTag, { color: '#3B82F6' }]}>Platform Overview</Text>
+          <Text style={[styles.sectionTag, { color: '#3B82F6' }]}>Fitur Lengkap Rekap.id</Text>
           <Text style={[styles.sectionHeading, { color: colors.ink }]}>
-            See your financial intelligence in action
+            Kelola Keuangan dengan Tenang & Rapi
           </Text>
           <Text style={[styles.sectionSubtitle, { color: colors.inkMuted }]}>
-            Satu ekosistem lengkap untuk memonitor, mengalokasikan, dan menumbuhkan aset finansial.
+            Satu aplikasi komprehensif untuk mencatat kas, membagi pos anggaran, dan memantau aset harian.
           </Text>
 
           <View style={[styles.bentoGrid, { flexDirection: isDesktop ? 'row' : 'column' }]}>
-            {/* Bento 1: Portfolio Tracking */}
+            {/* Bento 1: Kantong Dompet & Pockets */}
             <View
               style={[
                 styles.bentoCard,
@@ -782,29 +780,29 @@ export default function FintechXLandingScreen() {
               ]}
             >
               <View style={styles.bentoCardIconWrap}>
-                <Ionicons name="pie-chart" size={20} color="#3B82F6" />
+                <Ionicons name="wallet" size={20} color="#3B82F6" />
               </View>
-              <Text style={[styles.bentoTitle, { color: colors.ink }]}>Portfolio tracking</Text>
+              <Text style={[styles.bentoTitle, { color: colors.ink }]}>Multi-Kantong Dompet</Text>
               <Text style={[styles.bentoDesc, { color: colors.inkMuted }]}>
-                See your entire financial picture in one place with performance attribution and gain/loss analysis.
+                Bagi saldo ke pos terpisah seperti Dana Darurat, Tabungan Menikah, dan Biaya Hidup tanpa risiko tercampur.
               </Text>
 
               {/* Mini visual mockup inside bento */}
               <View style={styles.miniMockupPillsRow}>
                 <View style={[styles.miniPillCard, { backgroundColor: isDark ? '#1E293B' : '#F1F5F9' }]}>
-                  <Text style={[styles.miniPillLabel, { color: colors.inkMuted }]}>Stocks</Text>
-                  <Text style={[styles.miniPillVal, { color: colors.ink }]}>$78,258</Text>
-                  <Text style={{ color: '#10B981', fontSize: 11, fontWeight: '700' }}>+8.2%</Text>
+                  <Text style={[styles.miniPillLabel, { color: colors.inkMuted }]}>Kantong Utama</Text>
+                  <Text style={[styles.miniPillVal, { color: colors.ink }]}>Rp 18.500.000</Text>
+                  <Text style={{ color: '#10B981', fontSize: 11, fontWeight: '700' }}>Operasional</Text>
                 </View>
                 <View style={[styles.miniPillCard, { backgroundColor: isDark ? '#1E293B' : '#F1F5F9' }]}>
-                  <Text style={[styles.miniPillLabel, { color: colors.inkMuted }]}>Gold Antam</Text>
-                  <Text style={[styles.miniPillVal, { color: colors.ink }]}>Rp 1.480.000</Text>
-                  <Text style={{ color: '#10B981', fontSize: 11, fontWeight: '700' }}>+1.5%</Text>
+                  <Text style={[styles.miniPillLabel, { color: colors.inkMuted }]}>Dana Darurat</Text>
+                  <Text style={[styles.miniPillVal, { color: colors.ink }]}>Rp 6.350.000</Text>
+                  <Text style={{ color: '#10B981', fontSize: 11, fontWeight: '700' }}>Tersimpan Aman</Text>
                 </View>
               </View>
             </View>
 
-            {/* Bento 2: Smart Alerts */}
+            {/* Bento 2: Laporan & Ekspor PDF */}
             <View
               style={[
                 styles.bentoCard,
@@ -816,11 +814,11 @@ export default function FintechXLandingScreen() {
               ]}
             >
               <View style={styles.bentoCardIconWrap}>
-                <Ionicons name="notifications" size={20} color="#F59E0B" />
+                <Ionicons name="document-text" size={20} color="#F59E0B" />
               </View>
-              <Text style={[styles.bentoTitle, { color: colors.ink }]}>Smart alerts</Text>
+              <Text style={[styles.bentoTitle, { color: colors.ink }]}>Ekspor Laporan PDF A4</Text>
               <Text style={[styles.bentoDesc, { color: colors.inkMuted }]}>
-                Deteksi otomatis anomali pengeluaran dan lonjakan rasio risiko secara instan.
+                Cetak laporan arus kas formal format dokumen standar A4 lengkap dengan rincian kategori dan persentase surplus.
               </Text>
 
               {/* Alert notification preview */}
@@ -828,18 +826,18 @@ export default function FintechXLandingScreen() {
                 style={[
                   styles.alertNotificationCard,
                   {
-                    backgroundColor: isDark ? 'rgba(245, 158, 11, 0.12)' : '#FEF3C7',
-                    borderColor: 'rgba(245, 158, 11, 0.3)',
+                    backgroundColor: isDark ? 'rgba(16, 185, 129, 0.12)' : '#D1FAE5',
+                    borderColor: 'rgba(16, 185, 129, 0.3)',
                   },
                 ]}
               >
-                <Ionicons name="warning" size={18} color="#D97706" />
+                <Ionicons name="checkmark-circle" size={18} color="#10B981" />
                 <View style={{ flex: 1, marginLeft: 8 }}>
-                  <Text style={{ color: '#B45309', fontWeight: '700', fontSize: 12 }}>
-                    Risk exposure alert
+                  <Text style={{ color: '#047857', fontWeight: '700', fontSize: 12 }}>
+                    Status Arus Kas Sehat
                   </Text>
-                  <Text style={{ color: '#D97706', fontSize: 11 }}>
-                    Pemasukan bulan ini surplus +18%
+                  <Text style={{ color: '#065F46', fontSize: 11 }}>
+                    Bulan ini surplus Rp 7.750.000 (Rasio 62%)
                   </Text>
                 </View>
               </View>
