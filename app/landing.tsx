@@ -984,7 +984,7 @@ export default function FintechXLandingScreen() {
         >
           <View style={styles.footerBrand}>
             <View style={styles.brandIconWrap}>
-              <Ionicons name="sparkles" size={20} color="#FFFFFF" />
+              <Ionicons name="sparkles" size={26} color="#FFFFFF" />
             </View>
             <Text style={[styles.brandText, { color: colors.ink }]}>
               Rekap<Text style={{ color: '#3B82F6' }}>.id</Text>
@@ -1024,7 +1024,7 @@ export default function FintechXLandingScreen() {
             activeOpacity={0.8}
           >
             <View style={styles.brandIconWrap}>
-              <Ionicons name="sparkles" size={21} color="#FFFFFF" />
+              <Ionicons name="sparkles" size={26} color="#FFFFFF" />
             </View>
             <Text style={[styles.brandText, { color: colors.ink }]}>
               Rekap<Text style={{ color: '#3B82F6' }}>.id</Text>
@@ -1162,15 +1162,15 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
   },
   brandIconWrap: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: '#3B82F6',
     alignItems: 'center',
     justifyContent: 'center',
     ...(Platform.OS === 'web'
       ? ({
-          boxShadow: '0 4px 14px rgba(59, 130, 246, 0.45)',
+          boxShadow: '0 4px 18px rgba(59, 130, 246, 0.50)',
         } as any)
       : {}),
   },
