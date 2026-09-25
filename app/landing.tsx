@@ -175,7 +175,7 @@ export default function FintechXLandingScreen() {
         {/* ================= HERO SECTION ================= */}
         <View style={styles.heroSection}>
           {/* Top AI Badge */}
-          <MotionView preset="fade-in" delay={0} duration={0.5}
+          <View
             style={[
               styles.heroTopBadge,
               {
@@ -190,10 +190,10 @@ export default function FintechXLandingScreen() {
             <Text style={[styles.heroBadgeText, { color: isDark ? '#93C5FD' : '#1D4ED8' }]}>
               Generasi Baru Financial Intelligence
             </Text>
-          </MotionView>
+          </View>
 
           {/* Large Hero Title */}
-          <MotionView preset="fade-up" delay={0.1} duration={0.65} style={styles.heroTitleContainer}>
+          <View style={styles.heroTitleContainer}>
             <Text style={[styles.heroTitleMain, { color: colors.ink }]}>
               Finance{' '}
               <View
@@ -209,18 +209,16 @@ export default function FintechXLandingScreen() {
               </View>{' '}
               Platform
             </Text>
-          </MotionView>
+          </View>
 
           {/* Subtitle */}
-          <MotionView preset="fade-up" delay={0.2} duration={0.6}>
-            <Text style={[styles.heroSubtitle, { color: colors.inkMuted }]}>
-              Optimize your investments with AI-driven analysis, real-time tracking,
-              and intelligent recommendations.
-            </Text>
-          </MotionView>
+          <Text style={[styles.heroSubtitle, { color: colors.inkMuted }]}>
+            Optimize your investments with AI-driven analysis, real-time tracking,
+            and intelligent recommendations.
+          </Text>
 
           {/* Dual Action Buttons */}
-          <MotionView preset="fade-up" delay={0.3} duration={0.55} style={styles.heroActionsRow}>
+          <View style={styles.heroActionsRow}>
             <TouchableOpacity
               onPress={handleGoToApp}
               style={styles.heroPrimaryButton}
@@ -249,10 +247,10 @@ export default function FintechXLandingScreen() {
                 {isDemoLoading ? 'Memuat Demo...' : 'View demo'}
               </Text>
             </TouchableOpacity>
-          </MotionView>
+          </View>
 
           {/* Trust Highlights */}
-          <MotionView preset="fade-up" delay={0.4} duration={0.5} style={styles.heroTrustBadges}>
+          <View style={styles.heroTrustBadges}>
             <View style={styles.trustItem}>
               <Text style={styles.trustEmoji}>⭐</Text>
               <Text style={[styles.trustText, { color: colors.ink }]}>4.9/5 Rating</Text>
@@ -267,10 +265,10 @@ export default function FintechXLandingScreen() {
               <Text style={styles.trustEmoji}>⚡</Text>
               <Text style={[styles.trustText, { color: colors.ink }]}>Real-time AI insights</Text>
             </View>
-          </MotionView>
+          </View>
 
           {/* ================= FINANCIAL COMMAND DASHBOARD MOCKUP ================= */}
-          <MotionView preset="scale-in" delay={0.5} duration={0.8}
+          <View
             style={[
               styles.mockupShell,
               {
@@ -689,10 +687,10 @@ export default function FintechXLandingScreen() {
               </View>
             </View>
           </View>
-        </MotionView>
+        </View>
 
         {/* ================= COMPARISON SECTION ================= */}
-        <MotionView preset="fade-up" duration={0.65} style={styles.sectionContainer}>
+        <MotionView preset="fade-up" style={styles.sectionContainer}>
           <Text style={[styles.sectionHeading, { color: colors.ink }]}>
             Smarter decisions start with clear data
           </Text>
@@ -750,7 +748,7 @@ export default function FintechXLandingScreen() {
           </View>
 
           {/* Comparison Bento Card */}
-          <MotionView preset="scale-in" delay={0.2}
+          <View
             style={[
               styles.comparisonCard,
               {
@@ -839,30 +837,31 @@ export default function FintechXLandingScreen() {
                 </View>
               </View>
             </View>
-          </MotionView>
+          </View>
         </MotionView>
 
         {/* ================= CORE FEATURES BENTO GRID ================= */}
-        <MotionView preset="fade-up" duration={0.6} style={styles.sectionContainer}>
-          <MotionView preset="fade-in" delay={0.05}>
-            <Text style={[styles.sectionTag, { color: '#3B82F6' }]}>Platform Overview</Text>
-          </MotionView>
-          <MotionView preset="fade-up" delay={0.1}>
-            <Text style={[styles.sectionHeading, { color: colors.ink }]}>
-              See your financial intelligence in action
-            </Text>
-          </MotionView>
-          <MotionView preset="fade-up" delay={0.18}>
-            <Text style={[styles.sectionSubtitle, { color: colors.inkMuted }]}>
-              Satu ekosistem lengkap untuk memonitor, mengalokasikan, dan menumbuhkan aset finansial.
-            </Text>
-          </MotionView>
+        <MotionView preset="fade-up" delay={0.1} style={styles.sectionContainer}>
+          <Text style={[styles.sectionTag, { color: '#3B82F6' }]}>Platform Overview</Text>
+          <Text style={[styles.sectionHeading, { color: colors.ink }]}>
+            See your financial intelligence in action
+          </Text>
+          <Text style={[styles.sectionSubtitle, { color: colors.inkMuted }]}>
+            Satu ekosistem lengkap untuk memonitor, mengalokasikan, dan menumbuhkan aset finansial.
+          </Text>
 
           <View style={[styles.bentoGrid, { flexDirection: isDesktop ? 'row' : 'column' }]}>
             {/* Bento 1: Portfolio Tracking */}
-          <MotionView preset="slide-left" delay={0.15}
-            style={[styles.bentoCard, { flex: 1.4, backgroundColor: isDark ? '#111827' : '#FFFFFF', borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E2E8F0' }]}
-          >
+            <View
+              style={[
+                styles.bentoCard,
+                {
+                  flex: 1.4,
+                  backgroundColor: isDark ? '#111827' : '#FFFFFF',
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E2E8F0',
+                },
+              ]}
+            >
               <View style={styles.bentoCardIconWrap}>
                 <Ionicons name="pie-chart" size={20} color="#3B82F6" />
               </View>
@@ -884,7 +883,7 @@ export default function FintechXLandingScreen() {
                   <Text style={{ color: '#10B981', fontSize: 11, fontWeight: '700' }}>+1.5%</Text>
                 </View>
               </View>
-          </MotionView>
+            </View>
 
             {/* Bento 2: Smart Alerts */}
             <View
@@ -927,10 +926,10 @@ export default function FintechXLandingScreen() {
               </View>
             </View>
           </View>
-        </View>
+        </MotionView>
 
         {/* ================= SUPPORT CREATOR SECTION ================= */}
-        <View style={styles.sectionContainer}>
+        <MotionView preset="fade-up" delay={0.05} style={styles.sectionContainer}>
           <Text style={[styles.sectionTag, { color: '#10B981' }]}>100% Gratis Forever</Text>
           <Text style={[styles.sectionHeading, { color: colors.ink }]}>
             Dukung Developer,{' \n'}Tetap Nikmati Semua Fitur
@@ -1101,10 +1100,10 @@ export default function FintechXLandingScreen() {
             </View>
 
           </View>
-        </View>
+        </MotionView>
 
         {/* ================= FAQ ACCORDION ================= */}
-        <View style={styles.sectionContainer}>
+        <MotionView preset="fade-up" style={styles.sectionContainer}>
           <Text style={[styles.sectionHeading, { color: colors.ink }]}>
             Frequently Asked Questions
           </Text>
@@ -1157,7 +1156,7 @@ export default function FintechXLandingScreen() {
               </TouchableOpacity>
             ))}
           </View>
-        </View>
+        </MotionView>
 
         {/* ================= FOOTER ================= */}
         <View
