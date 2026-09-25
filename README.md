@@ -1,188 +1,273 @@
 <div align="center">
 
-# 💰 Catatan Keuangan
+<br />
 
-### *Aplikasi pencatat pemasukan dan pengeluaran harian modern lintas platform berbasis React Native & Laravel API*
+<img src="https://img.shields.io/badge/-%F0%9F%92%B8%20Rekap.id-1a1a2e?style=for-the-badge&labelColor=3B82F6&color=0F172A" alt="Rekap.id" height="42"/>
 
-![React Native](https://img.shields.io/badge/React_Native-0.86.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Expo](https://img.shields.io/badge/Expo-SDK_57-000020?style=for-the-badge&logo=expo&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
-![Railway](https://img.shields.io/badge/Railway-Production_API-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+<h3>Personal Finance Intelligence Platform</h3>
+<p><em>Catat. Analisis. Tumbuh. — 100% Gratis, Selamanya.</em></p>
 
 <br />
 
-**Catatan Keuangan** adalah aplikasi pelacak keuangan dan arus kas pribadi modern yang dibangun menggunakan **Expo (React Native)** pada sisi antarmuka pengguna dan **Laravel 12 REST API** pada sisi server. Aplikasi ini berjalan lintas platform (**Android, iOS, dan Web**) dengan fokus pada estetika visual elegan, animasi dinamis, pemantauan kurs pasar modal, dan laporan keuangan komprehensif.
+[![React Native](https://img.shields.io/badge/React_Native-0.86-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactnative.dev)
+[![Expo SDK](https://img.shields.io/badge/Expo-SDK_57-000020?style=flat-square&logo=expo&logoColor=white)](https://expo.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-latest-0055FF?style=flat-square&logo=framer&logoColor=white)](https://framer.com/motion)
+[![License MIT](https://img.shields.io/badge/License-MIT-10B981?style=flat-square)](LICENSE)
+[![Free Forever](https://img.shields.io/badge/Price-100%25_FREE-10B981?style=flat-square&logo=heart&logoColor=white)](#-support-creator)
 
-[Fitur Utama](#-fitur-utama) • [Teknologi & Database](#-teknologi-api--database) • [Struktur Folder](#-struktur-folder) • [Cara Menjalankan](#-cara-menjalankan) • [Deploy Backend & Frontend](#-deploy)
+<br />
+
+> **Rekap.id** adalah platform keuangan pribadi modern lintas platform (Android · iOS · Web) yang dibangun dengan **Expo React Native** + **Laravel 12 REST API**. Desain terinspirasi estetika premium FintechX dengan animasi scroll Framer Motion, market ticker real-time, dan laporan PDF ekspor — semua **gratis tanpa syarat**.
+
+<br />
+
+[✨ Fitur](#-fitur-utama) · [🛠️ Stack](#️-tech-stack) · [📂 Struktur](#-struktur-folder) · [🚀 Setup](#-cara-menjalankan) · [☁️ Deploy](#️-deploy) · [❤️ Support](#-support-creator)
 
 </div>
 
 ---
 
-## 🛠️ Teknologi, API & Database
-
-Aplikasi ini menggunakan arsitektur *Client-Server* terpisah (Decoupled):
-
-| Komponen | Teknologi | Keterangan |
-| :--- | :--- | :--- |
-| **API Backend** | [Laravel 12](https://laravel.com/) (PHP 8.2+) | RESTful API engine berkinerja tinggi |
-| **Autentikasi** | [Laravel Sanctum](https://laravel.com/docs/sanctum) | Manajemen sesi berbasis Bearer Token yang aman |
-| **Database** | **SQLite** (`database/database.sqlite`) | Database serverless yang cepat, andal, tanpa konfigurasi berat. Mendukung migrasi ke MySQL / PostgreSQL jika diperlukan |
-| **Cloud API** | [Railway](https://railway.com/) | Hosting backend produksi aktif: `https://catatan-keuangan-api-production.up.railway.app/api` |
-| **Frontend** | [React Native](https://reactnative.dev/) / [Expo SDK 57](https://expo.dev/) | Antarmuka universal untuk Web, Android, dan iOS |
-| **Routing** | [Expo Router](https://docs.expo.dev/router/introduction/) | Navigasi berbasis struktur file modern |
-| **Bahasa** | [TypeScript](https://www.typescriptlang.org/) | Type-safe development untuk meminimalisir bug |
-| **Penyimpanan Lokal** | [AsyncStorage](https://react-native-async-storage.github.io/async-storage/) | Menyimpan token otentikasi, preferensi tema, dan URL API |
-| **Laporan & PDF** | Expo Print & Expo Sharing | Generator dokumen cetak dan ekspor format A4 standar |
-
----
-
 ## ✨ Fitur Utama
 
-### 📈 Kurs Pasar & Indeks Keuangan Real-Time
-- **Market Ticker Interaktif**: Memantau pergerakan **IHSG**, kurs valas (**USD/IDR, EUR/IDR, SGD/IDR, JPY/IDR**), dan harga **Emas Antam** per gram langsung di atas dashboard.
-- **Indikator Fluktuasi**: Dilengkapi badge persentase naik/turun dengan warna dinamis.
+<table>
+<tr>
+<td width="50%">
 
-### 🌌 Desain Estetik & Ambient Nebula Glow
-- **Latar Belakang Nebula Mengambang**: Efek ambient glow orbs yang melayang lembut memberikan nuansa modern dan premium.
-- **Mode Gelap & Terang Halus**: Transisi warna latar belakang dan kontras kartu yang nyaman di mata pada setiap perangkat.
-- **Transisi Tab Bebas Ghosting**: Animasi masuk spring & fade dengan isolasi layar aktif agar tab tidak bertumpuk.
+### 📈 Market Intelligence
+- **Market Ticker Real-Time** — IHSG, USD/IDR, EUR/IDR, SGD/IDR, JPY/IDR, Emas Antam
+- Badge fluktuasi naik/turun dengan warna dinamis
+- Auto-refresh setiap interval terkonfigurasi
 
-### 📊 Ringkasan Saldo & Rasio Arus Kas
-- **Kartu Metrik KPI**: Menampilkan Total Saldo Bersih, Pemasukan Bulanan, dan Pengeluaran Harian secara kontras dan jelas.
-- **Rasio Arus Kas Visual**: Progress bar interaktif untuk menilai kesehatan finansial (Surplus vs Defisit).
-- **Aksi Cepat**: Tombol pintas untuk catat pengeluaran, transfer, dan unduh rekap.
+### 🏦 Dashboard Finansial
+- **KPI Cards** — Saldo bersih, pemasukan bulanan, pengeluaran harian
+- **Rasio Arus Kas** — Progress bar Surplus vs Defisit visual
+- Tombol aksi cepat: catat, transfer, rekap
 
-### 📅 Kalender Transaksi Interaktif
-- **Pemilih Bulan & Tahun Fleksibel**: Melompat ke periode bulan atau tahun kapan pun tanpa ribet.
-- **Titik Indikator Transaksi**: Tanggal ditandai titik hijau (pemasukan) dan merah (pengeluaran).
-- **Badge Tanggal Informatif**: Tanggal hari ini disajikan dengan ukuran font yang mudah dibaca.
+### 🗓️ Kalender Transaksi
+- Navigasi bulan & tahun fleksibel
+- Titik indikator hijau (masuk) & merah (keluar) per tanggal
+- Ringkasan per-periode langsung dari kalender
 
-### 📑 Laporan Eksekutif & Ekspor PDF Resmi
-- **Grafik Kategori**: Analisis pos pengeluaran terbesar dalam format kartu visual.
-- **Cetak / Unduh PDF**: Halaman laporan diformat khusus untuk kertas cetak A4 dan otomatis menyembunyikan navigasi aplikasi saat dicetak.
+</td>
+<td width="50%">
 
-### 🛡️ Panel Khusus Administrator
-- **Akses VIP Terproteksi**: Hanya akun terverifikasi admin (`is_admin = true`) yang dapat membuka panel admin.
-- **Monitoring Seluruh Sistem**: Melacak jumlah akun pengguna, total volume dana sistem, dan riwayat transaksi pengguna.
-- **Konfigurasi URL API Dinamis**: Dukungan pergantian URL server API langsung dari aplikasi tanpa perlu build ulang.
+### 🎨 Desain Premium
+- **Landing page** bergaya FintechX dengan animasi Framer Motion
+- **Scroll-triggered animations** — fade-up, slide, scale-in
+- Dark mode / Light mode dengan transisi mulus
+- Ambient nebula glow background
+- Font premium: Bricolage Grotesque + Inter
+
+### 📑 Laporan & Ekspor PDF
+- Grafik kategori pengeluaran terbesar
+- Ekspor langsung format **kertas A4** standar
+- Auto-hide navigasi saat mode cetak
+
+### 🛡️ Panel Administrator
+- Akses terisolasi (`is_admin = true`)
+- Monitoring seluruh akun & volume dana sistem
+- Konfigurasi URL API server dari dalam aplikasi
+
+</td>
+</tr>
+</table>
 
 ---
 
-## 📂 Struktur Folder Proyek
+## 🛠️ Tech Stack
 
-```plaintext
-catatan-keuangan/
-├── app/                        # Halaman aplikasi (Expo Router)
-│   ├── (app)/                  # Tab navigasi utama
-│   │   ├── index.tsx           # Dashboard, saldo, kurs pasar & aksi cepat
-│   │   ├── transaksi.tsx       # Form input transaksi (Pemasukan/Pengeluaran)
-│   │   ├── riwayat.tsx         # Riwayat kas lengkap + filter kalender
-│   │   ├── laporan.tsx         # Rekap analisis keuangan & ekspor PDF
-│   │   └── _layout.tsx         # Tab bar responsif (floating dock di desktop)
-│   ├── (auth)/                 # Autentikasi
-│   │   ├── login.tsx           # Halaman masuk teranimasi
-│   │   ├── register.tsx        # Halaman registrasi akun baru
-│   │   └── forgot-password.tsx # Halaman pemulihan password
-│   ├── admin/                  # Area khusus admin
-│   │   ├── index.tsx           # Statistik sistem & konfigurasi server
-│   │   └── user/[uid].tsx      # Detail transaksi per pengguna
-│   └── _layout.tsx             # Root layout, provider tema, & sinkronisasi web
-├── components/                 # Komponen UI
-│   ├── AppAmbientBackground.tsx# Animasi partikel nebula floating glow
-│   ├── ScreenTransitionWrapper.tsx # Isolasi visibilitas & animasi antar tab
-│   ├── CalendarModal.tsx       # Modal kalender interaktif
-│   ├── ServerConfigModal.tsx   # Modal pengaturan URL API server
-│   ├── ThemeToggle.tsx         # Tombol sakelar dark/light mode
-│   └── ui.tsx                  # Card, Button, Input, Chip, Badge
-├── constants/                  # Konstanta & tema
-│   ├── categories.ts           # Daftar kategori & icon transaksi
-│   └── theme.ts                # Skema warna, radius, dan bayangan
-├── contexts/                   # State management global
-│   ├── AuthContext.tsx         # Sesi pengguna & status admin
-│   └── ThemeContext.tsx        # State tema (Dark / Light)
-├── services/                   # Jaringan API
-│   └── api.ts                  # Axios/Fetch HTTP client & switch URL server
-└── vercel.json                 # Konfigurasi deployment web Vercel
+| Layer | Teknologi | Versi |
+|:---|:---|:---|
+| **UI Framework** | React Native via Expo | SDK 57 |
+| **Language** | TypeScript | 6.0 |
+| **Navigation** | Expo Router (file-based) | v4 |
+| **Animations** | Framer Motion (web) + React Native Animated | latest |
+| **Backend API** | Laravel + Laravel Sanctum (Bearer Token) | 12.x |
+| **Database** | SQLite → migratable ke MySQL/PostgreSQL | — |
+| **Cloud Hosting** | Railway (API) + Vercel (Web) | — |
+| **Local Storage** | AsyncStorage (token, tema, URL API) | — |
+| **PDF Export** | Expo Print + Expo Sharing | — |
+
+**API Produksi aktif:** `https://catatan-keuangan-api-production.up.railway.app/api`
+
+---
+
+## 📂 Struktur Folder
+
+```
+rekap.id (catatan-keuangan)/
+│
+├── app/                            # Halaman Expo Router
+│   ├── landing.tsx                 # 🌟 Landing page FintechX-style
+│   ├── (app)/
+│   │   ├── index.tsx               # Dashboard utama + KPI cards
+│   │   ├── transaksi.tsx           # Form input transaksi
+│   │   ├── riwayat.tsx             # Riwayat + filter kalender
+│   │   ├── laporan.tsx             # Rekap analitik + ekspor PDF
+│   │   └── _layout.tsx             # Floating tab bar responsif
+│   ├── (auth)/
+│   │   ├── login.tsx               # Login teranimasi
+│   │   ├── register.tsx            # Registrasi akun
+│   │   └── forgot-password.tsx     # Pemulihan password
+│   ├── admin/
+│   │   ├── index.tsx               # Admin dashboard + config server
+│   │   └── user/[uid].tsx          # Detail transaksi per user
+│   └── _layout.tsx                 # Root layout + providers
+│
+├── components/
+│   ├── MotionView.tsx              # 🎬 Universal Framer Motion wrapper
+│   ├── AppAmbientBackground.tsx    # Nebula floating glow particles
+│   ├── ScreenTransitionWrapper.tsx # Animasi antar tab
+│   ├── CalendarModal.tsx           # Modal kalender interaktif
+│   ├── MarketTicker.tsx            # Ticker pasar real-time
+│   ├── ServerConfigModal.tsx       # Modal URL server API
+│   ├── ThemeToggle.tsx             # Dark/Light mode toggle
+│   └── ui.tsx                      # Card, Button, Input, Badge
+│
+├── constants/
+│   ├── theme.ts                    # Skema warna, radius, shadow
+│   ├── categories.ts               # Kategori & icon transaksi
+│   └── pockets.ts                  # Konfigurasi kantong simpanan
+│
+├── contexts/
+│   ├── AuthContext.tsx             # Sesi user, admin state, demo login
+│   └── ThemeContext.tsx            # Global dark/light state
+│
+├── services/
+│   └── api.ts                      # HTTP client + URL server switcher
+│
+├── types/
+│   └── index.ts                    # TypeScript type definitions
+│
+└── vercel.json                     # Config deploy Vercel
 ```
 
 ---
 
 ## 🚀 Cara Menjalankan
 
-### 1. Menjalankan Backend (Laravel API & SQLite)
-Jika ingin menjalankan backend sendiri di komputer lokal:
+### Frontend (Expo — React Native)
+
 ```bash
-cd catatan-keuangan-api
+# 1. Clone repositori
+git clone https://github.com/JerichoNs/CatatanKeuangan.git
+cd CatatanKeuangan
 
-# 1. Pasang dependensi PHP
-composer install
-
-# 2. Salin environment file
-cp .env.example .env
-
-# 3. Buat key aplikasi & file database sqlite
-php artisan key:generate
-touch database/database.sqlite
-
-# 4. Jalankan migrasi dan seeder admin
-php artisan migrate --seed
-
-# 5. Jalankan server lokal (Port 8000)
-php artisan serve --host=0.0.0.0 --port=8000
-```
-
-> **Catatan**: Aplikasi frontend secara *default* sudah otomatis terhubung ke server produksi **Railway** (`https://catatan-keuangan-api-production.up.railway.app/api`), sehingga Anda dapat langsung menjalankan frontend tanpa wajib menyalakan server lokal.
-
-### 2. Menjalankan Frontend (Expo)
-Buka terminal pada folder `catatan-keuangan`:
-```bash
-cd catatan-keuangan
-
-# Pasang dependensi paket
+# 2. Install dependensi
 npm install
 
-# Menjalankan versi Web di browser
+# 3. Jalankan di browser
 npm run web
 
-# Menjalankan untuk ponsel (Android / iOS via Expo Go)
+# 4. Jalankan di ponsel (via Expo Go)
 npm start
 ```
 
+> 💡 **Tidak perlu setup backend!** Frontend sudah otomatis terhubung ke API produksi Railway. Langsung `npm run web` dan jalan.
+
 ---
 
-## 🔐 Manajemen Hak Akses Administrator
+### Backend (Laravel API — Opsional)
 
-Hak akses administrator dikelola langsung dari server backend. Untuk menetapkan hak akses admin pada akun pengguna, jalankan perintah artisan berikut pada terminal backend Anda:
+Jalankan backend sendiri jika ingin development offline:
 
 ```bash
-php artisan tinker --execute="App\Models\User::where('email', 'email_anda@domain.com')->update(['is_admin' => true]);"
+cd catatan-keuangan-api
+
+# Install dependensi PHP
+composer install
+
+# Setup environment
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+
+# Migrasi database + seeder admin
+php artisan migrate --seed
+
+# Jalankan server lokal
+php artisan serve --host=0.0.0.0 --port=8000
 ```
 
-Setelah itu, login ulang ke dalam aplikasi dan banner emas Administrator akan otomatis aktif di halaman Dashboard.
+Setelah backend lokal berjalan, buka **Settings → Server Config** di dalam aplikasi untuk mengganti URL API ke `http://localhost:8000/api`.
+
+---
+
+## 🔐 Akses Administrator
+
+Untuk mengaktifkan hak admin pada akun tertentu, jalankan di terminal backend:
+
+```bash
+php artisan tinker --execute="App\Models\User::where('email', 'email@domain.com')->update(['is_admin' => true]);"
+```
+
+Login ulang → banner emas **Administrator** otomatis muncul di dashboard.
 
 ---
 
 ## ☁️ Deploy
 
-### Deploy Frontend ke Vercel / Netlify
-1. Hubungkan repository GitHub ini ke **[Vercel](https://vercel.com)**.
-2. File `vercel.json` sudah terkonfigurasi:
-   - **Build Command**: `npx expo export -p web`
-   - **Output Directory**: `dist`
-3. Tekan **Deploy**, aplikasi web siap diakses publik.
+### 🌐 Frontend → Vercel
 
-### Deploy Backend ke Railway
-1. Hubungkan folder `catatan-keuangan-api` ke service **[Railway](https://railway.com)**.
-2. Gunakan start command: `bash start.sh` atau `php artisan serve --host 0.0.0.0 --port $PORT`.
-3. Variabel lingkungan utama: `DB_CONNECTION=sqlite`, `APP_ENV=production`.
+```bash
+# File vercel.json sudah terkonfigurasi otomatis
+# Build Command: npx expo export -p web
+# Output: dist/
+```
+
+1. Push ke GitHub
+2. Connect repo ke [vercel.com](https://vercel.com)
+3. Klik **Deploy** — selesai ✅
+
+### 🚂 Backend → Railway
+
+1. Connect folder API ke [railway.app](https://railway.app)
+2. Set start command: `php artisan serve --host 0.0.0.0 --port $PORT`
+3. Environment variables:
+   ```
+   DB_CONNECTION=sqlite
+   APP_ENV=production
+   APP_KEY=<your-key>
+   ```
 
 ---
 
-## 👨‍💻 Lisensi
+## ❤️ Support Creator
 
-Dikembangkan oleh **[JerichoNs](https://github.com/JerichoNs)**.  
-Proyek ini dilindungi di bawah lisensi **MIT License**.
+**Rekap.id sepenuhnya gratis dan open source.** Kalau aplikasi ini membantu keuanganmu, traktir developer kopi ☕ — bukan kewajiban, tapi sangat berarti!
+
+| Tier | Nominal | Manfaat |
+|:---|:---|:---|
+| ☕ **Traktir Kopi** | Rp 10.000 | Nama di halaman Thanks + badge Supporter |
+| 🚀 **Super Supporter** | Rp 25.000 | + Vote fitur + Early access + Badge eksklusif |
+| 👑 **Patron** | Rp 50.000 | + Nama di README ini + Request fitur langsung |
+
+> 🙏 *Terima kasih sudah mendukung open source Indonesia!*
+
+---
+
+### 👑 Patron Wall
+
+*Jadilah yang pertama mendukung Rekap.id sebagai Patron — nama kamu akan muncul di sini!*
+
+---
+
+## 📄 Lisensi
+
+```
+MIT License — Free to use, modify, and distribute.
+```
+
+Dikembangkan dengan ❤️ oleh **[JerichoNs](https://github.com/JerichoNs)**
+
+<div align="center">
+
+<br />
+
+**⭐ Jangan lupa kasih star kalau project ini bermanfaat!**
+
+[![GitHub stars](https://img.shields.io/github/stars/JerichoNs/CatatanKeuangan?style=social)](https://github.com/JerichoNs/CatatanKeuangan)
+
+</div>
