@@ -109,10 +109,10 @@ export default function FintechXLandingScreen() {
               <Ionicons name="sparkles" size={17} color="#FFFFFF" />
             </View>
             <Text style={[styles.brandText, { color: colors.ink }]}>
-              Fintech<Text style={{ color: '#3B82F6' }}>X</Text>
+              Rekap<Text style={{ color: '#3B82F6' }}>.id</Text>
             </Text>
             <View style={styles.brandBadge}>
-              <Text style={styles.brandBadgeText}>AI</Text>
+              <Text style={styles.brandBadgeText}>FREE</Text>
             </View>
           </TouchableOpacity>
 
@@ -129,7 +129,7 @@ export default function FintechXLandingScreen() {
                 <Text style={[styles.navLinkText, { color: colors.ink }]}>Use Cases</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.navLinkItem}>
-                <Text style={[styles.navLinkText, { color: colors.ink }]}>Pricing</Text>
+                <Text style={[styles.navLinkText, { color: colors.ink }]}>Support</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -718,7 +718,7 @@ export default function FintechXLandingScreen() {
                   { color: comparisonState === 'before' ? '#FFFFFF' : colors.inkMuted },
                 ]}
               >
-                Before FintechX
+                Before Rekap.id
               </Text>
             </TouchableOpacity>
 
@@ -741,7 +741,7 @@ export default function FintechXLandingScreen() {
                   { color: comparisonState === 'after' ? '#FFFFFF' : colors.inkMuted },
                 ]}
               >
-                After FintechX
+                After Rekap.id
               </Text>
             </TouchableOpacity>
           </View>
@@ -927,60 +927,37 @@ export default function FintechXLandingScreen() {
           </View>
         </View>
 
-        {/* ================= PRICING SECTION ================= */}
+        {/* ================= SUPPORT CREATOR SECTION ================= */}
         <View style={styles.sectionContainer}>
-          <Text style={[styles.sectionTag, { color: '#3B82F6' }]}>Transparent Pricing</Text>
+          <Text style={[styles.sectionTag, { color: '#10B981' }]}>100% Gratis Forever</Text>
           <Text style={[styles.sectionHeading, { color: colors.ink }]}>
-            Pilih Paket Finansial Terbaik Anda
+            Dukung Developer,{' \n'}Tetap Nikmati Semua Fitur
           </Text>
           <Text style={[styles.sectionSubtitle, { color: colors.inkMuted }]}>
-            Mulai gratis sekarang, upgrade saat Anda membutuhkan laporan eksekutif dan AI mendalam.
+            Rekap.id sepenuhnya gratis. Kalau aplikasi ini membantu keuanganmu,{' '}
+            traktir developer kopi ☕ — bukan kewajiban, tapi sangat berarti.
           </Text>
 
-          {/* Pricing Cycle Toggle */}
-          <View style={styles.pricingToggleRow}>
-            <TouchableOpacity
-              onPress={() => setPricingCycle('monthly')}
-              style={[
-                styles.pricingCycleBtn,
-                pricingCycle === 'monthly' && {
-                  backgroundColor: '#3B82F6',
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.pricingCycleText,
-                  { color: pricingCycle === 'monthly' ? '#FFFFFF' : colors.inkMuted },
-                ]}
-              >
-                Bulanan
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => setPricingCycle('yearly')}
-              style={[
-                styles.pricingCycleBtn,
-                pricingCycle === 'yearly' && {
-                  backgroundColor: '#3B82F6',
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.pricingCycleText,
-                  { color: pricingCycle === 'yearly' ? '#FFFFFF' : colors.inkMuted },
-                ]}
-              >
-                Tahunan (Hemat 20%)
-              </Text>
-            </TouchableOpacity>
+          {/* Free badge banner */}
+          <View
+            style={[
+              styles.supportFreeBanner,
+              {
+                backgroundColor: isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.08)',
+                borderColor: 'rgba(16, 185, 129, 0.3)',
+              },
+            ]}
+          >
+            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
+            <Text style={[styles.supportFreeBannerText, { color: isDark ? '#6EE7B7' : '#065F46' }]}>
+              Semua fitur — Catat Transaksi, Market Ticker, AI Command, Ekspor PDF — <Text style={{ fontWeight: '800' }}>GRATIS selamanya</Text>
+            </Text>
           </View>
 
-          {/* Pricing Cards Grid */}
+          {/* Donation Cards Grid */}
           <View style={[styles.pricingCardsGrid, { flexDirection: isDesktop ? 'row' : 'column' }]}>
-            {/* Starter Plan */}
+
+            {/* Tier 1: Kopi */}
             <View
               style={[
                 styles.pricingCard,
@@ -990,90 +967,137 @@ export default function FintechXLandingScreen() {
                 },
               ]}
             >
-              <Text style={[styles.pricingPlanName, { color: colors.ink }]}>Starter</Text>
+              <Text style={{ fontSize: 36, marginBottom: 8 }}>☕</Text>
+              <Text style={[styles.pricingPlanName, { color: colors.ink }]}>Traktir Kopi</Text>
               <Text style={[styles.pricingPlanDesc, { color: colors.inkMuted }]}>
-                Untuk pemula yang ingin mulai mencatat arus kas pribadi.
+                Donasi kecil yang berarti besar. Bantu developer tetap semangat ngoding.
               </Text>
-              <Text style={[styles.pricingPrice, { color: colors.ink }]}>Rp 0</Text>
-              <Text style={[styles.pricingPerMonth, { color: colors.inkMuted }]}>Gratis selamanya</Text>
+              <Text style={[styles.pricingPrice, { color: colors.ink }]}>Rp 10.000</Text>
+              <Text style={[styles.pricingPerMonth, { color: colors.inkMuted }]}>sekali, sukarela</Text>
 
               <View style={styles.pricingFeatureList}>
                 <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="checkmark" size={16} color="#10B981" />
-                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Catat transaksi harian</Text>
+                  <Ionicons name="heart" size={16} color="#EF4444" />
+                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Nama kamu di halaman Thanks</Text>
                 </View>
                 <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="checkmark" size={16} color="#10B981" />
-                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>2 Kantong Simpanan</Text>
-                </View>
-                <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="checkmark" size={16} color="#10B981" />
-                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Dashboard ringkasan kas</Text>
+                  <Ionicons name="heart" size={16} color="#EF4444" />
+                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Badge "Supporter" di profil</Text>
                 </View>
               </View>
 
               <TouchableOpacity
-                onPress={handleStartDemo}
+                onPress={handleGoToApp}
                 style={[
                   styles.pricingCardButtonOutlined,
                   { borderColor: isDark ? 'rgba(255,255,255,0.2)' : '#CBD5E1' },
                 ]}
               >
                 <Text style={[styles.pricingCardButtonTextOutlined, { color: colors.ink }]}>
-                  Mulai Gratis
+                  Traktir Sekarang ☕
                 </Text>
               </TouchableOpacity>
             </View>
 
-            {/* Pro Plan (Featured) */}
+            {/* Tier 2: Supporter (Featured) */}
             <View
               style={[
                 styles.pricingCard,
                 styles.pricingCardFeatured,
                 {
                   backgroundColor: isDark ? '#141E33' : '#0F172A',
-                  borderColor: '#3B82F6',
+                  borderColor: '#10B981',
                 },
               ]}
             >
-              <View style={styles.popularBadge}>
-                <Text style={styles.popularBadgeText}>PALING POPULER</Text>
+              <View style={[styles.popularBadge, { backgroundColor: '#10B981' }]}>
+                <Text style={styles.popularBadgeText}>PALING BANYAK DIPILIH</Text>
               </View>
-              <Text style={[styles.pricingPlanName, { color: '#FFFFFF' }]}>Pro AI</Text>
+              <Text style={{ fontSize: 36, marginBottom: 8 }}>🚀</Text>
+              <Text style={[styles.pricingPlanName, { color: '#FFFFFF' }]}>Super Supporter</Text>
               <Text style={[styles.pricingPlanDesc, { color: '#94A3B8' }]}>
-                Fitur lengkap dengan analisis AI, market ticker, dan ekspor resmi.
+                Kontribusi yang bikin server tetap nyala dan fitur baru terus hadir.
               </Text>
-              <Text style={[styles.pricingPrice, { color: '#FFFFFF' }]}>
-                {pricingCycle === 'yearly' ? 'Rp 39.000' : 'Rp 49.000'}
-              </Text>
-              <Text style={[styles.pricingPerMonth, { color: '#94A3B8' }]}>/ bulan dibayar tahunan</Text>
+              <Text style={[styles.pricingPrice, { color: '#FFFFFF' }]}>Rp 25.000</Text>
+              <Text style={[styles.pricingPerMonth, { color: '#94A3B8' }]}>sekali, sukarela</Text>
 
               <View style={styles.pricingFeatureList}>
                 <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="checkmark" size={16} color="#3B82F6" />
-                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Semua fitur Starter</Text>
+                  <Ionicons name="heart" size={16} color="#10B981" />
+                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Semua dari Tier Kopi</Text>
                 </View>
                 <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="checkmark" size={16} color="#3B82F6" />
-                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Real-time Market Ticker (IHSG, Valas, Emas)</Text>
+                  <Ionicons name="heart" size={16} color="#10B981" />
+                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Badge eksklusif "Super Supporter" 🚀</Text>
                 </View>
                 <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="checkmark" size={16} color="#3B82F6" />
-                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Ekspor Laporan PDF format A4</Text>
+                  <Ionicons name="heart" size={16} color="#10B981" />
+                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Vote fitur yang mau dikembangkan</Text>
                 </View>
                 <View style={styles.pricingFeatureItem}>
-                  <Ionicons name="checkmark" size={16} color="#3B82F6" />
-                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>AI Financial Command & Prediksi</Text>
+                  <Ionicons name="heart" size={16} color="#10B981" />
+                  <Text style={[styles.pricingFeatureText, { color: '#FFFFFF' }]}>Early access fitur baru</Text>
                 </View>
               </View>
 
               <TouchableOpacity
                 onPress={handleGoToApp}
-                style={styles.pricingCardButtonSolid}
+                style={[styles.pricingCardButtonSolid, { backgroundColor: '#10B981' }]}
               >
-                <Text style={styles.pricingCardButtonTextSolid}>Coba Pro Sekarang</Text>
+                <Text style={styles.pricingCardButtonTextSolid}>Dukung Sekarang 🚀</Text>
               </TouchableOpacity>
             </View>
+
+            {/* Tier 3: Patron */}
+            <View
+              style={[
+                styles.pricingCard,
+                {
+                  backgroundColor: isDark ? '#111827' : '#FFFFFF',
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E2E8F0',
+                },
+              ]}
+            >
+              <Text style={{ fontSize: 36, marginBottom: 8 }}>👑</Text>
+              <Text style={[styles.pricingPlanName, { color: colors.ink }]}>Patron</Text>
+              <Text style={[styles.pricingPlanDesc, { color: colors.inkMuted }]}>
+                Kamu serius mendukung open source Indonesia. Terima kasih dari hati!
+              </Text>
+              <Text style={[styles.pricingPrice, { color: colors.ink }]}>Rp 50.000</Text>
+              <Text style={[styles.pricingPerMonth, { color: colors.inkMuted }]}>sekali, sukarela</Text>
+
+              <View style={styles.pricingFeatureList}>
+                <View style={styles.pricingFeatureItem}>
+                  <Ionicons name="heart" size={16} color="#F59E0B" />
+                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Semua dari Tier Sebelumnya</Text>
+                </View>
+                <View style={styles.pricingFeatureItem}>
+                  <Ionicons name="heart" size={16} color="#F59E0B" />
+                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Nama + link di README GitHub</Text>
+                </View>
+                <View style={styles.pricingFeatureItem}>
+                  <Ionicons name="heart" size={16} color="#F59E0B" />
+                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Badge "Patron" eksklusif 👑</Text>
+                </View>
+                <View style={styles.pricingFeatureItem}>
+                  <Ionicons name="heart" size={16} color="#F59E0B" />
+                  <Text style={[styles.pricingFeatureText, { color: colors.ink }]}>Satu permintaan fitur langsung ke developer</Text>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                onPress={handleGoToApp}
+                style={[
+                  styles.pricingCardButtonOutlined,
+                  { borderColor: isDark ? 'rgba(255,255,255,0.2)' : '#CBD5E1' },
+                ]}
+              >
+                <Text style={[styles.pricingCardButtonTextOutlined, { color: colors.ink }]}>
+                  Jadi Patron 👑
+                </Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
         </View>
 
@@ -1083,7 +1107,7 @@ export default function FintechXLandingScreen() {
             Frequently Asked Questions
           </Text>
           <Text style={[styles.sectionSubtitle, { color: colors.inkMuted }]}>
-            Pertanyaan yang sering diajukan mengenai platform Catatan Keuangan.
+            Pertanyaan yang sering diajukan mengenai Rekap.id.
           </Text>
 
           <View style={styles.faqList}>
@@ -1098,7 +1122,7 @@ export default function FintechXLandingScreen() {
               },
               {
                 q: 'Apakah bisa digunakan di berbagai perangkat (Web & Mobile)?',
-                a: 'Ya, Catatan Keuangan dibangun secara universal sehingga Anda dapat membukanya dengan mulus di browser laptop (Chrome, Edge, Safari) maupun aplikasi mobile Android dan iOS.',
+                a: 'Ya, Rekap.id dibangun secara universal sehingga Anda dapat membukanya dengan mulus di browser laptop (Chrome, Edge, Safari) maupun aplikasi mobile Android dan iOS.',
               },
               {
                 q: 'Apakah tersedia fitur cetak / unduh laporan PDF?',
@@ -1148,11 +1172,11 @@ export default function FintechXLandingScreen() {
               <Ionicons name="sparkles" size={16} color="#FFFFFF" />
             </View>
             <Text style={[styles.brandText, { color: colors.ink }]}>
-              Fintech<Text style={{ color: '#3B82F6' }}>X</Text> Keuangan
+              Rekap<Text style={{ color: '#3B82F6' }}>.id</Text>
             </Text>
           </View>
           <Text style={[styles.footerCopyright, { color: colors.inkMuted }]}>
-            © 2026 Catatan Keuangan × FintechX Template. All rights reserved.
+            © 2026 Rekap.id — Open Source, Gratis Selamanya ❤️
           </Text>
         </View>
       </ScrollView>
@@ -1994,7 +2018,7 @@ const styles = StyleSheet.create({
   },
   pricingCardsGrid: {
     width: '100%',
-    maxWidth: 820,
+    maxWidth: 1100,
     gap: 24,
   },
   pricingCard: {
@@ -2117,5 +2141,23 @@ const styles = StyleSheet.create({
   },
   footerCopyright: {
     fontSize: 13,
+  },
+  supportFreeBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    borderRadius: 14,
+    borderWidth: 1,
+    marginBottom: 32,
+    width: '100%',
+    maxWidth: 700,
+  },
+  supportFreeBannerText: {
+    fontSize: 13,
+    fontWeight: '600',
+    flex: 1,
+    lineHeight: 20,
   },
 });
