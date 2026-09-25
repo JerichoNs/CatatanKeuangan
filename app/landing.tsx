@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -23,6 +23,11 @@ export default function FintechXLandingScreen() {
   const { loginAsDemo, user } = useAuth();
   const isDesktop = width >= 960;
   const isTablet = width >= 640 && width < 960;
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const scrollToY = (y: number) => {
+    scrollViewRef.current?.scrollTo({ y, animated: true });
+  };
 
   const [activeTab, setActiveTab] = useState<'monthly' | 'weekly' | 'daily'>('monthly');
   const [comparisonState, setComparisonState] = useState<'after' | 'before'>('after');
@@ -80,95 +85,9 @@ export default function FintechXLandingScreen() {
         />
       </View>
 
-      {/* Floating Top Pill Navbar */}
-      <View style={styles.navbarWrapper}>
-        <View
-          style={[
-            styles.navbarPill,
-            {
-              backgroundColor: isDark ? 'rgba(15, 23, 42, 0.82)' : 'rgba(255, 255, 255, 0.85)',
-              borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.95)',
-              ...(isWeb
-                ? ({
-                    backdropFilter: 'blur(20px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                    boxShadow: isDark
-                      ? '0 10px 30px rgba(0, 0, 0, 0.5)'
-                      : '0 10px 30px rgba(37, 99, 235, 0.08)',
-                  } as any)
-                : {}),
-            },
-          ]}
-        >
-          {/* Brand Logo */}
-          <TouchableOpacity
-            onPress={() => router.replace('/landing')}
-            style={styles.navBrand}
-            activeOpacity={0.8}
-          >
-            <View style={styles.brandIconWrap}>
-              <Ionicons name="sparkles" size={21} color="#FFFFFF" />
-            </View>
-            <Text style={[styles.brandText, { color: colors.ink }]}>
-              Rekap<Text style={{ color: '#3B82F6' }}>.id</Text>
-            </Text>
-            <View style={styles.brandBadge}>
-              <Text style={styles.brandBadgeText}>FREE</Text>
-            </View>
-          </TouchableOpacity>
-
-          {/* Desktop Nav Links */}
-          {isDesktop && (
-            <View style={styles.navLinksCenter}>
-              <TouchableOpacity style={styles.navLinkItem}>
-                <Text style={[styles.navLinkText, { color: colors.ink }]}>Products</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navLinkItem}>
-                <Text style={[styles.navLinkText, { color: colors.ink }]}>Features</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navLinkItem}>
-                <Text style={[styles.navLinkText, { color: colors.ink }]}>Use Cases</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navLinkItem}>
-                <Text style={[styles.navLinkText, { color: colors.ink }]}>Support</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-
-          {/* Right Action Buttons */}
-          <View style={styles.navRightActions}>
-            <ThemeToggle size="small" />
-
-            <TouchableOpacity
-              onPress={handleStartDemo}
-              style={[
-                styles.navDemoButton,
-                {
-                  borderColor: isDark ? 'rgba(255, 255, 255, 0.16)' : 'rgba(0, 0, 0, 0.1)',
-                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
-                },
-              ]}
-              activeOpacity={0.8}
-            >
-              <Text style={[styles.navDemoText, { color: colors.ink }]}>Demo</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={handleGoToApp}
-              style={styles.navCtaButton}
-              activeOpacity={0.85}
-            >
-              <Text style={styles.navCtaText}>{user ? 'Buka App' : 'Try it free'}</Text>
-              <View style={styles.navCtaArrow}>
-                <Ionicons name="arrow-forward" size={12} color="#0B0F19" />
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-
       {/* Main Scroll Content */}
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
@@ -293,7 +212,7 @@ export default function FintechXLandingScreen() {
                     <View style={styles.sidebarLogoIcon}>
                       <Ionicons name="sparkles" size={15} color="#FFFFFF" />
                     </View>
-                    <Text style={styles.sidebarBrandTitle}>FintechX</Text>
+                    <Text style={styles.sidebarBrandTitle}>Rekap.id</Text>
                   </View>
 
                   <View style={styles.sidebarMenu}>
@@ -695,7 +614,7 @@ export default function FintechXLandingScreen() {
             Smarter decisions start with clear data
           </Text>
           <Text style={[styles.sectionSubtitle, { color: colors.inkMuted }]}>
-            Bandingkan bagaimana alur pengelolaan kas manual vs sistem cerdas FintechX
+            Bandingkan bagaimana alur pengelolaan kas manual vs sistem cerdas Rekap.id
           </Text>
 
           {/* Toggle Switch */}
@@ -930,12 +849,12 @@ export default function FintechXLandingScreen() {
 
         {/* ================= SUPPORT CREATOR SECTION ================= */}
         <MotionView preset="fade-up" delay={0.05} style={styles.sectionContainer}>
-          <Text style={[styles.sectionTag, { color: '#10B981' }]}>100% Gratis Forever</Text>
+          <Text style={[styles.sectionTag, { color: '#10B981' }]}>100% Gratis Selamanya</Text>
           <Text style={[styles.sectionHeading, { color: colors.ink }]}>
-            Suka Aplikasinya?{'\n'}Traktir Developer Dong ☕
+            Suka Aplikasinya?{'\n'}Boleh Traktir Kopi ☕
           </Text>
           <Text style={[styles.sectionSubtitle, { color: colors.inkMuted }]}>
-            Rekap.id gratis sepenuhnya. Kalau mau support, boleh — kalau nggak, juga nggak apa-apa 😄
+            Semua fitur Rekap.id bebas digunakan siapa saja tanpa biaya apapun. Kalau mau apresiasi developer, traktir seikhlasnya ya!
           </Text>
 
           {/* Donation Cards — Simple */}
@@ -1074,10 +993,115 @@ export default function FintechXLandingScreen() {
             </Text>
           </View>
           <Text style={[styles.footerCopyright, { color: colors.inkMuted }]}>
-            © 2026 Rekap.id — Open Source, Gratis Selamanya ❤️
+            © 2026 Rekap.id — 100% Gratis untuk Semua Orang ❤️
           </Text>
         </View>
       </ScrollView>
+
+      {/* Floating Top Pill Navbar (Rendered AFTER ScrollView for top z-index & clean clicks) */}
+      <View style={styles.navbarWrapper} pointerEvents="box-none">
+        <View
+          style={[
+            styles.navbarPill,
+            {
+              backgroundColor: isDark ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255, 255, 255, 0.88)',
+              borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.95)',
+              ...(isWeb
+                ? ({
+                    backdropFilter: 'blur(20px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                    boxShadow: isDark
+                      ? '0 10px 30px rgba(0, 0, 0, 0.5)'
+                      : '0 10px 30px rgba(37, 99, 235, 0.08)',
+                  } as any)
+                : {}),
+            },
+          ]}
+          pointerEvents="auto"
+        >
+          {/* Brand Logo */}
+          <TouchableOpacity
+            onPress={() => scrollToY(0)}
+            style={styles.navBrand}
+            activeOpacity={0.8}
+          >
+            <View style={styles.brandIconWrap}>
+              <Ionicons name="sparkles" size={21} color="#FFFFFF" />
+            </View>
+            <Text style={[styles.brandText, { color: colors.ink }]}>
+              Rekap<Text style={{ color: '#3B82F6' }}>.id</Text>
+            </Text>
+            <View style={styles.brandBadge}>
+              <Text style={styles.brandBadgeText}>FREE</Text>
+            </View>
+          </TouchableOpacity>
+
+          {/* Desktop Nav Links */}
+          {isDesktop && (
+            <View style={styles.navLinksCenter}>
+              <TouchableOpacity
+                onPress={() => scrollToY(720)}
+                style={styles.navLinkItem}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.navLinkText, { color: colors.ink }]}>Bandingkan</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => scrollToY(1180)}
+                style={styles.navLinkItem}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.navLinkText, { color: colors.ink }]}>Fitur</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => scrollToY(1700)}
+                style={styles.navLinkItem}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.navLinkText, { color: colors.ink }]}>Traktir Dev</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => scrollToY(2150)}
+                style={styles.navLinkItem}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.navLinkText, { color: colors.ink }]}>FAQ</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* Right Action Buttons */}
+          <View style={styles.navRightActions}>
+            <ThemeToggle size="small" />
+
+            <TouchableOpacity
+              onPress={handleStartDemo}
+              style={[
+                styles.navDemoButton,
+                {
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.16)' : 'rgba(0, 0, 0, 0.1)',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
+                },
+                isWeb && ({ cursor: 'pointer' } as any),
+              ]}
+              activeOpacity={0.8}
+            >
+              <Text style={[styles.navDemoText, { color: colors.ink }]}>Demo</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleGoToApp}
+              style={[styles.navCtaButton, isWeb && ({ cursor: 'pointer' } as any)]}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.navCtaText}>{user ? 'Buka App' : 'Coba Gratis'}</Text>
+              <View style={styles.navCtaArrow}>
+                <Ionicons name="arrow-forward" size={12} color="#0B0F19" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
@@ -1118,7 +1142,7 @@ const styles = StyleSheet.create({
     top: 20,
     left: 0,
     right: 0,
-    zIndex: 100,
+    zIndex: 99999,
     alignItems: 'center',
     paddingHorizontal: 16,
   },
@@ -1137,6 +1161,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
+    cursor: 'pointer',
   },
   brandIconWrap: {
     width: 38,
@@ -1170,11 +1195,13 @@ const styles = StyleSheet.create({
   navLinksCenter: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 26,
+    gap: 18,
   },
   navLinkItem: {
-    paddingVertical: 4,
-    paddingHorizontal: 2,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    cursor: 'pointer',
   },
   navLinkText: {
     fontSize: 14,
@@ -1190,6 +1217,7 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     borderRadius: 9999,
     borderWidth: 1,
+    cursor: 'pointer',
   },
   navDemoText: {
     fontSize: 13,
@@ -1204,6 +1232,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingVertical: 7,
     borderRadius: 9999,
+    cursor: 'pointer',
   },
   navCtaText: {
     color: '#FFFFFF',
@@ -1734,6 +1763,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 80,
     alignItems: 'center',
+    flexDirection: 'column',
   },
   sectionTag: {
     fontSize: 13,
@@ -1741,6 +1771,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     textTransform: 'uppercase',
     marginBottom: 8,
+    textAlign: 'center',
+    width: '100%',
   },
   sectionHeading: {
     fontSize: 34,
@@ -1748,6 +1780,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     letterSpacing: -0.8,
     marginBottom: 10,
+    width: '100%',
   },
   sectionSubtitle: {
     fontSize: 15,
@@ -1755,6 +1788,7 @@ const styles = StyleSheet.create({
     maxWidth: 600,
     lineHeight: 22,
     marginBottom: 32,
+    width: '100%',
   },
   toggleRow: {
     flexDirection: 'row',

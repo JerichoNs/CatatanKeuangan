@@ -14,7 +14,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-latest-0055FF?style=flat-square&logo=framer&logoColor=white)](https://framer.com/motion)
-[![License MIT](https://img.shields.io/badge/License-MIT-10B981?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/License-Private-F59E0B?style=flat-square)]()
 [![Free Forever](https://img.shields.io/badge/Price-100%25_FREE-10B981?style=flat-square&logo=heart&logoColor=white)](#-support-creator)
 
 <br />
@@ -236,7 +236,7 @@ Login ulang → banner emas **Administrator** otomatis muncul di dashboard.
 
 ## ❤️ Support Creator
 
-**Rekap.id sepenuhnya gratis dan open source.** Kalau aplikasi ini membantu keuanganmu dan kamu mau traktir developer, boleh banget:
+**Rekap.id 100% gratis digunakan oleh siapapun.** Tidak ada biaya tersembunyi, batasan fitur, maupun sistem langganan berbayar. Kalau aplikasi ini bermanfaat untukmu dan kamu mau traktir developer, boleh banget:
 
 - ☕ **Kopi** — Rp 10.000
 - 🍱 **Makan Siang** — Rp 25.000
@@ -247,10 +247,12 @@ Login ulang → banner emas **Administrator** otomatis muncul di dashboard.
 
 ---
 
-## 📄 Lisensi
+## 📄 Lisensi & Hak Cipta
 
 ```
-MIT License — Free to use, modify, and distribute.
+Copyright (c) 2026 JerichoNs. All rights reserved.
+Aplikasi ini gratis digunakan oleh publik secara personal.
+Source code bersifat privat (bukan open-source) dan hak cipta sepenuhnya dilindungi.
 ```
 
 Dikembangkan dengan ❤️ oleh **[JerichoNs](https://github.com/JerichoNs)**

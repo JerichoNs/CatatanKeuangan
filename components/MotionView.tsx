@@ -73,9 +73,9 @@ function WebMotionView({
   if (!MotionDiv) {
     // Show content immediately while loading (prevents layout shift)
     return (
-      <div style={{ ...(style as any), opacity: 1 }} {...(rest as any)}>
+      <View style={style} {...rest}>
         {children}
-      </div>
+      </View>
     );
   }
 
@@ -90,10 +90,16 @@ function WebMotionView({
         delay,
         ease: [0.22, 1, 0.36, 1],
       }}
-      style={style as any}
-      {...(rest as any)}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        alignItems: 'center',
+      }}
     >
-      {children}
+      <View style={style} {...rest}>
+        {children}
+      </View>
     </MotionDiv>
   );
 }
