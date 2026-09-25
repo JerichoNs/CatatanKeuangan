@@ -15,7 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth, translateApiError } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { spacing, radius, shadow } from '../../constants/theme';
-import { Button, InputField, LiquidSheenBeam } from '../../components/ui';
+import { Button, InputField } from '../../components/ui';
 import { ThemeToggle } from '../../components/ThemeToggle';
 import { AuthAmbientBubbles } from '../../components/AuthAmbientBubbles';
 
@@ -186,8 +186,6 @@ export default function LoginScreen() {
             cardShadow,
           ]}
         >
-          <LiquidSheenBeam />
-
           {isWide ? (
             <View style={styles.twoColLayout}>
               <Animated.View style={[styles.leftPanel, { opacity: leftPaneFade, transform: [{ translateX: leftPaneSlide }] }]}>
@@ -203,10 +201,10 @@ export default function LoginScreen() {
                     ))}
                   </View>
                   <Animated.View style={[styles.leftIconArea, { transform: [{ translateY: floatAnim }, { scale: pulseAnim }] }]}>
+                    <View style={styles.orbitRing} pointerEvents="none" />
                     <View style={styles.leftIconCircle}>
-                      <Ionicons name="wallet" size={38} color="#FFFFFF" />
+                      <Ionicons name="wallet" size={36} color="#FFFFFF" />
                     </View>
-                    <View style={styles.orbitRing} />
                   </Animated.View>
                   <Text style={styles.leftTitle}>Rekap.id</Text>
                   <Text style={styles.leftSubtitle}>{'Pantau keuangan harian\ndengan mudah & cerdas.'}</Text>
@@ -325,13 +323,13 @@ function FormContent({
           <Animated.View style={[styles.shimmerBar, { transform: [{ translateX: shimmerTranslate }] }]} pointerEvents="none" />
         )}
         {demoLoading ? (
-          <Text style={[styles.demoText, { color: colors.primary }]}>Memuat demo\u2026</Text>
+          <Text style={[styles.demoText, { color: colors.primary }]}>Memuat demo…</Text>
         ) : (
           <View style={styles.demoInner}>
             <LinearGradient colors={['#7C7CFF', '#6161FF']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.demoIconBubble}>
               <Ionicons name="play-circle-outline" size={16} color="#FFF" />
             </LinearGradient>
-            <Text style={[styles.demoText, { color: colors.primary }]}>Coba Demo \u2014 Tanpa Akun</Text>
+            <Text style={[styles.demoText, { color: colors.primary }]}>Coba Demo — Tanpa Akun</Text>
             <View style={[styles.demoBadge, { backgroundColor: isDark ? 'rgba(97,97,255,0.25)' : 'rgba(97,97,255,0.12)' }]}>
               <Text style={[styles.demoBadgeText, { color: colors.primary }]}>GRATIS</Text>
             </View>
@@ -371,14 +369,45 @@ const styles = StyleSheet.create({
   leftPanelGradient: { flex: 1, padding: 36, justifyContent: 'flex-end', overflow: 'hidden' },
   dotGrid: { position: 'absolute', top: 20, left: 20, flexDirection: 'row', flexWrap: 'wrap', width: 120, gap: 12 },
   dot: { width: 4, height: 4, borderRadius: 2, backgroundColor: '#FFFFFF' },
-  leftIconArea: { alignItems: 'center', marginBottom: 28 },
-  leftIconCircle: {
-    width: 80, height: 80, borderRadius: 40,
-    backgroundColor: 'rgba(255,255,255,0.18)', borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.35)',
-    alignItems: 'center', justifyContent: 'center',
-    ...(Platform.OS === 'web' ? ({ boxShadow: '0 16px 40px rgba(0,0,0,0.30)', backdropFilter: 'blur(8px)' } as any) : {}),
+  leftIconArea: {
+    width: 120,
+    height: 120,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: 24,
+    position: 'relative',
   },
-  orbitRing: { position: 'absolute', width: 110, height: 110, borderRadius: 55, borderWidth: 1, borderColor: 'rgba(255,255,255,0.18)', borderStyle: 'dashed' },
+  leftIconCircle: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,255,255,0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 2,
+    ...(Platform.OS === 'web'
+      ? ({
+          boxShadow: '0 12px 32px rgba(0,0,0,0.30)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+        } as any)
+      : {}),
+  },
+  orbitRing: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    width: 104,
+    height: 104,
+    borderRadius: 52,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,255,255,0.25)',
+    borderStyle: 'dashed',
+    zIndex: 1,
+  },
   leftTitle: { fontSize: 28, fontWeight: '800', color: '#FFFFFF', letterSpacing: -0.8, marginBottom: 8 },
   leftSubtitle: { fontSize: 14, color: 'rgba(255,255,255,0.72)', lineHeight: 22, marginBottom: 24 },
   chipRow: { gap: 8 },

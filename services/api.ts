@@ -115,9 +115,9 @@ async function request<T>(
     if (token) headers['Authorization'] = `Bearer ${token}`;
   }
 
-  // Intercept untuk Demo Mode FintechX
+  // Intercept untuk Demo Mode (Rekap.id / FintechX)
   const token = requiresAuth ? await getToken() : null;
-  if (token === 'demo_fintechx_token') {
+  if (token && (token.startsWith('demo_') || token === 'demo_fintechx_token' || token === 'demo_rekap_token')) {
     return handleDemoRequest<T>(method, path, body);
   }
 
@@ -166,90 +166,98 @@ async function request<T>(
   }
 }
 
-// Memory store untuk Demo FintechX
+function toDemoDate(daysAgo = 0): string {
+  const d = new Date(Date.now() - 86400000 * daysAgo);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Memory store untuk Demo Rekap.id
 let demoStorage: any[] = [
   {
     id: 'tx-1',
-    userId: 'demo-user-fintechx',
+    userId: 'demo-user-rekap',
     type: 'income',
-    amount: 35000000,
-    category: 'Gaji & Bonus',
-    note: 'Gaji Bulanan & Profit Sharing',
+    amount: 18500000,
+    category: 'Gaji',
+    note: 'Gaji Bulanan & Tunjangan Operasional',
     pocket: 'simpanan_pertama',
-    date: new Date(Date.now() - 86400000 * 2).toISOString(),
-    createdAt: Date.now() - 86400000 * 2,
+    date: toDemoDate(1),
+    createdAt: Date.now() - 86400000 * 1,
   },
   {
     id: 'tx-2',
-    userId: 'demo-user-fintechx',
+    userId: 'demo-user-rekap',
     type: 'income',
-    amount: 12500000,
-    category: 'Investasi & Dividen',
-    note: 'Dividen Saham BBCA & Return Reksadana',
+    amount: 6200000,
+    category: 'Investasi',
+    note: 'Dividen Portofolio Saham & Reksadana [Nabung]',
     pocket: 'pocket_nabung',
-    date: new Date(Date.now() - 86400000 * 3).toISOString(),
-    createdAt: Date.now() - 86400000 * 3,
+    date: toDemoDate(2),
+    createdAt: Date.now() - 86400000 * 2,
   },
   {
     id: 'tx-3',
-    userId: 'demo-user-fintechx',
+    userId: 'demo-user-rekap',
     type: 'expense',
-    amount: 4500000,
-    category: 'Kebutuhan & Rumah',
-    note: 'Belanja Bulanan & Listrik',
+    amount: 3200000,
+    category: 'Belanja',
+    note: 'Belanja Bulanan & Kebutuhan Rumah',
     pocket: 'simpanan_pertama',
-    date: new Date(Date.now() - 86400000 * 1).toISOString(),
-    createdAt: Date.now() - 86400000 * 1,
+    date: toDemoDate(2),
+    createdAt: Date.now() - 86400000 * 2,
   },
   {
     id: 'tx-4',
-    userId: 'demo-user-fintechx',
+    userId: 'demo-user-rekap',
     type: 'expense',
-    amount: 1850000,
-    category: 'Makan & Minum',
-    note: 'Dining & Coffee Workspace',
+    amount: 1450000,
+    category: 'Makanan',
+    note: 'Dining Kuliner & Coffee Workspace',
     pocket: 'simpanan_pertama',
-    date: new Date(Date.now() - 86400000 * 1).toISOString(),
-    createdAt: Date.now() - 86400000 * 1,
+    date: toDemoDate(3),
+    createdAt: Date.now() - 86400000 * 3,
   },
   {
     id: 'tx-5',
-    userId: 'demo-user-fintechx',
+    userId: 'demo-user-rekap',
     type: 'income',
-    amount: 8000000,
-    category: 'Freelance & Side Gig',
-    note: 'Konsultasi Fintech Web Project',
+    amount: 4500000,
+    category: 'Bonus',
+    note: 'Project Freelance Web App [Nabung]',
     pocket: 'pocket_nabung',
-    date: new Date(Date.now() - 86400000 * 5).toISOString(),
-    createdAt: Date.now() - 86400000 * 5,
-  },
-  {
-    id: 'tx-6',
-    userId: 'demo-user-fintechx',
-    type: 'expense',
-    amount: 2200000,
-    category: 'Langganan & Software',
-    note: 'Cloud, Claude AI & Figma Pro',
-    pocket: 'simpanan_pertama',
-    date: new Date(Date.now() - 86400000 * 4).toISOString(),
+    date: toDemoDate(4),
     createdAt: Date.now() - 86400000 * 4,
   },
   {
+    id: 'tx-6',
+    userId: 'demo-user-rekap',
+    type: 'expense',
+    amount: 850000,
+    category: 'Tagihan',
+    note: 'Listrik PLN, WiFi, & Air',
+    pocket: 'simpanan_pertama',
+    date: toDemoDate(5),
+    createdAt: Date.now() - 86400000 * 5,
+  },
+  {
     id: 'tx-7',
-    userId: 'demo-user-fintechx',
-    type: 'income',
-    amount: 4200000,
-    category: 'Imbal Hasil Emas & Obligasi',
-    note: 'Kupon Sukuk Ritel SR020',
-    pocket: 'pocket_nabung',
-    date: new Date(Date.now() - 86400000 * 6).toISOString(),
+    userId: 'demo-user-rekap',
+    type: 'expense',
+    amount: 650000,
+    category: 'Transportasi',
+    note: 'Bensin & Saldo E-Toll',
+    pocket: 'simpanan_pertama',
+    date: toDemoDate(6),
     createdAt: Date.now() - 86400000 * 6,
   },
 ];
 
 async function handleDemoRequest<T>(method: string, path: string, body?: any): Promise<T> {
-  // Simulasi latency cepat 100ms
-  await new Promise((r) => setTimeout(r, 120));
+  // Latency responsif 80ms
+  await new Promise((r) => setTimeout(r, 80));
 
   if (path === '/transactions') {
     if (method === 'GET') {
@@ -258,7 +266,7 @@ async function handleDemoRequest<T>(method: string, path: string, body?: any): P
     if (method === 'POST') {
       const newTx = {
         id: `demo-${Date.now()}`,
-        userId: 'demo-user-fintechx',
+        userId: 'demo-user-rekap',
         ...body,
         createdAt: Date.now(),
       };
@@ -267,11 +275,25 @@ async function handleDemoRequest<T>(method: string, path: string, body?: any): P
     }
   }
 
+  if (path === '/transactions/reset/all' || (path.startsWith('/transactions/') && path.includes('reset'))) {
+    demoStorage = [];
+    return { message: 'Reset transaksi berhasil' } as T;
+  }
+
   if (path.startsWith('/transactions/')) {
     const id = path.replace('/transactions/', '');
     if (method === 'DELETE') {
       demoStorage = demoStorage.filter((t) => t.id !== id);
       return undefined as T;
+    }
+    if (method === 'GET') {
+      const item = demoStorage.find((t) => t.id === id);
+      return (item || {}) as T;
+    }
+    if (method === 'PUT') {
+      demoStorage = demoStorage.map((t) => (t.id === id ? { ...t, ...body } : t));
+      const updated = demoStorage.find((t) => t.id === id);
+      return (updated || body) as T;
     }
   }
 
