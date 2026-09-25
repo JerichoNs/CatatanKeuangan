@@ -16,6 +16,7 @@ type AuthContextType = {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
+  loginAsDemo: () => Promise<void>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
 };
@@ -71,6 +72,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await persistUser(res.token, res.user);
   };
 
+  const loginAsDemo = async () => {
+    const demoUser: AppUser = {
+      id: "demo-user-fintechx",
+      name: "Alex FintechX",
+      email: "alex.fintechx@example.com",
+      is_admin: true,
+    };
+    await persistUser("demo_fintechx_token", demoUser);
+  };
+
   const logout = async () => {
     try {
       await api.post("/auth/logout", {});
@@ -94,6 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         loading,
         login,
         register,
+        loginAsDemo,
         logout,
         resetPassword,
       }}

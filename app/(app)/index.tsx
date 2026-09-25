@@ -300,21 +300,23 @@ export default function DashboardScreen() {
             style={[
               styles.datePill,
               {
-                backgroundColor: isDark ? 'rgba(97, 97, 255, 0.16)' : '#E7ECFF',
-                borderColor: isDark ? 'rgba(97, 97, 255, 0.35)' : '#D0D4E4',
+                backgroundColor: isDark ? 'rgba(59, 130, 246, 0.16)' : '#EFF6FF',
+                borderColor: isDark ? 'rgba(59, 130, 246, 0.35)' : '#BFDBFE',
               },
             ]}
           >
             <View style={[styles.dateIconCircle, { backgroundColor: colors.primary }]}>
-              <Ionicons name="calendar" size={13} color="#FFFFFF" />
+              <Ionicons name="sparkles" size={13} color="#FFFFFF" />
             </View>
-            <Text style={[styles.datePillText, { color: colors.ink }]}>{getFormattedDate()}</Text>
+            <Text style={[styles.datePillText, { color: colors.ink }]}>
+              Financial Command • {getFormattedDate()}
+            </Text>
           </View>
           <Text style={[styles.greetingTitle, { color: colors.ink }]}>
-            {getGreeting()}, <Text style={{ color: colors.primary }}>{user?.name || 'Kawan'}</Text> 👋
+            Financial Command, <Text style={{ color: colors.primary }}>{user?.name || 'Alex'}</Text>
           </Text>
           <Text style={[styles.greetingSubtitle, { color: colors.inkMuted }]}>
-            Pantau arus kas masuk, pengeluaran harian, dan kesehatan finansialmu hari ini.
+            Welcome back! Pantau arus kas masuk, pengeluaran harian, dan kesehatan portofolio Anda secara real-time.
           </Text>
         </View>
 
@@ -388,12 +390,12 @@ export default function DashboardScreen() {
 
           {/* 3. Top Financial Metric Cards Grid */}
           <View style={isDesktop ? styles.metricGridDesktop : styles.metricGridMobile}>
-            {/* Kartu Saldo Utama (Hero) - Monday Brand Panel #6161FF */}
+            {/* Kartu Saldo Utama (Hero) - FintechX Brand Panel #3B82F6 */}
             <LinearGradient
               colors={
                 isDark
-                  ? ['#6161FF', '#3D3DBE']
-                  : ['#6161FF', '#4E4EFF']
+                  ? ['#2563EB', '#1D4ED8']
+                  : ['#3B82F6', '#2563EB']
               }
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}

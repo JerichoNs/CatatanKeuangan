@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Tabs } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { View, TouchableOpacity, Text, Platform, useWindowDimensions, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -158,21 +158,46 @@ function HeaderRightActions({ isDesktop }: { isDesktop: boolean }) {
         )}
       </View>
 
-      <ThemeToggle size="small" />
+        <ThemeToggle size="small" />
 
-      <TouchableOpacity
-        onPress={logout}
-        hitSlop={8}
-        accessibilityRole="button"
-        accessibilityLabel="Keluar"
-        style={{
-          backgroundColor: isDark ? 'rgba(239, 68, 68, 0.12)' : 'rgba(239, 68, 68, 0.08)',
-          padding: isDesktop ? 7 : 6,
-          borderRadius: radius.pill,
-        }}
-      >
-        <Ionicons name="log-out-outline" size={isDesktop ? 19 : 17} color={colors.expense} />
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push('/landing')}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Landing Page"
+          style={{
+            backgroundColor: isDark ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.1)',
+            paddingHorizontal: isDesktop ? 10 : 8,
+            paddingVertical: isDesktop ? 5 : 4,
+            borderRadius: radius.pill,
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.25)',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 4,
+          }}
+        >
+          <Ionicons name="sparkles" size={13} color="#3B82F6" />
+          {isDesktop && (
+            <Text style={{ color: '#3B82F6', fontSize: 12, fontWeight: '700' }}>
+              Landing
+            </Text>
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={logout}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Keluar"
+          style={{
+            backgroundColor: isDark ? 'rgba(239, 68, 68, 0.12)' : 'rgba(239, 68, 68, 0.08)',
+            padding: isDesktop ? 7 : 6,
+            borderRadius: radius.pill,
+          }}
+        >
+          <Ionicons name="log-out-outline" size={isDesktop ? 19 : 17} color={colors.expense} />
+        </TouchableOpacity>
     </View>
   );
 }

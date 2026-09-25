@@ -27,13 +27,17 @@ function RootNavigation() {
         const style = document.createElement('style');
         style.id = styleId;
         style.innerHTML = `
-          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
           body, input, textarea, select {
-            font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                         border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                         color 0.25s ease;
+          }
+
+          h1, h2, h3, .fintechx-display {
+            font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif !important;
           }
 
           /* Hilangkan outline kotak biru bawaan browser Chrome/Edge */
@@ -144,9 +148,10 @@ function RootNavigation() {
   useEffect(() => {
     if (loading) return;
     const inAuthGroup = segments[0] === '(auth)';
+    const isLanding = segments[0] === 'landing';
 
-    if (!user && !inAuthGroup) {
-      router.replace('/login');
+    if (!user && !inAuthGroup && !isLanding) {
+      router.replace('/landing');
     } else if (user && inAuthGroup) {
       router.replace('/');
     }

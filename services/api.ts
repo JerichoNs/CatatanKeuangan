@@ -115,6 +115,12 @@ async function request<T>(
     if (token) headers['Authorization'] = `Bearer ${token}`;
   }
 
+  // Intercept untuk Demo Mode FintechX
+  const token = requiresAuth ? await getToken() : null;
+  if (token === 'demo_fintechx_token') {
+    return handleDemoRequest<T>(method, path, body);
+  }
+
   // Pilih base URL: Jika request ke admin (/admin/*), pakai currentAdminUrl, selain itu currentPublicUrl
   const baseUrl = path.startsWith('/admin') ? currentAdminUrl : currentPublicUrl;
 
@@ -158,6 +164,122 @@ async function request<T>(
       0
     );
   }
+}
+
+// Memory store untuk Demo FintechX
+let demoStorage: any[] = [
+  {
+    id: 'tx-1',
+    userId: 'demo-user-fintechx',
+    type: 'income',
+    amount: 35000000,
+    category: 'Gaji & Bonus',
+    note: 'Gaji Bulanan & Profit Sharing',
+    pocket: 'simpanan_pertama',
+    date: new Date(Date.now() - 86400000 * 2).toISOString(),
+    createdAt: Date.now() - 86400000 * 2,
+  },
+  {
+    id: 'tx-2',
+    userId: 'demo-user-fintechx',
+    type: 'income',
+    amount: 12500000,
+    category: 'Investasi & Dividen',
+    note: 'Dividen Saham BBCA & Return Reksadana',
+    pocket: 'pocket_nabung',
+    date: new Date(Date.now() - 86400000 * 3).toISOString(),
+    createdAt: Date.now() - 86400000 * 3,
+  },
+  {
+    id: 'tx-3',
+    userId: 'demo-user-fintechx',
+    type: 'expense',
+    amount: 4500000,
+    category: 'Kebutuhan & Rumah',
+    note: 'Belanja Bulanan & Listrik',
+    pocket: 'simpanan_pertama',
+    date: new Date(Date.now() - 86400000 * 1).toISOString(),
+    createdAt: Date.now() - 86400000 * 1,
+  },
+  {
+    id: 'tx-4',
+    userId: 'demo-user-fintechx',
+    type: 'expense',
+    amount: 1850000,
+    category: 'Makan & Minum',
+    note: 'Dining & Coffee Workspace',
+    pocket: 'simpanan_pertama',
+    date: new Date(Date.now() - 86400000 * 1).toISOString(),
+    createdAt: Date.now() - 86400000 * 1,
+  },
+  {
+    id: 'tx-5',
+    userId: 'demo-user-fintechx',
+    type: 'income',
+    amount: 8000000,
+    category: 'Freelance & Side Gig',
+    note: 'Konsultasi Fintech Web Project',
+    pocket: 'pocket_nabung',
+    date: new Date(Date.now() - 86400000 * 5).toISOString(),
+    createdAt: Date.now() - 86400000 * 5,
+  },
+  {
+    id: 'tx-6',
+    userId: 'demo-user-fintechx',
+    type: 'expense',
+    amount: 2200000,
+    category: 'Langganan & Software',
+    note: 'Cloud, Claude AI & Figma Pro',
+    pocket: 'simpanan_pertama',
+    date: new Date(Date.now() - 86400000 * 4).toISOString(),
+    createdAt: Date.now() - 86400000 * 4,
+  },
+  {
+    id: 'tx-7',
+    userId: 'demo-user-fintechx',
+    type: 'income',
+    amount: 4200000,
+    category: 'Imbal Hasil Emas & Obligasi',
+    note: 'Kupon Sukuk Ritel SR020',
+    pocket: 'pocket_nabung',
+    date: new Date(Date.now() - 86400000 * 6).toISOString(),
+    createdAt: Date.now() - 86400000 * 6,
+  },
+];
+
+async function handleDemoRequest<T>(method: string, path: string, body?: any): Promise<T> {
+  // Simulasi latency cepat 100ms
+  await new Promise((r) => setTimeout(r, 120));
+
+  if (path === '/transactions') {
+    if (method === 'GET') {
+      return [...demoStorage] as T;
+    }
+    if (method === 'POST') {
+      const newTx = {
+        id: `demo-${Date.now()}`,
+        userId: 'demo-user-fintechx',
+        ...body,
+        createdAt: Date.now(),
+      };
+      demoStorage = [newTx, ...demoStorage];
+      return newTx as T;
+    }
+  }
+
+  if (path.startsWith('/transactions/')) {
+    const id = path.replace('/transactions/', '');
+    if (method === 'DELETE') {
+      demoStorage = demoStorage.filter((t) => t.id !== id);
+      return undefined as T;
+    }
+  }
+
+  if (path === '/auth/logout') {
+    return {} as T;
+  }
+
+  return {} as T;
 }
 
 export class ApiError extends Error {
